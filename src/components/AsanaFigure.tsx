@@ -30,6 +30,12 @@ export function AsanaFigure({ pose, className }: Props) {
             {i > 0 && (
               <path d="M -12 44 L -4 50 L -12 56" className="asana-figure__arrow" />
             )}
+            {fig.torso && (
+              <polygon
+                points={fig.torso.map(([x, y]) => `${x},${y}`).join(' ')}
+                className="asana-figure__torso"
+              />
+            )}
             {fig.strokes.map((line, j) => (
               <polyline
                 key={j}

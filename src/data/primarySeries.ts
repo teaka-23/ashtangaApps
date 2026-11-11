@@ -14,8 +14,10 @@ export interface Section {
 
 export interface Asana {
   id: string;
-  /** Транслитерация санскритского названия */
+  /** Транслитерация санскритского названия (латиницей) */
   sanskrit: string;
+  /** Русская транскрипция — как произносится */
+  transcription: string;
   /** Название на русском */
   russian: string;
   /** Ключ SVG-позы из poses.ts */

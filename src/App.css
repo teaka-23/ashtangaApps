@@ -164,8 +164,16 @@ body {
 .asana-figure__stroke {
   fill: none;
   stroke: var(--tg-text);
-  stroke-width: 3;
+  stroke-width: 2.6;
   stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.asana-figure__torso {
+  fill: var(--tg-text);
+  fill-opacity: 0.14;
+  stroke: var(--tg-text);
+  stroke-width: 2.2;
   stroke-linejoin: round;
 }
 
