@@ -33,7 +33,7 @@ export const SECTIONS: Section[] = [
   { id: 'surya-a', title: 'Сурья Намаскар А', subtitle: 'Приветствие Солнцу А · 9 виньяс' },
   { id: 'surya-b', title: 'Сурья Намаскар Б', subtitle: 'Приветствие Солнцу Б · 17 виньяс' },
   { id: 'standing', title: 'Стоя', subtitle: 'Фундаментальные асаны' },
-  { id: 'seated', title: 'Сидя', subtitle: 'Йога Чикитса — основная часть' },
+  { id: 'seated', title: 'Сидя', subtitle: 'Основная часть серии' },
   { id: 'backbend', title: 'Прогибы', subtitle: 'Завершение основной части' },
   { id: 'finishing', title: 'Завершающая последовательность', subtitle: 'Перевёрнутые и медитация' },
 ];

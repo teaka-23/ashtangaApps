@@ -32,7 +32,7 @@ export default function App() {
     <div className="app">
       <header className="header">
         <h1>Аштанга-йога</h1>
-        <p>Первая серия · Йога Чикитса · {PRIMARY_SERIES.length} позиций</p>
+        <p>Йога Чикитса (первая серия аштанга-виньяса-йоги) · {PRIMARY_SERIES.length} позиций</p>
       </header>
 
       <nav className="section-nav">
