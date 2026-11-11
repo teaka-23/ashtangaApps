@@ -27,7 +27,7 @@ npm run build   # прод-сборка в dist/
 
 ## Структура
 
-- `src/data/primarySeries.ts` — последовательность первой серии (61 позиция)
+- `src/data/primarySeries.ts` — последовательность первой серии (61 асана)
 - `src/data/poses.ts` — координаты SVG-фигурок для каждой асаны
 - `src/components/AsanaFigure.tsx` — рендер иллюстраций
 - `src/telegram.ts` — интеграция Telegram WebApp (тема, expand)
