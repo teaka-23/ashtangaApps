@@ -13,6 +13,10 @@ React 19 + Vite + TypeScript. Полностью статическое прил
 GitHub Actions (`.github/workflows/deploy.yml`) собирает и публикует на
 GitHub Pages при пуше в `main`: https://teaka-23.github.io/ashtangaApps/
 
+## Telegram Mini App
+
+https://t.me/ashtanga_yoga_by_teaka_bot/ashtaga_by_teaka
+
 ## Разработка
 
 ```bash
