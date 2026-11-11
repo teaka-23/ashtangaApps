@@ -8,6 +8,11 @@ Telegram Mini App для практикующих аштанга-йогу: по�
 
 React 19 + Vite + TypeScript. Полностью статическое приложение, без бэкенда.
 
+## Деплой
+
+GitHub Actions (`.github/workflows/deploy.yml`) собирает и публикует на
+GitHub Pages при пуше в `main`: https://teaka-23.github.io/ashtangaApps/
+
 ## Разработка
 
 ```bash
