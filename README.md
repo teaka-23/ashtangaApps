@@ -1,32 +1,29 @@
-# React + TypeScript + Vite
+# Аштанга-йога — Первая серия
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Telegram Mini App для практикующих аштанга-йогу: последовательность асан
+первой серии (Йога Чикитса) с названиями на санскрите и русском,
+схематичными SVG-иллюстрациями, виньясами и дришти.
 
-Currently, two official plugins are available:
+## Стек
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+React 19 + Vite + TypeScript. Полностью статическое приложение, без бэкенда.
 
-## React Compiler
+## Разработка
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev     # http://localhost:5173
+npm run build   # прод-сборка в dist/
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Структура
+
+- `src/data/primarySeries.ts` — последовательность первой серии (61 позиция)
+- `src/data/poses.ts` — координаты SVG-фигурок для каждой асаны
+- `src/components/AsanaFigure.tsx` — рендер иллюстраций
+- `src/telegram.ts` — интеграция Telegram WebApp (тема, expand)
+
+## Документация
+
+- [ADR](docs/adr/) — архитектурные решения (платформа, стек, иллюстрации, данные)
+- [Технический долг](docs/tech-debt.md) — реестр с приоритетами
