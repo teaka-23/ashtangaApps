@@ -69,6 +69,7 @@ export default function App() {
                       <AsanaFigure pose={asana.pose} className="asana-card__figure" />
                       <span className="asana-card__text">
                         <span className="asana-card__sanskrit">{asana.sanskrit}</span>
+                        <span className="asana-card__transcription">{asana.transcription}</span>
                         <span className="asana-card__russian">{asana.russian}</span>
                       </span>
                       {asana.vinyasa !== undefined && (
@@ -89,6 +90,7 @@ export default function App() {
             <div className="sheet__grip" />
             <AsanaFigure pose={selected.pose} className="sheet__figure" />
             <h3 className="sheet__sanskrit">{selected.sanskrit}</h3>
+            <p className="sheet__transcription">{selected.transcription}</p>
             <p className="sheet__russian">{selected.russian}</p>
             <dl className="sheet__meta">
               {selected.vinyasa !== undefined && (

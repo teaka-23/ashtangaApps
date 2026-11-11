@@ -144,6 +144,12 @@ body {
   font-size: 15px;
 }
 
+.asana-card__transcription {
+  color: var(--tg-hint);
+  font-size: 12px;
+  font-style: italic;
+}
+
 .asana-card__russian {
   color: var(--tg-hint);
   font-size: 13px;
@@ -265,6 +271,13 @@ body {
 .sheet__sanskrit {
   margin: 4px 0 2px;
   font-size: 20px;
+}
+
+.sheet__transcription {
+  margin: 0 0 2px;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--tg-hint);
 }
 
 .sheet__russian {
