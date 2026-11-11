@@ -5,6 +5,42 @@ interface Props {
   className?: string;
 }
 
+function drawLimb(
+  points: [[number, number], [number, number], [number, number]],
+  className: string,
+) {
+  return (
+    <polyline
+      points={points.map(([x, y]) => `${x},${y}`).join(' ')}
+      className={className}
+    />
+  );
+}
+
+function drawJoints(
+  points: [[number, number], [number, number], [number, number]],
+) {
+  return points.map(([x, y], j) => (
+    <circle
+      key={j}
+      cx={x}
+      cy={y}
+      r={j === 1 ? 2.5 : 2}
+      className="asana-figure__joint"
+    />
+  ));
+}
+
+function drawStrokes(strokes: [number, number][][]) {
+  return strokes.map((line, j) => (
+    <polyline
+      key={j}
+      points={line.map(([x, y]) => `${x},${y}`).join(' ')}
+      className="asana-figure__stroke"
+    />
+  ));
+}
+
 export function AsanaFigure({ pose, className }: Props) {
   const def = POSES[pose];
   if (!def) return null;
@@ -36,13 +72,32 @@ export function AsanaFigure({ pose, className }: Props) {
                 className="asana-figure__torso"
               />
             )}
-            {fig.strokes.map((line, j) => (
-              <polyline
-                key={j}
-                points={line.map(([x, y]) => `${x},${y}`).join(' ')}
-                className="asana-figure__stroke"
+            {fig.arms && (
+              <>
+                {drawLimb(fig.arms.left, 'asana-figure__limb asana-figure__arm')}
+                {drawLimb(fig.arms.right, 'asana-figure__limb asana-figure__arm')}
+                {drawJoints(fig.arms.left)}
+                {drawJoints(fig.arms.right)}
+              </>
+            )}
+            {fig.legs && (
+              <>
+                {drawLimb(fig.legs.left, 'asana-figure__limb asana-figure__leg')}
+                {drawLimb(fig.legs.right, 'asana-figure__limb asana-figure__leg')}
+                {drawJoints(fig.legs.left)}
+                {drawJoints(fig.legs.right)}
+              </>
+            )}
+            {fig.strokes && drawStrokes(fig.strokes)}
+            {fig.drishti && (
+              <line
+                x1={fig.head[0]}
+                y1={fig.head[1]}
+                x2={fig.drishti[0]}
+                y2={fig.drishti[1]}
+                className="asana-figure__drishti"
               />
-            ))}
+            )}
             <circle
               cx={fig.head[0]}
               cy={fig.head[1]}
