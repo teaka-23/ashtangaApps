@@ -4,6 +4,15 @@ import { AsanaFigure } from './components/AsanaFigure';
 import { initTelegram } from './telegram';
 import './App.css';
 
+function pluralizeAsana(count: number): string {
+  const n = count % 100;
+  if (n >= 5 && n <= 20) return 'асан';
+  const n1 = count % 10;
+  if (n1 === 1) return 'асана';
+  if (n1 >= 2 && n1 <= 4) return 'асана';
+  return 'асан';
+}
+
 export default function App() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -32,7 +41,7 @@ export default function App() {
     <div className="app">
       <header className="header">
         <h1>Аштанга-йога</h1>
-        <p>Йога Чикитса (первая серия аштанга-виньяса-йоги) · {PRIMARY_SERIES.length} асан</p>
+        <p>Йога Чикитса (первая серия аштанга-виньяса-йоги) · {PRIMARY_SERIES.length} {pluralizeAsana(PRIMARY_SERIES.length)}</p>
       </header>
 
       <nav className="section-nav">

@@ -107,7 +107,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'parivrtta-trikonasana',
     sanskrit: 'Parivrtta Trikonasana',
-    transcription: 'Паривр́тта Трико́на́сана',
+    transcription: 'Париври́тта Трико́на́сана',
     russian: 'Перевёрнутый треугольник',
     pose: 'parivrtta-trikonasana',
     vinyasa: 5,
@@ -137,7 +137,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'parivrtta-parsvakonasana',
     sanskrit: 'Parivrtta Parsvakonasana',
-    transcription: 'Паривр́тта Паршвако́на́сана',
+    transcription: 'Париври́тта Паршвако́на́сана',
     russian: 'Перевёрнутый боковой угол',
     pose: 'parivrtta-parsvakonasana',
     vinyasa: 5,
