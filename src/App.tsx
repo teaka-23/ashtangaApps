@@ -88,7 +88,7 @@ export default function App() {
         <div className="sheet-backdrop" onClick={() => setSelectedId(null)}>
           <div className="sheet" onClick={(e) => e.stopPropagation()}>
             <div className="sheet__grip" />
-            <AsanaFigure pose={selected.pose} className="sheet__figure" />
+            <AsanaFigure pose={selected.pose} className="sheet__figure" columns={3} />
             <h3 className="sheet__sanskrit">{selected.sanskrit}</h3>
             <p className="sheet__transcription">{selected.transcription}</p>
             <p className="sheet__russian">{selected.russian}</p>

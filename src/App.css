@@ -245,7 +245,7 @@ body {
 .sheet {
   width: 100%;
   max-width: 560px;
-  max-height: 85vh;
+  max-height: 95vh;
   overflow-y: auto;
   background: var(--tg-bg);
   border-radius: 20px 20px 0 0;
@@ -264,7 +264,7 @@ body {
 
 .sheet__figure {
   width: 100%;
-  max-height: 240px;
+  max-height: 60vh;
   margin-bottom: 8px;
 }
 

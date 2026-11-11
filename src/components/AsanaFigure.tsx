@@ -3,6 +3,8 @@ import { POSES } from '../data/poses';
 interface Props {
   pose: string;
   className?: string;
+  /** Максимум фигур в ряд (для шторки) */
+  columns?: number;
 }
 
 function drawLimb(
@@ -41,19 +43,27 @@ function drawStrokes(strokes: [number, number][][]) {
   ));
 }
 
-export function AsanaFigure({ pose, className }: Props) {
+export function AsanaFigure({ pose, className, columns = 0 }: Props) {
   const def = POSES[pose];
   if (!def) return null;
 
-  const width = def.figures.length * 100;
-  const viewBox = `0 0 ${width} 100`;
+  const cols = columns > 0 ? columns : def.figures.length;
+  const rows = Math.ceil(def.figures.length / cols);
+  const cellW = 100;
+  const cellH = 100;
+  const width = Math.min(def.figures.length, cols) * cellW;
+  const height = rows * cellH;
+  const viewBox = `0 0 ${width} ${height}`;
 
   return (
     <svg viewBox={viewBox} className={className} role="img" aria-hidden="true">
       {def.figures.map((fig, i) => {
-        const ox = i * 100;
+        const col = i % cols;
+        const row = Math.floor(i / cols);
+        const ox = col * cellW;
+        const oy = row * cellH;
         return (
-          <g key={i} transform={`translate(${ox}, 0)`}>
+          <g key={i} transform={`translate(${ox}, ${oy})`}>
             {fig.ground !== undefined && (
               <line
                 x1={6}
@@ -63,7 +73,10 @@ export function AsanaFigure({ pose, className }: Props) {
                 className="asana-figure__ground"
               />
             )}
-            {i > 0 && (
+            {i > 0 && col === 0 && row > 0 && (
+              <path d="M 44 -12 L 50 -4 L 56 -12" className="asana-figure__arrow" />
+            )}
+            {i > 0 && col > 0 && (
               <path d="M -12 44 L -4 50 L -12 56" className="asana-figure__arrow" />
             )}
             {fig.torso && (
