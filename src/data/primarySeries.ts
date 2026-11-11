@@ -45,6 +45,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'surya-a',
     sanskrit: 'Surya Namaskara A',
+    transcription: 'Сурья Намаскара А',
     russian: 'Приветствие Солнцу А',
     pose: 'surya-a',
     vinyasa: 9,
@@ -55,6 +56,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'surya-b',
     sanskrit: 'Surya Namaskara B',
+    transcription: 'Сурья Намаскара Б',
     russian: 'Приветствие Солнцу Б',
     pose: 'surya-b',
     vinyasa: 17,
@@ -65,6 +67,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'padangusthasana',
     sanskrit: 'Padangusthasana',
+    transcription: 'Пада́нгуштха́сана',
     russian: 'Наклон с захватом больших пальцев ног',
     pose: 'padangusthasana',
     vinyasa: 3,
@@ -74,6 +77,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'padahastasana',
     sanskrit: 'Padahastasana',
+    transcription: 'Пада́хаста́сана',
     russian: 'Наклон, ладони под стопы',
     pose: 'padahastasana',
     vinyasa: 3,
@@ -83,6 +87,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'utthita-trikonasana-a',
     sanskrit: 'Utthita Trikonasana A',
+    transcription: 'Утхита Трико́на́сана А',
     russian: 'Вытянутый треугольник',
     pose: 'trikonasana-a',
     vinyasa: 5,
@@ -92,6 +97,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'utthita-trikonasana-b',
     sanskrit: 'Utthita Trikonasana B',
+    transcription: 'Утхита Трико́на́сана Б',
     russian: 'Вытянутый треугольник, разворот',
     pose: 'trikonasana-b',
     vinyasa: 5,
@@ -101,6 +107,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'parivrtta-trikonasana',
     sanskrit: 'Parivrtta Trikonasana',
+    transcription: 'Паривр́тта Трико́на́сана',
     russian: 'Перевёрнутый треугольник',
     pose: 'parivrtta-trikonasana',
     vinyasa: 5,
@@ -110,6 +117,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'utthita-parsvakonasana-a',
     sanskrit: 'Utthita Parsvakonasana A',
+    transcription: 'Утхита Паршвако́на́сана А',
     russian: 'Вытянутый боковой угол',
     pose: 'parsvakonasana-a',
     vinyasa: 5,
@@ -119,6 +127,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'utthita-parsvakonasana-b',
     sanskrit: 'Utthita Parsvakonasana B',
+    transcription: 'Утхита Паршвако́на́сана Б',
     russian: 'Вытянутый боковой угол, разворот',
     pose: 'parsvakonasana-b',
     vinyasa: 5,
@@ -128,6 +137,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'parivrtta-parsvakonasana',
     sanskrit: 'Parivrtta Parsvakonasana',
+    transcription: 'Паривр́тта Паршвако́на́сана',
     russian: 'Перевёрнутый боковой угол',
     pose: 'parivrtta-parsvakonasana',
     vinyasa: 5,
@@ -137,6 +147,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'prasarita-padottanasana-a',
     sanskrit: 'Prasarita Padottanasana A',
+    transcription: 'Праса́рита Падотта́на́сана А',
     russian: 'Наклон с широкой постановкой ног А',
     pose: 'prasarita-a',
     vinyasa: 5,
@@ -147,6 +158,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'prasarita-padottanasana-b',
     sanskrit: 'Prasarita Padottanasana B',
+    transcription: 'Праса́рита Падотта́на́сана Б',
     russian: 'Наклон с широкой постановкой ног Б',
     pose: 'prasarita-b',
     vinyasa: 5,
@@ -157,6 +169,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'prasarita-padottanasana-c',
     sanskrit: 'Prasarita Padottanasana C',
+    transcription: 'Праса́рита Падотта́на́сана В',
     russian: 'Наклон с широкой постановкой ног В',
     pose: 'prasarita-c',
     vinyasa: 5,
@@ -167,6 +180,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'prasarita-padottanasana-d',
     sanskrit: 'Prasarita Padottanasana D',
+    transcription: 'Праса́рита Падотта́на́сана Г',
     russian: 'Наклон с широкой постановкой ног Г',
     pose: 'prasarita-d',
     vinyasa: 5,
@@ -177,6 +191,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'parsvottanasana',
     sanskrit: 'Parsvottanasana',
+    transcription: 'Паршвотта́на́сана',
     russian: 'Интенсивное вытяжение бока',
     pose: 'parsvottanasana',
     vinyasa: 5,
@@ -187,6 +202,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'utthita-hasta-padangusthasana',
     sanskrit: 'Utthita Hasta Padangusthasana',
+    transcription: 'Утхита Хаста Падангуштха́сана',
     russian: 'Стоя, вытянутая нога в руке',
     pose: 'utthita-hasta',
     vinyasa: 14,
@@ -197,6 +213,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'ardha-baddha-padmottanasana',
     sanskrit: 'Ardha Baddha Padmottanasana',
+    transcription: 'Ардха Баддха Падмотта́на́сана',
     russian: 'Наклон с полулотосом стоя',
     pose: 'ardha-baddha-padmottanasana',
     vinyasa: 5,
@@ -206,6 +223,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'utkatasana',
     sanskrit: 'Utkatasana',
+    transcription: 'Утка́та́сана',
     russian: 'Поза стула',
     pose: 'utkatasana',
     vinyasa: 4,
@@ -215,6 +233,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'virabhadrasana-a',
     sanskrit: 'Virabhadrasana A',
+    transcription: 'Вирабхадра́сана А',
     russian: 'Поза воина I',
     pose: 'virabhadrasana-a',
     vinyasa: 5,
@@ -224,6 +243,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'virabhadrasana-b',
     sanskrit: 'Virabhadrasana B',
+    transcription: 'Вирабхадра́сана Б',
     russian: 'Поза воина II',
     pose: 'virabhadrasana-b',
     vinyasa: 5,
@@ -234,6 +254,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'dandasana',
     sanskrit: 'Dandasana',
+    transcription: 'Да́нда́сана',
     russian: 'Поза палки',
     pose: 'dandasana',
     vinyasa: 7,
@@ -243,6 +264,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'paschimottanasana-a',
     sanskrit: 'Paschimottanasana A',
+    transcription: 'Пашчимотта́на́сана А',
     russian: 'Наклон к стопам сидя А',
     pose: 'paschimottanasana-a',
     vinyasa: 16,
@@ -253,6 +275,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'paschimottanasana-b',
     sanskrit: 'Paschimottanasana B',
+    transcription: 'Пашчимотта́на́сана Б',
     russian: 'Наклон к стопам сидя Б',
     pose: 'paschimottanasana-b',
     vinyasa: 16,
@@ -263,6 +286,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'paschimottanasana-c',
     sanskrit: 'Paschimottanasana C',
+    transcription: 'Пашчимотта́на́сана В',
     russian: 'Наклон к стопам сидя В',
     pose: 'paschimottanasana-c',
     vinyasa: 16,
@@ -273,6 +297,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'purvottanasana',
     sanskrit: 'Purvottanasana',
+    transcription: 'Пурвотта́на́сана',
     russian: 'Поза вытяжения передней части тела',
     pose: 'purvottanasana',
     vinyasa: 16,
@@ -283,6 +308,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'ardha-baddha-padma-paschimottanasana',
     sanskrit: 'Ardha Baddha Padma Paschimottanasana',
+    transcription: 'Ардха Баддха Падма Пашчимотта́на́сана',
     russian: 'Наклон с полулотосом сидя',
     pose: 'ardha-baddha-padma-paschimottanasana',
     vinyasa: 16,
@@ -292,6 +318,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'trianga-mukhaikapada-paschimottanasana',
     sanskrit: 'Trianga Mukhaikapada Paschimottanasana',
+    transcription: 'Трианга Мухаикапада Пашчимотта́на́сана',
     russian: 'Наклон, нога согнута назад',
     pose: 'trianga-mukha',
     vinyasa: 16,
@@ -301,6 +328,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'janu-sirsasana-a',
     sanskrit: 'Janu Sirsasana A',
+    transcription: 'Джану Ширша́сана А',
     russian: 'Наклон головы к колену А',
     pose: 'janu-sirsasana-a',
     vinyasa: 16,
@@ -310,6 +338,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'janu-sirsasana-b',
     sanskrit: 'Janu Sirsasana B',
+    transcription: 'Джану Ширша́сана Б',
     russian: 'Наклон головы к колену Б',
     pose: 'janu-sirsasana-b',
     vinyasa: 16,
@@ -320,6 +349,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'janu-sirsasana-c',
     sanskrit: 'Janu Sirsasana C',
+    transcription: 'Джану Ширша́сана В',
     russian: 'Наклон головы к колену В',
     pose: 'janu-sirsasana-c',
     vinyasa: 16,
@@ -330,6 +360,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'marichyasana-a',
     sanskrit: 'Marichyasana A',
+    transcription: 'Маричья́сана А',
     russian: 'Поза Маричи А',
     pose: 'marichyasana-a',
     vinyasa: 16,
@@ -340,6 +371,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'marichyasana-b',
     sanskrit: 'Marichyasana B',
+    transcription: 'Маричья́сана Б',
     russian: 'Поза Маричи Б',
     pose: 'marichyasana-b',
     vinyasa: 16,
@@ -350,6 +382,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'marichyasana-c',
     sanskrit: 'Marichyasana C',
+    transcription: 'Маричья́сана В',
     russian: 'Поза Маричи В',
     pose: 'marichyasana-c',
     vinyasa: 16,
@@ -360,6 +393,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'marichyasana-d',
     sanskrit: 'Marichyasana D',
+    transcription: 'Маричья́сана Г',
     russian: 'Поза Маричи Г',
     pose: 'marichyasana-d',
     vinyasa: 16,
@@ -370,6 +404,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'navasana',
     sanskrit: 'Navasana',
+    transcription: 'Нава́сана',
     russian: 'Поза лодки',
     pose: 'navasana',
     vinyasa: 13,
@@ -380,6 +415,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'bhujapidasana',
     sanskrit: 'Bhujapidasana',
+    transcription: 'Бхуджапида́сана',
     russian: 'Поза сжатия плечами',
     pose: 'bhujapidasana',
     vinyasa: 16,
@@ -389,6 +425,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'kurmasana',
     sanskrit: 'Kurmasana',
+    transcription: 'Курма́сана',
     russian: 'Поза черепахи',
     pose: 'kurmasana',
     vinyasa: 16,
@@ -398,6 +435,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'supta-kurmasana',
     sanskrit: 'Supta Kurmasana',
+    transcription: 'Шупта Курма́сана',
     russian: 'Поза спящей черепахи',
     pose: 'supta-kurmasana',
     vinyasa: 16,
@@ -407,6 +445,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'garbha-pindasana',
     sanskrit: 'Garbha Pindasana',
+    transcription: 'Гарбха Пинда́сана',
     russian: 'Поза эмбриона в лотосе',
     pose: 'garbha-pindasana',
     vinyasa: 16,
@@ -417,6 +456,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'kukkutasana',
     sanskrit: 'Kukkutasana',
+    transcription: 'Куккута́сана',
     russian: 'Поза петуха',
     pose: 'kukkutasana',
     vinyasa: 16,
@@ -426,6 +466,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'baddha-konasana-a',
     sanskrit: 'Baddha Konasana A',
+    transcription: 'Баддха Ко́на́сана А',
     russian: 'Связанный угол А',
     pose: 'baddha-konasana-a',
     vinyasa: 15,
@@ -436,6 +477,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'baddha-konasana-b',
     sanskrit: 'Baddha Konasana B',
+    transcription: 'Баддха Ко́на́сана Б',
     russian: 'Связанный угол Б',
     pose: 'baddha-konasana-b',
     vinyasa: 15,
@@ -446,6 +488,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'upavishta-konasana',
     sanskrit: 'Upavishta Konasana',
+    transcription: 'Упави́шта Ко́на́сана',
     russian: 'Наклон сидя с широко разведёнными ногами',
     pose: 'upavishta-konasana',
     vinyasa: 15,
@@ -455,6 +498,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'supta-konasana',
     sanskrit: 'Supta Konasana',
+    transcription: 'Шупта Ко́на́сана',
     russian: 'Поза угла лёжа',
     pose: 'supta-konasana',
     vinyasa: 15,
@@ -465,6 +509,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'supta-padangusthasana',
     sanskrit: 'Supta Padangusthasana',
+    transcription: 'Шупта Падангуштха́сана',
     russian: 'Поза большого пальца ноги лёжа',
     pose: 'supta-padangusthasana',
     vinyasa: 28,
@@ -475,6 +520,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'ubhaya-padangusthasana',
     sanskrit: 'Ubhaya Padangusthasana',
+    transcription: 'Убхая Падангуштха́сана',
     russian: 'Поза обоих больших пальцев ног',
     pose: 'ubhaya-padangusthasana',
     vinyasa: 15,
@@ -485,6 +531,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'urdhva-mukha-paschimottanasana',
     sanskrit: 'Urdhva Mukha Paschimottanasana',
+    transcription: 'Урдхва Муха Пашчимотта́на́сана',
     russian: 'Наклон лицом вверх',
     pose: 'urdhva-mukha-paschimottanasana',
     vinyasa: 15,
@@ -495,6 +542,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'setu-bandhasana',
     sanskrit: 'Setu Bandhasana',
+    transcription: 'Сету Бандха́сана',
     russian: 'Поза моста с захватом',
     pose: 'setu-bandhasana',
     vinyasa: 15,
@@ -505,6 +553,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'urdhva-dhanurasana',
     sanskrit: 'Urdhva Dhanurasana',
+    transcription: 'Урдхва Дханура́сана',
     russian: 'Поза лука лицом вверх',
     pose: 'urdhva-dhanurasana',
     vinyasa: 15,
@@ -516,6 +565,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'salamba-sarvangasana',
     sanskrit: 'Salamba Sarvangasana',
+    transcription: 'Саламба Сарванга́сана',
     russian: 'Стойка на плечах с опорой',
     pose: 'sarvangasana',
     drishti: 'Нос',
@@ -525,6 +575,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'halasana',
     sanskrit: 'Halasana',
+    transcription: 'Хала́сана',
     russian: 'Поза плуга',
     pose: 'halasana',
     drishti: 'Нос',
@@ -533,6 +584,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'karnapidasana',
     sanskrit: 'Karnapidasana',
+    transcription: 'Карнапида́сана',
     russian: 'Поза сжатия ушей коленями',
     pose: 'karnapidasana',
     drishti: 'Нос',
@@ -541,6 +593,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'urdhva-padmasana',
     sanskrit: 'Urdhva Padmasana',
+    transcription: 'Урдхва Падма́сана',
     russian: 'Верхний лотос',
     pose: 'urdhva-padmasana',
     drishti: 'Нос',
@@ -550,6 +603,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'pindasana',
     sanskrit: 'Pindasana',
+    transcription: 'Пинда́сана',
     russian: 'Поза эмбриона (в плечевой стойке)',
     pose: 'pindasana',
     drishti: 'Нос',
@@ -558,6 +612,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'matsyasana',
     sanskrit: 'Matsyasana',
+    transcription: 'Матсья́сана',
     russian: 'Поза рыбы',
     pose: 'matsyasana',
     drishti: 'Третий глаз',
@@ -566,6 +621,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'uttana-padasana',
     sanskrit: 'Uttana Padasana',
+    transcription: 'Уттана Пада́сана',
     russian: 'Поза вытянутых ног',
     pose: 'uttana-padasana',
     drishti: 'Третий глаз',
@@ -575,6 +631,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'sirsasana',
     sanskrit: 'Sirsasana',
+    transcription: 'Ширша́сана',
     russian: 'Стойка на голове',
     pose: 'sirsasana',
     drishti: 'Нос',
@@ -584,6 +641,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'baddha-padmasana',
     sanskrit: 'Baddha Padmasana',
+    transcription: 'Баддха Падма́сана',
     russian: 'Связанный лотос',
     pose: 'baddha-padmasana',
     drishti: 'Нос',
@@ -593,6 +651,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'padmasana',
     sanskrit: 'Padmasana',
+    transcription: 'Падма́сана',
     russian: 'Поза лотоса',
     pose: 'padmasana',
     drishti: 'Нос',
@@ -602,6 +661,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'utpluthih',
     sanskrit: 'Utpluthih (Tolasana)',
+    transcription: 'Утплути́х (Тола́сана)',
     russian: 'Поза весов',
     pose: 'utpluthih',
     drishti: 'Нос',
@@ -611,6 +671,7 @@ export const PRIMARY_SERIES: Asana[] = [
   {
     id: 'savasana',
     sanskrit: 'Savasana',
+    transcription: 'Шава́сана',
     russian: 'Поза покоя',
     pose: 'savasana',
     note: 'Отдых 5–10 минут, полное расслабление.',
