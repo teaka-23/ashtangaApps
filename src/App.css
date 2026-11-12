@@ -5,6 +5,8 @@
   --tg-link: #2481cc;
   --tg-button: #2481cc;
   --tg-secondary-bg: #f2f2f5;
+  --modern-bg: #eef6f0;
+  --modern-accent: #2f6b4f;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,6 +17,8 @@
     --tg-link: #5aa9e6;
     --tg-button: #5aa9e6;
     --tg-secondary-bg: #2c2c2e;
+    --modern-bg: #1e2a24;
+    --modern-accent: #7dba98;
   }
 }
 
@@ -36,15 +40,75 @@ body {
   padding: 20px 0 12px;
 }
 
+.header__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .header h1 {
   margin: 0;
   font-size: 24px;
+}
+
+.header__lang {
+  flex-shrink: 0;
+  border: none;
+  border-radius: 10px;
+  padding: 6px 10px;
+  background: var(--tg-secondary-bg);
+  color: var(--tg-text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .header p {
   margin: 4px 0 0;
   color: var(--tg-hint);
   font-size: 14px;
+}
+
+.header__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.header__practice,
+.header__continue,
+.sheet__practice,
+.sheet__share {
+  border: none;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.header__practice,
+.sheet__practice {
+  background: var(--tg-button);
+  color: #fff;
+}
+
+.header__continue,
+.sheet__share {
+  background: var(--tg-secondary-bg);
+  color: var(--tg-text);
+}
+
+.sheet__practice,
+.sheet__share {
+  width: 100%;
+  margin: 4px 0 8px;
+}
+
+.sheet__share {
+  margin-bottom: 12px;
 }
 
 .section-nav {
@@ -119,6 +183,18 @@ body {
   opacity: 0.7;
 }
 
+.asana-card--modern {
+  background: var(--modern-bg);
+  box-shadow: inset 3px 0 0 var(--modern-accent);
+}
+
+.asana-card__badge {
+  margin-top: 2px;
+  color: var(--modern-accent);
+  font-size: 11px;
+  font-weight: 600;
+}
+
 .asana-card__num {
   min-width: 22px;
   color: var(--tg-hint);
@@ -137,6 +213,15 @@ body {
   flex-direction: column;
   gap: 2px;
   min-width: 0;
+  padding-right: 4px;
+}
+
+.asana-card__sanskrit,
+.asana-card__transcription,
+.asana-card__russian {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .asana-card__sanskrit {
@@ -156,6 +241,7 @@ body {
 }
 
 .asana-card__vinyasa {
+  flex-shrink: 0;
   min-width: 28px;
   height: 28px;
   display: grid;
@@ -166,46 +252,89 @@ body {
   font-size: 12px;
 }
 
-/* Фигурки */
-.asana-figure__stroke {
-  fill: none;
-  stroke: var(--tg-text);
-  stroke-width: 2.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
+/* Фигурки: дальняя сторона бледнее, кисть = кружок, стопа = чёрточка */
 .asana-figure__limb {
   fill: none;
   stroke: var(--tg-text);
-  stroke-width: 2.8;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 .asana-figure__arm {
-  stroke-width: 2.6;
+  stroke: var(--tg-link);
+  stroke-width: 2.3;
 }
 
 .asana-figure__leg {
+  stroke: var(--tg-text);
   stroke-width: 3;
 }
 
-.asana-figure__joint {
+.asana-figure__limb--far {
+  opacity: 0.4;
+}
+
+.asana-figure__limb--near {
+  opacity: 1;
+}
+
+.asana-figure__joint--arm {
+  fill: var(--tg-link);
+}
+
+.asana-figure__joint--leg {
   fill: var(--tg-text);
-  fill-opacity: 0.85;
+}
+
+.asana-figure__joint--far {
+  fill-opacity: 0.4;
+}
+
+.asana-figure__joint--near {
+  fill-opacity: 0.95;
+}
+
+.asana-figure__hand {
+  fill: none;
+  stroke: var(--tg-link);
+  stroke-width: 1.8;
+}
+
+.asana-figure__hand--far {
+  opacity: 0.4;
+}
+
+.asana-figure__hand--near {
+  opacity: 1;
+}
+
+.asana-figure__foot {
+  fill: none;
+  stroke: var(--tg-text);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.asana-figure__foot--far {
+  opacity: 0.4;
+}
+
+.asana-figure__foot--near {
+  opacity: 1;
 }
 
 .asana-figure__torso {
   fill: var(--tg-text);
-  fill-opacity: 0.14;
+  fill-opacity: 0.1;
   stroke: var(--tg-text);
-  stroke-width: 2.2;
+  stroke-width: 1.8;
   stroke-linejoin: round;
 }
 
 .asana-figure__head {
-  stroke-width: 2.5;
+  fill: var(--tg-bg);
+  stroke: var(--tg-text);
+  stroke-width: 2.4;
 }
 
 .asana-figure__drishti {
@@ -229,6 +358,13 @@ body {
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+.asana-figure__frame-num {
+  fill: var(--tg-hint);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
 /* Нижняя шторка с деталями */
@@ -263,14 +399,48 @@ body {
 }
 
 .sheet__figure {
-  width: 100%;
-  max-height: 60vh;
-  margin-bottom: 8px;
+  width: min(100%, 280px);
+  max-height: 45vh;
+  margin: 0 auto 8px;
+}
+
+.sheet__frames {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 0 12px;
+  color: var(--tg-hint);
+  font-size: 13px;
+}
+
+.sheet__frames button {
+  border: none;
+  border-radius: 10px;
+  background: var(--tg-secondary-bg);
+  color: var(--tg-text);
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.sheet__frames button:disabled {
+  opacity: 0.35;
 }
 
 .sheet__sanskrit {
   margin: 4px 0 2px;
   font-size: 20px;
+}
+
+.sheet__devanagari {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.35;
+  font-family: 'Noto Sans Devanagari', 'Devanagari Sangam MN', 'Kohinoor Devanagari',
+    'Noto Serif Devanagari', sans-serif;
 }
 
 .sheet__transcription {
@@ -285,26 +455,36 @@ body {
   color: var(--tg-hint);
 }
 
+.sheet__modern-badge {
+  display: inline-block;
+  margin: 0 0 12px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: var(--modern-bg);
+  color: var(--modern-accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+
 .sheet__meta {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto auto;
   justify-content: center;
-  gap: 8px 24px;
+  column-gap: 24px;
+  row-gap: 6px;
   margin: 0 0 8px;
   font-size: 14px;
 }
 
 .sheet__meta dt {
   color: var(--tg-hint);
+  text-align: right;
 }
 
 .sheet__meta dd {
   margin: 0;
   font-weight: 600;
-}
-
-.sheet__meta dt,
-.sheet__meta dd {
-  display: inline;
+  text-align: left;
 }
 
 .sheet__note {
@@ -334,4 +514,291 @@ body {
 
 .sheet__nav button:disabled {
   opacity: 0.35;
+}
+
+/* Режим практики — один экран, без вертикального скролла */
+.practice {
+  max-width: 560px;
+  margin: 0 auto;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+  padding: 0 14px calc(10px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--tg-bg);
+  color: var(--tg-text);
+}
+
+.practice__progress {
+  flex: 0 0 auto;
+  height: 3px;
+  background: var(--tg-secondary-bg);
+  margin: 0 -14px;
+  width: calc(100% + 28px);
+}
+
+.practice__progress-bar {
+  height: 100%;
+  background: var(--tg-button);
+  transition: width 0.25s ease;
+}
+
+.practice__header {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0 2px;
+  gap: 8px;
+}
+
+.practice__step {
+  color: var(--tg-hint);
+  font-size: 13px;
+}
+
+.practice__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.practice__exit,
+.practice__finish,
+.practice__controls button {
+  border: none;
+  border-radius: 10px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.practice__exit {
+  background: transparent;
+  color: var(--tg-link);
+  padding: 4px 6px;
+  font-size: 14px;
+}
+
+.practice__finish {
+  background: transparent;
+  color: var(--tg-hint);
+  font-size: 13px;
+  padding: 4px 6px;
+}
+
+.practice__visual {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2px 0;
+}
+
+.practice__figure {
+  width: 100%;
+  max-width: 420px;
+  max-height: 100%;
+  height: auto;
+}
+
+.practice__info {
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
+}
+
+.practice__sanskrit {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.practice__names {
+  margin: 2px 0 0;
+  color: var(--tg-hint);
+  font-size: 13px;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.practice__meta-line {
+  margin: 4px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tg-text);
+}
+
+.practice__note {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--tg-secondary-bg);
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-size: 12px;
+  line-height: 1.35;
+  text-align: left;
+  margin: 6px 0 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.practice__flow-hint {
+  flex: 0 0 auto;
+  margin: 6px 0;
+  color: var(--tg-hint);
+  font-size: 13px;
+}
+
+.practice__breath-opts {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  margin: 2px 0 0;
+}
+
+.practice__breath-opts button {
+  border: none;
+  border-radius: 8px;
+  background: var(--tg-secondary-bg);
+  color: var(--tg-hint);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.practice__breath-opts button.is-active {
+  background: var(--tg-button);
+  color: #fff;
+}
+
+.practice__controls {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.practice__controls button {
+  flex: 1;
+  padding: 11px;
+  background: var(--tg-secondary-bg);
+  color: var(--tg-text);
+  font-weight: 600;
+}
+
+.practice__controls button:disabled {
+  opacity: 0.35;
+}
+
+.practice__controls .practice__primary,
+.practice__primary {
+  background: var(--tg-button);
+  color: #fff;
+}
+
+.practice__done {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 40px 0;
+}
+
+.practice__done h2 {
+  margin: 0;
+}
+
+.practice__done p {
+  margin: 0;
+  color: var(--tg-hint);
+}
+
+.practice__done .practice__primary {
+  margin-top: 12px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Breath timer — компактный, чтобы практика помещалась в экран */
+.breath-timer {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 4px 0;
+}
+
+.breath-timer__ring {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: conic-gradient(
+    var(--tg-button) calc(var(--breath-progress, 0) * 100%),
+    var(--tg-secondary-bg) 0
+  );
+  transition: transform 0.4s ease;
+}
+
+.breath-timer__ring--inhale {
+  transform: scale(1.05);
+}
+
+.breath-timer__ring--exhale {
+  transform: scale(0.95);
+}
+
+.breath-timer__ring--paused {
+  transform: none;
+  opacity: 0.7;
+}
+
+.breath-timer__count {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--tg-bg);
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.breath-timer__of {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--tg-hint);
+}
+
+.breath-timer__phase {
+  margin: 4px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tg-hint);
 }

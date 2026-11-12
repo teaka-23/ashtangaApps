@@ -8,6 +8,41 @@ interface TelegramThemeParams {
   secondary_bg_color?: string;
 }
 
+interface TelegramBackButton {
+  isVisible: boolean;
+  show(): void;
+  hide(): void;
+  onClick(cb: () => void): void;
+  offClick(cb: () => void): void;
+}
+
+interface TelegramMainButton {
+  text: string;
+  isVisible: boolean;
+  setText(text: string): void;
+  show(): void;
+  hide(): void;
+  onClick(cb: () => void): void;
+  offClick(cb: () => void): void;
+  enable(): void;
+  disable(): void;
+}
+
+type HapticImpact = 'light' | 'medium' | 'heavy' | 'rigid' | 'soft';
+type HapticNotification = 'error' | 'success' | 'warning';
+
+interface TelegramHapticFeedback {
+  impactOccurred(style: HapticImpact): void;
+  notificationOccurred(type: HapticNotification): void;
+  selectionChanged(): void;
+}
+
+interface TelegramCloudStorage {
+  setItem(key: string, value: string, callback?: (error: string | null, ok?: boolean) => void): void;
+  getItem(key: string, callback: (error: string | null, value?: string) => void): void;
+  removeItem(key: string, callback?: (error: string | null, ok?: boolean) => void): void;
+}
+
 interface TelegramWebApp {
   ready(): void;
   expand(): void;
@@ -17,6 +52,10 @@ interface TelegramWebApp {
   colorScheme?: 'light' | 'dark';
   themeParams?: TelegramThemeParams;
   initData?: string;
+  BackButton?: TelegramBackButton;
+  MainButton?: TelegramMainButton;
+  HapticFeedback?: TelegramHapticFeedback;
+  CloudStorage?: TelegramCloudStorage;
 }
 
 declare global {
@@ -25,8 +64,14 @@ declare global {
   }
 }
 
+export type HapticKind = 'light' | 'medium' | 'success' | 'warning' | 'selection';
+
+export function getTelegram(): TelegramWebApp | undefined {
+  return window.Telegram?.WebApp;
+}
+
 export function initTelegram(): boolean {
-  const tg = window.Telegram?.WebApp;
+  const tg = getTelegram();
   if (!tg) return false;
 
   tg.ready();
@@ -52,4 +97,101 @@ export function initTelegram(): boolean {
   }
 
   return true;
+}
+
+let backHandler: (() => void) | null = null;
+
+export function showBackButton(onClick: () => void): void {
+  const btn = getTelegram()?.BackButton;
+  if (!btn) return;
+
+  if (backHandler) btn.offClick(backHandler);
+  backHandler = onClick;
+  btn.onClick(onClick);
+  btn.show();
+}
+
+export function hideBackButton(): void {
+  const btn = getTelegram()?.BackButton;
+  if (!btn) return;
+
+  if (backHandler) {
+    btn.offClick(backHandler);
+    backHandler = null;
+  }
+  btn.hide();
+}
+
+export function haptic(kind: HapticKind = 'light'): void {
+  const hf = getTelegram()?.HapticFeedback;
+  if (!hf) return;
+
+  if (kind === 'selection') {
+    hf.selectionChanged();
+    return;
+  }
+  if (kind === 'success' || kind === 'warning') {
+    hf.notificationOccurred(kind);
+    return;
+  }
+  hf.impactOccurred(kind);
+}
+
+function localGet(key: string): string | null {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function localSet(key: string, value: string): void {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    /* ignore quota / private mode */
+  }
+}
+
+function localRemove(key: string): void {
+  try {
+    localStorage.removeItem(key);
+  } catch {
+    /* ignore */
+  }
+}
+
+export function storageGet(key: string): Promise<string | null> {
+  const cs = getTelegram()?.CloudStorage;
+  if (!cs) return Promise.resolve(localGet(key));
+
+  return new Promise((resolve) => {
+    cs.getItem(key, (error, value) => {
+      if (error) {
+        resolve(localGet(key));
+        return;
+      }
+      resolve(value ?? null);
+    });
+  });
+}
+
+export function storageSet(key: string, value: string): Promise<void> {
+  localSet(key, value);
+  const cs = getTelegram()?.CloudStorage;
+  if (!cs) return Promise.resolve();
+
+  return new Promise((resolve) => {
+    cs.setItem(key, value, () => resolve());
+  });
+}
+
+export function storageRemove(key: string): Promise<void> {
+  localRemove(key);
+  const cs = getTelegram()?.CloudStorage;
+  if (!cs) return Promise.resolve();
+
+  return new Promise((resolve) => {
+    cs.removeItem(key, () => resolve());
+  });
 }

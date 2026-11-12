@@ -1,8 +1,8 @@
 # Аштанга-йога — Первая серия
 
-Telegram Mini App для практикующих аштанга-йогу: последовательность асан
-первой серии (Йога Чикитса) с названиями на санскрите и русском,
-схематичными SVG-иллюстрациями, виньясами и дришти.
+Telegram Mini App для практикующих аштанга-йогу: справочник первой серии
+(Йога Чикитса, 61 асана) и режим практики с таймером дыхания.
+Источник контента: **Yoga Mala**.
 
 ## Стек
 
@@ -21,21 +21,34 @@ https://t.me/ashtanga_yoga_by_teaka_bot/ashtaga_by_teaka
 
 ```bash
 npm install
-npm run dev     # http://localhost:5173
-npm run build   # прод-сборка в dist/
+npm run dev          # http://localhost:5173
+npm run build        # прод-сборка в dist/
+npm test             # Vitest (unit)
+npm run test:e2e:install   # один раз: Chromium для Playwright
+npm run test:e2e     # e2e smoke
 ```
+
+## Возможности
+
+- Каталог по секциям, шторка асаны, локаль ru/en
+- Практика: прогресс, BreathTimer, темп и звук дыхания
+- В практике — общий план позы (без кликов по кадрам), один экран без скролла
+- Hash-роуты: `#/asana/:id`, `#/practice`, `#/practice/:id`, `#/practice/continue`
 
 ## Структура
 
-- `src/data/primarySeries.ts` — последовательность первой серии (61 асана):
-  санскрит, русская транскрипция с ударениями, перевод, виньясы, дришти
-- `src/data/poses.ts` — SVG-фигурки: сегментированные руки/ноги, торс,
-  дришти; мультикадровые позы (вход/удержание/выход)
-- `src/components/AsanaFigure.tsx` — рендер иллюстраций (в т.ч. превью
-  основного кадра для списка)
-- `src/telegram.ts` — интеграция Telegram WebApp (тема, expand)
+- `src/data/primarySeries.ts` — серия: имена, виньясы, дыхания, дришти, заметки
+- `src/data/poses.ts` — SVG-фигурки (сегменты рук/ног, торс, дришти; мультикадр)
+- `src/components/AsanaFigure.tsx` — рендер (превью / кадр / общий план)
+- `src/practice/` — PracticeView, BreathTimer, прогресс, звук/темп
+- `src/routing.ts` — hash-роутинг
+- `src/i18n/` — ru/en
+- `src/telegram.ts` — тема, BackButton, haptics, CloudStorage
+- `e2e/` — Playwright smoke
 
 ## Документация
 
-- [ADR](docs/adr/) — архитектурные решения (платформа, стек, иллюстрации, данные)
-- [Технический долг](docs/tech-debt.md) — реестр с приоритетами
+- [Требования](docs/requirements.md)
+- [Changelog](docs/changelog.md)
+- [ADR](docs/adr/) — архитектурные решения
+- [Технический долг](docs/tech-debt.md)
