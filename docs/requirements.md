@@ -4,8 +4,9 @@
 
 ## Продукт
 
-Telegram Mini App для практикующих: выбор серии (первая / вторая), справочник
-асан и режим практики с таймером дыхания. Полностью статический клиент (без бэкенда).
+Mini App для практикующих (Telegram **и** VK): выбор серии (первая / вторая),
+справочник асан и режим практики с таймером дыхания. Один статический SPA
+без бэкенда; хост определяется при старте (`src/platform`).
 
 - Первая серия (Йога Чикитса): 61 асана
 - Вторая серия (Нади Шодхана): opening + промежуточные + finishing
@@ -37,7 +38,7 @@ Telegram Mini App для практикующих: выбор серии (пер
 | ID | Требование |
 |----|------------|
 | F-10 | Режим практики по всей серии (или с выбранной асаны) |
-| F-11 | Прогресс: CloudStorage + fallback localStorage; продолжение `#/series/:id/practice/continue` |
+| F-11 | Прогресс: platform storage (TG CloudStorage / VK Storage) + fallback localStorage; продолжение `#/series/:id/practice/continue` |
 | F-12 | Для асан с `breaths` — BreathTimer (вдох/выдох), пауза, авто-переход |
 | F-13 | Сурьи с `breaths: 5` — BreathTimer (удержание в Адхо Мукха / круги) |
 | F-14 | Мультикадр в практике — **общий план** всей последовательности (без кликов по кадрам); длинная заметка скрыта (есть в шторке) |
@@ -52,7 +53,9 @@ Telegram Mini App для практикующих: выбор серии (пер
 |----|------------|
 | F-20 | Hash-роуты: `#/`, `#/series/:seriesId`, `#/series/:seriesId/asana/:id`, `#/series/:seriesId/section/:id`, `#/series/:seriesId/practice`, `#/series/:seriesId/practice/:id`, `#/series/:seriesId/practice/continue`; legacy primary `#/asana/:id`, `#/practice…` |
 | F-21 | UI на русском; i18n-строки en сохранены, переключатель локали временно скрыт |
-| F-22 | Telegram BackButton, haptics |
+| F-22 | Платформенные BackButton (TG) / in-app назад (VK/web), haptics |
+| F-23 | Детект хоста telegram \| vk \| web; `initPlatform` (тема, storage, haptic) |
+| F-24 | VK: sync hash ↔ `VKWebAppSetLocation` / `VKWebAppChangeFragment` |
 
 ### Контент / иллюстрации
 
@@ -78,3 +81,5 @@ Telegram Mini App для практикующих: выбор серии (пер
 - e2e полный регресс всех асан
 - Покадровая навигация (шторка / практика) — снята; модель = общая схема виньяс
 - Менять эту модель (схема ↔ один кадр ↔ клик по кадрам) — **только после явного подтверждения владельца**
+- Синхронизация прогресса между Telegram и VK (нужен бэкенд/аккаунт)
+- Отдельный билд или второй URL под VK; VKUI

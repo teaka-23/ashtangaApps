@@ -1,5 +1,5 @@
 import type { SeriesId } from '../data/types';
-import { storageGet, storageRemove, storageSet } from '../telegram';
+import { storageGet, storageRemove, storageSet } from '../platform';
 
 /** Legacy key (primary only) — migrated on first read */
 export const PROGRESS_KEY_LEGACY = 'ashtanga.practice.progress';

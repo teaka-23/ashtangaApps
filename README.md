@@ -1,7 +1,7 @@
 # Аштанга-йога — Mini App
 
-Telegram Mini App для практикующих аштанга-йогу: выбор серии, справочник асан
-и режим практики с таймером дыхания.
+Mini App для практикующих аштанга-йогу: выбор серии, справочник асан
+и режим практики с таймером дыхания. Работает в **Telegram** и **VK**.
 Источник контента: **Yoga Mala**.
 
 - **Первая серия** — Йога Чикитса (61 асана)
@@ -10,21 +10,39 @@ Telegram Mini App для практикующих аштанга-йогу: вы�
 ## Стек
 
 React 19 + Vite + TypeScript. Полностью статическое приложение, без бэкенда.
+Платформа: `src/platform` (Telegram WebApp / `@vkontakte/vk-bridge` / web).
 
 ## Деплой
 
 GitHub Actions (`.github/workflows/deploy.yml`) собирает и публикует на
 GitHub Pages при пуше в `main`: https://teaka-23.github.io/ashtangaApps/
 
+Один URL используется и для Telegram, и для VK.
+
 ## Telegram Mini App
 
 https://t.me/ashtanga_yoga_by_teaka_bot/ashtaga_by_teaka
+
+## VK Mini App
+
+https://vk.com/app54892947
+
+App ID: `54892947`. URL приложения в кабинете: `https://teaka-23.github.io/ashtangaApps/`
+
+Прогресс практики в VK и Telegram **не синхронизируется** (нет бэкенда).
+
+### Чеклист / отладка
+
+1. В [кабинете VK](https://dev.vk.com/ru/mini-apps/getting-started) указан GitHub Pages URL выше.
+2. Включены нужные платформы (мобильный клиент / m.vk / vk.com).
+3. Открытие из VK даёт `vk_app_id` / `vk_platform` → `platform` делает `VKWebAppInit`.
+4. Локально: `@vkontakte/vk-tunnel` или запуск с launch params.
 
 ## Разработка
 
 ```bash
 npm install
-npm run dev          # http://localhost:5173
+npm run dev          # http://localhost:5173  (host = web)
 npm run build        # прод-сборка в dist/
 npm test             # Vitest (unit)
 npm run test:e2e:install   # один раз: Chromium для Playwright
@@ -47,12 +65,12 @@ npm run test:e2e     # e2e smoke
 - `src/practice/` — PracticeView, BreathTimer, прогресс, звук/темп
 - `src/routing.ts` — hash-роутинг
 - `src/i18n/` — ru/en
-- `src/telegram.ts` — тема, BackButton, haptics, CloudStorage
+- `src/platform/` — Telegram / VK / web адаптеры
 - `e2e/` — Playwright smoke
 
 ## Документация
 
 - [Требования](docs/requirements.md)
 - [Changelog](docs/changelog.md)
-- [ADR](docs/adr/) — архитектурные решения
+- [ADR](docs/adr/) — архитектурные решения (см. ADR-0006 dual-platform)
 - [Технический долг](docs/tech-debt.md)

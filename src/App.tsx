@@ -3,7 +3,7 @@ import { POSES } from './data/poses';
 import { getSeries, SERIES_ORDER, type SeriesId } from './data/series';
 import type { Asana } from './data/types';
 import { AsanaFigure } from './components/AsanaFigure';
-import { hideBackButton, initTelegram, showBackButton } from './telegram';
+import { hideBackButton, initPlatform, showBackButton } from './platform';
 import { clearProgress, loadProgress, type PracticeProgress } from './practice/progress';
 import { PracticeView } from './practice/PracticeView';
 import { navigate, parseHash, type Route } from './routing';
@@ -53,7 +53,7 @@ export default function App() {
   const progress = activeSeriesId ? (progressBySeries[activeSeriesId] ?? null) : null;
 
   useEffect(() => {
-    initTelegram();
+    void initPlatform();
     document.documentElement.lang = locale;
     void Promise.all(
       SERIES_ORDER.map(async (id) => [id, await loadProgress(id)] as const),

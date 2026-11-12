@@ -3,7 +3,7 @@ import { getSeries } from '../data/series';
 import type { SeriesId } from '../data/types';
 import { POSES } from '../data/poses';
 import { AsanaFigure } from '../components/AsanaFigure';
-import { haptic, hideBackButton, showBackButton } from '../telegram';
+import { haptic, hideBackButton, showBackButton } from '../platform';
 import {
   asanaDescription,
   asanaDisplayName,

@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-11-12 (Telegram + VK)
+
+- Слой `src/platform`: детект telegram | vk | web; единый init/storage/haptic/back
+- `@vkontakte/vk-bridge`: Init, тема, Storage, Taptic, SetLocation/ChangeFragment
+- Прогресс локален на платформе (без sync TG↔VK)
+- ADR-0006 dual-platform; ADR-0001 → superseded
+- VK Mini App: https://vk.com/app54892947 (app id 54892947)
+
 ## 2026-11-12 (UI/UX polish)
 
 - Справочник: убрана покадровая навигация; в шторке — общая схема виньяс
