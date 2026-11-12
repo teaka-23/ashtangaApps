@@ -12,7 +12,7 @@ export const INTERMEDIATE_SECTIONS: Section[] = [
   { id: 'standing', title: 'Стоя', subtitle: 'Фундаментальные асаны' },
   {
     id: 'intermediate',
-    title: 'Промежуточная',
+    title: 'Основная часть',
     subtitle: 'Нади Шодхана — очищение энергетических каналов',
   },
   { id: 'finishing', title: 'Завершающая последовательность', subtitle: 'Перевёрнутые и медитация' },

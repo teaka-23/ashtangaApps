@@ -51,6 +51,7 @@ export function PracticeView({
   const [done, setDone] = useState(false);
   const [tempo, setTempo] = useState<BreathTempo>(() => loadBreathTempo());
   const [soundOn, setSoundOn] = useState(() => loadBreathSound());
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const asana = asanas[index];
 
@@ -129,14 +130,16 @@ export function PracticeView({
   const label = asanaDisplayName(asana, locale);
   const drishti = asanaDrishti(asana, locale);
   const note = asanaNote(asana, locale);
-  const multiFrame = (POSES[asana.pose]?.figures.length ?? 1) > 1;
+  const frameCount = POSES[asana.pose]?.figures.length ?? 1;
+  const multiFrame = frameCount > 1;
   const metaParts = [
     asana.vinyasa !== undefined ? `${t(locale, 'vinyasas')} ${asana.vinyasa}` : null,
+    asana.breaths !== undefined ? `${t(locale, 'breaths')} ${asana.breaths}` : null,
     drishti ? `${t(locale, 'drishti')}: ${drishti}` : null,
   ].filter(Boolean);
 
   return (
-    <div className="practice">
+    <div className={`practice${multiFrame ? ' practice--overview' : ''}`}>
       <div
         className="practice__progress"
         role="progressbar"
@@ -153,9 +156,6 @@ export function PracticeView({
           {index + 1} / {asanas.length}
         </span>
         <div className="practice__header-actions">
-          <button type="button" className="practice__finish" onClick={finish}>
-            {t(locale, 'finishPractice')}
-          </button>
           <button type="button" className="practice__exit" onClick={onExit}>
             {t(locale, 'exit')}
           </button>
@@ -167,6 +167,7 @@ export function PracticeView({
           pose={asana.pose}
           className="practice__figure"
           numbered={multiFrame}
+          compact={multiFrame}
           label={label}
           description={asanaDescription(asana, locale)}
         />
@@ -182,7 +183,8 @@ export function PracticeView({
         {metaParts.length > 0 && (
           <p className="practice__meta-line">{metaParts.join(' · ')}</p>
         )}
-        {note && (
+        {/* Длинная расшифровка виньяс у Сурий — в шторке; на экране мешает таймеру */}
+        {note && !multiFrame && (
           <p className="practice__note" title={note}>
             {note}
           </p>
@@ -191,36 +193,48 @@ export function PracticeView({
 
       {asana.breaths !== undefined ? (
         <>
-          <div className="practice__breath-opts" role="group" aria-label={t(locale, 'breaths')}>
-            {(['slow', 'normal', 'fast'] as const).map((key) => (
-              <button
-                key={key}
-                type="button"
-                className={tempo === key ? 'is-active' : undefined}
-                onClick={() => {
-                  setTempo(key);
-                  saveBreathTempo(key);
-                  void resumeBreathAudio();
-                }}
-              >
-                {t(
-                  locale,
-                  key === 'slow' ? 'tempoSlow' : key === 'fast' ? 'tempoFast' : 'tempoNormal',
-                )}
-              </button>
-            ))}
+          <div className="practice__settings">
             <button
               type="button"
-              className={soundOn ? 'is-active' : undefined}
-              onClick={() => {
-                const next = !soundOn;
-                setSoundOn(next);
-                saveBreathSound(next);
-                if (next) void resumeBreathAudio();
-              }}
+              className={`practice__settings-toggle${settingsOpen ? ' is-active' : ''}`}
+              aria-expanded={settingsOpen}
+              onClick={() => setSettingsOpen((v) => !v)}
             >
-              {soundOn ? t(locale, 'soundOn') : t(locale, 'soundOff')}
+              {t(locale, 'practiceSettings')}
             </button>
+            {settingsOpen && (
+              <div className="practice__breath-opts" role="group" aria-label={t(locale, 'breaths')}>
+                {(['slow', 'normal', 'fast'] as const).map((key) => (
+                  <button
+                    key={key}
+                    type="button"
+                    className={tempo === key ? 'is-active' : undefined}
+                    onClick={() => {
+                      setTempo(key);
+                      saveBreathTempo(key);
+                      void resumeBreathAudio();
+                    }}
+                  >
+                    {t(
+                      locale,
+                      key === 'slow' ? 'tempoSlow' : key === 'fast' ? 'tempoFast' : 'tempoNormal',
+                    )}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  className={soundOn ? 'is-active' : undefined}
+                  onClick={() => {
+                    const next = !soundOn;
+                    setSoundOn(next);
+                    saveBreathSound(next);
+                    if (next) void resumeBreathAudio();
+                  }}
+                >
+                  {soundOn ? t(locale, 'soundOn') : t(locale, 'soundOff')}
+                </button>
+              </div>
+            )}
           </div>
           <BreathTimer
             key={`${asana.id}-${tempo}`}

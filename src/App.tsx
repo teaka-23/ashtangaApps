@@ -14,6 +14,7 @@ import {
   asanaNote,
   asanaSecondaryName,
   pluralizeAsana,
+  sectionNavLabel,
   sectionSubtitle,
   sectionTitle,
   seriesSubtitle,
@@ -25,12 +26,6 @@ import './App.css';
 
 /** UI locale switcher hidden for now; i18n strings kept for later. */
 const LOCALE: Locale = 'ru';
-
-function defaultFrameIndex(poseKey: string): number {
-  const def = POSES[poseKey];
-  if (!def) return 0;
-  return def.mainFrame ?? Math.floor(def.figures.length / 2);
-}
 
 function useRoute(): Route {
   const [route, setRoute] = useState<Route>(() => parseHash());
@@ -51,7 +46,6 @@ export default function App() {
     Partial<Record<SeriesId, PracticeProgress | null>>
   >({});
   const [practiceCompletedIds, setPracticeCompletedIds] = useState<string[]>([]);
-  const [sheetFrame, setSheetFrame] = useState(0);
 
   const activeSeriesId: SeriesId | null =
     route.name === 'home' ? null : route.seriesId;
@@ -153,12 +147,9 @@ export default function App() {
       : -1;
   const selected =
     series && selectedIndex >= 0 ? series.asanas[selectedIndex] : null;
-  const sheetFrameCount = selected ? (POSES[selected.pose]?.figures.length ?? 1) : 1;
-
-  useEffect(() => {
-    if (!selected) return;
-    setSheetFrame(defaultFrameIndex(selected.pose));
-  }, [selected?.id, selected?.pose]);
+  const sheetMultiFrame = selected
+    ? (POSES[selected.pose]?.figures.length ?? 1) > 1
+    : false;
 
   useEffect(() => {
     if (route.name === 'practice') return;
@@ -218,23 +209,33 @@ export default function App() {
               const def = getSeries(id);
               const p = progressBySeries[id];
               return (
-                <article key={id} className="series-card">
+                <article
+                  key={id}
+                  className="series-card"
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${seriesTitle(id, locale)}. ${t(locale, 'openCatalog')}`}
+                  onClick={() => goCatalog(id)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      goCatalog(id);
+                    }
+                  }}
+                >
                   <h2>{seriesTitle(id, locale)}</h2>
                   <p className="series-card__sub">{seriesSubtitle(id, locale)}</p>
                   <p className="series-card__count">
                     {def.asanas.length} {pluralizeAsana(locale, def.asanas.length)}
                   </p>
-                  <div className="series-card__actions">
+                  <div
+                    className="series-card__actions"
+                    onClick={(e) => e.stopPropagation()}
+                    onKeyDown={(e) => e.stopPropagation()}
+                  >
                     <button
                       type="button"
                       className="header__practice"
-                      onClick={() => goCatalog(id)}
-                    >
-                      {t(locale, 'openCatalog')}
-                    </button>
-                    <button
-                      type="button"
-                      className="header__continue"
                       onClick={() => startPractice(id)}
                     >
                       {t(locale, 'startPractice')}
@@ -257,15 +258,15 @@ export default function App() {
       ) : (
         <div className="app">
           <header className="header">
+            <button type="button" className="header__back-series" onClick={goHome}>
+              {t(locale, 'backToSeries')}
+            </button>
             <h1>{seriesTitle(route.seriesId, locale)}</h1>
-            <p>
-              {seriesSubtitle(route.seriesId, locale)} · {series!.asanas.length}{' '}
-              {pluralizeAsana(locale, series!.asanas.length)}
+            <p className="header__series-sub">{seriesSubtitle(route.seriesId, locale)}</p>
+            <p className="header__series-count">
+              {series!.asanas.length} {pluralizeAsana(locale, series!.asanas.length)}
             </p>
             <div className="header__actions">
-              <button type="button" className="header__back-series" onClick={goHome}>
-                {t(locale, 'backToSeries')}
-              </button>
               <button
                 type="button"
                 className="header__practice"
@@ -288,7 +289,7 @@ export default function App() {
           <nav className="section-nav" aria-label="Sections">
             {series!.sections.map((s) => (
               <a key={s.id} href={`#/series/${route.seriesId}/section/${s.id}`}>
-                {sectionTitle(s, locale)}
+                {sectionNavLabel(s, locale)}
               </a>
             ))}
           </nav>
@@ -321,16 +322,13 @@ export default function App() {
                             thumbnail
                           />
                           <span className="asana-card__text" aria-hidden="true">
-                            <span className="asana-card__sanskrit">{asana.sanskrit}</span>
-                            <span className="asana-card__transcription">
-                              {asanaSecondaryName(asana, locale)}
+                            <span className="asana-card__sanskrit">
+                              {asana.modernAddition && (
+                                <span className="asana-card__modern-dot" title={t(locale, 'modernBadge')} />
+                              )}
+                              {asana.sanskrit}
                             </span>
                             <span className="asana-card__russian">{label}</span>
-                            {asana.modernAddition && (
-                              <span className="asana-card__badge">
-                                {t(locale, 'modernBadge')}
-                              </span>
-                            )}
                           </span>
                           {asana.vinyasa !== undefined && (
                             <span className="asana-card__vinyasa" aria-hidden="true">
@@ -358,33 +356,10 @@ export default function App() {
                 <div className="sheet__grip" />
                 <AsanaFigure
                   pose={selected.pose}
-                  className="sheet__figure"
-                  frameIndex={sheetFrame}
+                  className={`sheet__figure${sheetMultiFrame ? ' sheet__figure--overview' : ''}`}
+                  numbered={sheetMultiFrame}
                   label={asanaDisplayName(selected, locale)}
                 />
-                {sheetFrameCount > 1 && (
-                  <div className="sheet__frames">
-                    <button
-                      type="button"
-                      disabled={sheetFrame <= 0}
-                      onClick={() => setSheetFrame((f) => f - 1)}
-                      aria-label={`${t(locale, 'frame')} ←`}
-                    >
-                      ← {t(locale, 'frame')}
-                    </button>
-                    <span>
-                      {sheetFrame + 1}/{sheetFrameCount}
-                    </span>
-                    <button
-                      type="button"
-                      disabled={sheetFrame >= sheetFrameCount - 1}
-                      onClick={() => setSheetFrame((f) => f + 1)}
-                      aria-label={`${t(locale, 'frame')} →`}
-                    >
-                      {t(locale, 'frame')} →
-                    </button>
-                  </div>
-                )}
                 <h3 className="sheet__sanskrit" id="sheet-title">
                   {selected.sanskrit}
                 </h3>

@@ -8,12 +8,17 @@ interface Props {
   className?: string;
   /** Максимум фигур в ряд; 0 = подобрать автоматически */
   columns?: number;
-  /** Только основной кадр (для превью в списке) */
+  /** Только основной кадр (для превью в списке / практике) */
   thumbnail?: boolean;
   /** Конкретный кадр (шторка); имеет приоритет над thumbnail */
   frameIndex?: number;
-  /** Номера кадров на общем плане */
+  /** Номера виньяс на общем плане */
   numbered?: boolean;
+  /**
+   * Практика: сетка ячеек на весь слот (Сурьи и др. последовательности),
+   * без покадрового клика.
+   */
+  compact?: boolean;
   /** Accessible name for the figure */
   label?: string;
   /** Longer description for screen readers */
@@ -21,7 +26,14 @@ interface Props {
 }
 
 /** Сколько фигур в ряд, чтобы общий план оставался читаемым на телефоне */
-function autoColumns(count: number): number {
+function autoColumns(count: number, compact: boolean): number {
+  if (count <= 1) return 1;
+  if (compact) {
+    if (count <= 4) return count;
+    if (count <= 12) return 3;
+    if (count <= 20) return 4;
+    return 5;
+  }
   if (count <= 3) return count;
   if (count <= 12) return 3;
   return 4;
@@ -144,6 +156,7 @@ export function AsanaFigure({
   thumbnail = false,
   frameIndex,
   numbered = false,
+  compact = false,
   label,
   description,
 }: Props) {
@@ -158,20 +171,64 @@ export function AsanaFigure({
         : def.figures;
 
   const showNumbers = numbered && figures.length > 1;
-  const cols = columns > 0 ? columns : autoColumns(figures.length);
+  const cols = columns > 0 ? columns : autoColumns(figures.length, compact);
   const rows = Math.ceil(figures.length / cols);
   const gapX = figures.length > 1 ? 10 : 0;
   const gapY = figures.length > 1 ? 14 : 0;
   const cellW = 100;
-  const cellH = showNumbers ? 112 : 100;
+  const numPad = showNumbers ? 12 : 0;
+  const cellH = 100 + numPad;
   const width = Math.min(figures.length, cols) * cellW + Math.max(0, cols - 1) * gapX;
   const height = rows * cellH + Math.max(0, rows - 1) * gapY;
   const viewBox = `0 0 ${width} ${height}`;
   const descId = description ? `pose-desc-${pose}` : undefined;
 
+  /* Практика: CSS-grid заполняет слот; каждая виньяса — отдельный SVG */
+  if (compact && figures.length > 1) {
+    return (
+      <div
+        className={`${className ?? ''} asana-figure--compact-grid`.trim()}
+        style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
+        role="img"
+        aria-label={label}
+        aria-describedby={descId}
+        aria-hidden={label ? undefined : true}
+      >
+        {description && (
+          <span id={descId} className="visually-hidden">
+            {description}
+          </span>
+        )}
+        {figures.map((fig, i) => (
+          <svg
+            key={i}
+            viewBox="0 0 100 100"
+            preserveAspectRatio="xMidYMid meet"
+            className="asana-figure__cell"
+            aria-hidden="true"
+          >
+            {showNumbers && (
+              <text
+                x={5}
+                y={11}
+                className="asana-figure__frame-num asana-figure__frame-num--compact"
+              >
+                {i + 1}
+              </text>
+            )}
+            <g transform="translate(50 52) scale(1.12) translate(-50 -50)">
+              {drawFigureBody(fig)}
+            </g>
+          </svg>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <svg
       viewBox={viewBox}
+      preserveAspectRatio="xMidYMid meet"
       className={className}
       role="img"
       aria-label={label}
@@ -185,7 +242,7 @@ export function AsanaFigure({
         const row = Math.floor(i / cols);
         const ox = col * (cellW + gapX);
         const oy = row * (cellH + gapY);
-        const figY = showNumbers ? 12 : 0;
+        const figY = numPad;
         return (
           <g key={i} transform={`translate(${ox}, ${oy})`}>
             {showNumbers && (
@@ -199,13 +256,13 @@ export function AsanaFigure({
               </text>
             )}
             <g transform={`translate(0, ${figY})`}>
-              {i > 0 && col === 0 && row > 0 && (
+              {!compact && i > 0 && col === 0 && row > 0 && (
                 <path
                   d={`M 44 ${-gapY / 2 - 6} L 50 ${-gapY / 2 + 2} L 56 ${-gapY / 2 - 6}`}
                   className="asana-figure__arrow"
                 />
               )}
-              {i > 0 && col > 0 && (
+              {!compact && i > 0 && col > 0 && (
                 <path
                   d={`M ${-gapX / 2 - 6} 44 L ${-gapX / 2 + 2} 50 L ${-gapX / 2 - 6} 56`}
                   className="asana-figure__arrow"

@@ -5,11 +5,22 @@ export const SECTIONS_EN: Record<string, { title: string; subtitle: string }> = 
   standing: { title: 'Standing', subtitle: 'Foundational asanas' },
   seated: { title: 'Seated', subtitle: 'Main sequence' },
   intermediate: {
-    title: 'Intermediate',
+    title: 'Main sequence',
     subtitle: 'Nadi Shodhana — purification of the energy channels',
   },
   backbend: { title: 'Backbends', subtitle: 'End of the main sequence' },
   finishing: { title: 'Finishing', subtitle: 'Inversions and meditation' },
+};
+
+/** Short labels for sticky section chips */
+export const SECTION_NAV: Record<string, { ru: string; en: string }> = {
+  'surya-a': { ru: 'Сурья А', en: 'Surya A' },
+  'surya-b': { ru: 'Сурья Б', en: 'Surya B' },
+  standing: { ru: 'Стоя', en: 'Standing' },
+  seated: { ru: 'Сидя', en: 'Seated' },
+  intermediate: { ru: 'Основная', en: 'Main' },
+  backbend: { ru: 'Прогибы', en: 'Backbends' },
+  finishing: { ru: 'Финиш', en: 'Finish' },
 };
 
 /** English common names for asanas */

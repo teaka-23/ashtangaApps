@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 import { contentKeyForAsana } from '../data/series';
 import type { Asana, Section, SeriesId } from '../data/types';
-import { DRISHTI_EN, ENGLISH_NAME, NOTE_EN, SECTIONS_EN } from './content';
+import { DRISHTI_EN, ENGLISH_NAME, NOTE_EN, SECTION_NAV, SECTIONS_EN } from './content';
 import { messages, type Locale, type MessageKey } from './messages';
 
 export type { Locale, MessageKey };
@@ -76,6 +76,13 @@ export function sectionTitle(section: Section, locale: Locale): string {
 export function sectionSubtitle(section: Section, locale: Locale): string {
   if (locale === 'en') return SECTIONS_EN[section.id]?.subtitle ?? section.subtitle;
   return section.subtitle;
+}
+
+/** Short chip label for sticky section nav */
+export function sectionNavLabel(section: Section, locale: Locale): string {
+  const short = SECTION_NAV[section.id];
+  if (short) return locale === 'en' ? short.en : short.ru;
+  return sectionTitle(section, locale);
 }
 
 /** Textual technique summary for screen readers */

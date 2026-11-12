@@ -1,17 +1,14 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('Ashtanga Mini App', () => {
-  test('shows series picker and opens primary catalog', async ({ page }) => {
+  test('shows series picker and opens primary catalog by card tap', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Первая серия' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Вторая серия' })).toBeVisible();
-    await page
-      .getByRole('article')
-      .filter({ hasText: 'Первая серия' })
-      .getByRole('button', { name: 'Открыть' })
-      .click();
+    await page.getByRole('button', { name: /Первая серия/ }).click();
     await expect(page.getByRole('heading', { name: 'Первая серия' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Сурья А' })).toBeVisible();
     await page.getByRole('button', { name: /Surya Namaskara A/i }).click();
     await expect(page.getByRole('dialog')).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Surya Namaskara A' })).toBeVisible();
@@ -20,16 +17,21 @@ test.describe('Ashtanga Mini App', () => {
   test('opens intermediate catalog and asana', async ({ page }) => {
     await page.goto('/#/series/intermediate');
     await expect(page.getByRole('heading', { name: 'Вторая серия' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Основная' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Основная часть' })).toBeVisible();
     await page.getByRole('button', { name: /Pasasana/i }).click();
     await expect(page.getByRole('dialog')).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Pasasana' })).toBeVisible();
   });
 
-  test('starts practice and advances manually', async ({ page }) => {
+  test('starts practice with timer and advances', async ({ page }) => {
     await page.goto('/#/series/primary/practice/surya-a');
     await expect(page.getByRole('heading', { name: 'Surya Namaskara A' })).toBeVisible();
     await expect(page.getByText('1 / 61')).toBeVisible();
-    await page.getByRole('button', { name: 'Далее' }).click();
+    await expect(page.getByRole('button', { name: 'Выйти' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Завершить практику' })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Пауза' })).toBeVisible();
+    await page.getByRole('button', { name: '→' }).click();
     await expect(page.getByRole('heading', { name: 'Surya Namaskara B' })).toBeVisible();
     await expect(page.getByText('2 / 61')).toBeVisible();
   });
