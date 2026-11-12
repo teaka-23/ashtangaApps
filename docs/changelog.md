@@ -7,6 +7,7 @@
 - Прогресс локален на платформе (без sync TG↔VK)
 - ADR-0006 dual-platform; ADR-0001 → superseded
 - VK Mini App: https://vk.com/app54892947 (app id 54892947)
+- Docs: F-16 уточнён (заметка Сурий); tech-debt TD-5/TD-8 под dual-platform
 
 ## 2026-11-12 (UI/UX polish)
 
