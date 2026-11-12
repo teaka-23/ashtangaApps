@@ -24,6 +24,8 @@ export interface Figure {
 
 export interface PoseDef {
   figures: Figure[];
+  /** Индекс основного кадра для превью в списке. По умолчанию — средний */
+  mainFrame?: number;
 }
 
 const f = (
@@ -59,6 +61,7 @@ const f = (
 export const POSES: Record<string, PoseDef> = {
   // ── Сурья Намаскар А (9 виньяс) ─────────────────────────────────────
   'surya-a': {
+    mainFrame: 6, // Адхо Мукха Шванасана — собака мордой вниз
     figures: [
       // 1. Самастхити — равная стойка
       f(
@@ -229,6 +232,7 @@ export const POSES: Record<string, PoseDef> = {
   },
   // ── Сурья Намаскар Б (17 виньяс) ─────────────────────────────────────────────
   'surya-b': {
+    mainFrame: 14, // Адхо Мукха Шванасана — собака мордой вниз
     figures: [
       // 1. Самастхити — равная стойка
       f(

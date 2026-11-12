@@ -5,6 +5,8 @@ interface Props {
   className?: string;
   /** Максимум фигур в ряд (для шторки) */
   columns?: number;
+  /** Только основной кадр (для превью в списке) */
+  thumbnail?: boolean;
 }
 
 function drawLimb(
@@ -43,21 +45,25 @@ function drawStrokes(strokes: [number, number][][]) {
   ));
 }
 
-export function AsanaFigure({ pose, className, columns = 0 }: Props) {
+export function AsanaFigure({ pose, className, columns = 0, thumbnail = false }: Props) {
   const def = POSES[pose];
   if (!def) return null;
 
-  const cols = columns > 0 ? columns : def.figures.length;
-  const rows = Math.ceil(def.figures.length / cols);
+  const figures = thumbnail
+    ? [def.figures[def.mainFrame ?? Math.floor(def.figures.length / 2)]]
+    : def.figures;
+
+  const cols = columns > 0 ? columns : figures.length;
+  const rows = Math.ceil(figures.length / cols);
   const cellW = 100;
   const cellH = 100;
-  const width = Math.min(def.figures.length, cols) * cellW;
+  const width = Math.min(figures.length, cols) * cellW;
   const height = rows * cellH;
   const viewBox = `0 0 ${width} ${height}`;
 
   return (
     <svg viewBox={viewBox} className={className} role="img" aria-hidden="true">
-      {def.figures.map((fig, i) => {
+      {figures.map((fig, i) => {
         const col = i % cols;
         const row = Math.floor(i / cols);
         const ox = col * cellW;

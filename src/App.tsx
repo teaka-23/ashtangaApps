@@ -66,7 +66,7 @@ export default function App() {
                   <li key={asana.id}>
                     <button className="asana-card" onClick={() => setSelectedId(asana.id)}>
                       <span className="asana-card__num">{counter}</span>
-                      <AsanaFigure pose={asana.pose} className="asana-card__figure" />
+                      <AsanaFigure pose={asana.pose} className="asana-card__figure" thumbnail />
                       <span className="asana-card__text">
                         <span className="asana-card__sanskrit">{asana.sanskrit}</span>
                         <span className="asana-card__transcription">{asana.transcription}</span>
