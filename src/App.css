@@ -334,23 +334,51 @@ body {
 .asana-figure__torso {
   fill: var(--asana-skin);
   stroke: var(--asana-skin);
-  stroke-width: 2.5;
+  stroke-width: 1.6;
   stroke-linejoin: round;
+  stroke-linecap: round;
 }
 
 .asana-figure__shorts {
   fill: var(--asana-shorts);
   stroke: var(--asana-shorts);
-  stroke-width: 2;
+  stroke-width: 1.4;
   stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.asana-figure__spine {
+  fill: none;
+  stroke: var(--asana-skin-far);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  opacity: 0.35;
+  pointer-events: none;
 }
 
 .asana-figure__neck {
   fill: var(--asana-skin);
+  stroke: var(--asana-skin);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
 }
 
 .asana-figure__head {
   fill: var(--asana-skin);
+  stroke: var(--asana-skin);
+  stroke-width: 0.9;
+  stroke-linejoin: round;
+}
+
+.asana-figure__ear {
+  fill: var(--asana-skin-far);
+}
+
+.asana-figure__nose {
+  fill: var(--asana-hair);
+  stroke: var(--asana-hair);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
 }
 
 .asana-figure__hair {
