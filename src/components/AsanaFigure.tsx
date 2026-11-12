@@ -39,70 +39,137 @@ function autoColumns(count: number, compact: boolean): number {
   return 4;
 }
 
-function drawLimb(points: Limb, className: string) {
-  return (
-    <polyline
-      points={points.map(([x, y]) => `${x},${y}`).join(' ')}
-      className={className}
-    />
-  );
-}
+const lerp = (a: Pt, b: Pt, t: number): Pt => [
+  a[0] + (b[0] - a[0]) * t,
+  a[1] + (b[1] - a[1]) * t,
+];
 
-/** Только локоть/колено — плечо и бедро совпадают с торсом и шумят */
-function drawMidJoint(points: Limb, className: string) {
-  const [x, y] = points[1];
-  return <circle cx={x} cy={y} r={2.1} className={className} />;
-}
+const ptsAttr = (pts: Pt[]) =>
+  pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
 
-function handMarker(hand: Pt, className: string) {
-  return <circle cx={hand[0]} cy={hand[1]} r={2.6} className={className} />;
-}
-
-/** Чёрточка стопы поперёк голени — чтобы нога не путалась с рукой */
-function footMarker(points: Limb, className: string) {
-  const [, knee, foot] = points;
-  const dx = foot[0] - knee[0];
-  const dy = foot[1] - knee[1];
+/** Сужающийся сегмент конечности: трапеция поперёк оси a→b, ширина wa→wb */
+function taperedSeg(a: Pt, b: Pt, wa: number, wb: number): string {
+  const dx = b[0] - a[0];
+  const dy = b[1] - a[1];
   const len = Math.hypot(dx, dy) || 1;
-  const px = (-dy / len) * 4.5;
-  const py = (dx / len) * 4.5;
-  const fx = (dx / len) * 1.5;
-  const fy = (dy / len) * 1.5;
-  return (
-    <line
-      x1={foot[0] - px + fx}
-      y1={foot[1] - py + fy}
-      x2={foot[0] + px + fx}
-      y2={foot[1] + py + fy}
-      className={className}
-    />
-  );
+  const px = -dy / len;
+  const py = dx / len;
+  return ptsAttr([
+    [a[0] + (px * wa) / 2, a[1] + (py * wa) / 2],
+    [b[0] + (px * wb) / 2, b[1] + (py * wb) / 2],
+    [b[0] - (px * wb) / 2, b[1] - (py * wb) / 2],
+    [a[0] - (px * wa) / 2, a[1] - (py * wa) / 2],
+  ]);
 }
+
+/** Ширины сегментов: [у тела, сустав, конец] */
+const LIMB_W = {
+  arm: [5.4, 4.2, 3.2],
+  leg: [7.6, 5.8, 4.2],
+} as const;
 
 function drawSide(
   limbKind: 'arm' | 'leg',
   points: Limb,
   depth: 'far' | 'near',
+  torso?: [number, number][],
 ) {
-  const base =
-    limbKind === 'arm'
-      ? 'asana-figure__limb asana-figure__arm'
-      : 'asana-figure__limb asana-figure__leg';
-  const depthClass = `asana-figure__limb--${depth}`;
-  const jointClass = `asana-figure__joint asana-figure__joint--${limbKind} asana-figure__joint--${depth}`;
-  const endClass =
-    limbKind === 'arm'
-      ? `asana-figure__hand asana-figure__hand--${depth}`
-      : `asana-figure__foot asana-figure__foot--${depth}`;
+  const [root, mid, end] = points;
+  const [w0, w1, w2] = LIMB_W[limbKind];
+  const sideClass = `asana-figure__side asana-figure__side--${depth}`;
+
+  /* Стык с торсом: мостик от ближайшей точки контура, но только если
+     корень рядом. У скрещенных ног и замков корень далеко — мостик не нужен */
+  let joint: Pt | undefined;
+  if (torso) {
+    const nearest = torso.reduce((best, p) =>
+      Math.hypot(p[0] - root[0], p[1] - root[1]) <
+      Math.hypot(best[0] - root[0], best[1] - root[1])
+        ? p
+        : best,
+    ) as Pt;
+    if (Math.hypot(nearest[0] - root[0], nearest[1] - root[1]) <= 8) {
+      joint = nearest;
+    }
+  }
 
   return (
-    <g>
-      {drawLimb(points, `${base} ${depthClass}`)}
-      {drawMidJoint(points, jointClass)}
-      {limbKind === 'arm'
-        ? handMarker(points[2], endClass)
-        : footMarker(points, endClass)}
+    <g className={sideClass}>
+      {joint && <polygon points={taperedSeg(joint, root, w0, w0)} />}
+      <polygon points={taperedSeg(root, mid, w0, w1)} />
+      <polygon points={taperedSeg(mid, end, w1, w2)} />
+      <circle cx={root[0]} cy={root[1]} r={w0 / 2} />
+      <circle cx={mid[0]} cy={mid[1]} r={w1 / 2} />
+      {limbKind === 'arm' ? (
+        <circle cx={end[0]} cy={end[1]} r={3} />
+      ) : (
+        /* Стопа: горизонтальная капсула от щиколотки «от колена» */
+        (() => {
+          const dir = end[0] - mid[0] >= 0 ? 1 : -1;
+          const toe: Pt = [end[0] + dir * 7.5, end[1]];
+          return (
+            <>
+              <polygon points={taperedSeg(end, toe, w2, 2.6)} />
+              <circle cx={toe[0]} cy={toe[1]} r={1.4} />
+            </>
+          );
+        })()
+      )}
     </g>
+  );
+}
+
+/** Торс: [плечо, плечо, бедро, бедро] по кругу; шорты — нижние ~55% */
+function drawTorso(torso: [number, number][]) {
+  const [s0, s1, h1, h0] = torso as [Pt, Pt, Pt, Pt];
+  const shorts: Pt[] = [lerp(s0, h0, 0.55), lerp(s1, h1, 0.55), h1, h0];
+  return (
+    <>
+      <polygon points={ptsAttr(torso as Pt[])} className="asana-figure__torso" />
+      <polygon points={ptsAttr(shorts)} className="asana-figure__shorts" />
+    </>
+  );
+}
+
+/** Шея: сужающийся сегмент от края головы к середине плеч */
+function drawNeck(fig: Figure) {
+  if (!fig.torso) return null;
+  const [t0, t1] = fig.torso;
+  const sx = (t0[0] + t1[0]) / 2;
+  const sy = (t0[1] + t1[1]) / 2;
+  const [hx, hy] = fig.head;
+  const r = fig.headR ?? 5.2;
+  const dx = sx - hx;
+  const dy = sy - hy;
+  const len = Math.hypot(dx, dy) || 1;
+  const start: Pt = [hx + (dx / len) * r * 0.55, hy + (dy / len) * r * 0.55];
+  const end: Pt = [sx - (dx / len) * 2.5, sy - (dy / len) * 2.5];
+  return (
+    <polygon
+      points={taperedSeg(start, end, r * 0.85, 7)}
+      className="asana-figure__neck"
+    />
+  );
+}
+
+function drawHead(fig: Figure) {
+  const [hx, hy] = fig.head;
+  const r = fig.headR ?? 5.2;
+  /* Пучок — на затылке: вверх и в сторону, противоположную взгляду (дришти) */
+  let gx = 0;
+  if (fig.drishti) {
+    const dx = fig.drishti[0] - hx;
+    const dy = fig.drishti[1] - hy;
+    const len = Math.hypot(dx, dy) || 1;
+    gx = dx / len;
+  }
+  const bx = hx - gx * r * 0.55;
+  const by = hy - r * 0.72;
+  return (
+    <>
+      <circle cx={bx} cy={by} r={r * 0.48} className="asana-figure__hair" />
+      <circle cx={hx} cy={hy} r={r} className="asana-figure__head" />
+    </>
   );
 }
 
@@ -110,26 +177,31 @@ function drawFigureBody(fig: Figure) {
   return (
     <>
       {fig.ground !== undefined && (
-        <line
-          x1={6}
-          y1={fig.ground}
-          x2={94}
-          y2={fig.ground}
-          className="asana-figure__ground"
-        />
+        <>
+          <ellipse
+            cx={50}
+            cy={fig.ground + 2.5}
+            rx={30}
+            ry={3.2}
+            className="asana-figure__shadow"
+          />
+          <line
+            x1={6}
+            y1={fig.ground}
+            x2={94}
+            y2={fig.ground}
+            className="asana-figure__ground"
+          />
+        </>
       )}
-      {/* Дальняя сторона (левая) — ниже по z, бледнее */}
-      {fig.legs && drawSide('leg', fig.legs.left, 'far')}
-      {fig.arms && drawSide('arm', fig.arms.left, 'far')}
-      {fig.torso && (
-        <polygon
-          points={fig.torso.map(([x, y]) => `${x},${y}`).join(' ')}
-          className="asana-figure__torso"
-        />
-      )}
+      {/* Дальняя сторона (левая) — ниже по z, темнее */}
+      {fig.legs && drawSide('leg', fig.legs.left, 'far', fig.torso)}
+      {fig.arms && drawSide('arm', fig.arms.left, 'far', fig.torso)}
+      {fig.torso && drawTorso(fig.torso)}
+      {drawNeck(fig)}
       {/* Ближняя сторона (правая) — поверх */}
-      {fig.legs && drawSide('leg', fig.legs.right, 'near')}
-      {fig.arms && drawSide('arm', fig.arms.right, 'near')}
+      {fig.legs && drawSide('leg', fig.legs.right, 'near', fig.torso)}
+      {fig.arms && drawSide('arm', fig.arms.right, 'near', fig.torso)}
       {fig.drishti && (
         <line
           x1={fig.head[0]}
@@ -139,12 +211,7 @@ function drawFigureBody(fig: Figure) {
           className="asana-figure__drishti"
         />
       )}
-      <circle
-        cx={fig.head[0]}
-        cy={fig.head[1]}
-        r={fig.headR ?? 5.2}
-        className="asana-figure__head"
-      />
+      {drawHead(fig)}
     </>
   );
 }

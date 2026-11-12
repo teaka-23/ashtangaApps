@@ -312,89 +312,53 @@ body {
   font-size: 12px;
 }
 
-/* Фигурки: дальняя сторона бледнее, кисть = кружок, стопа = чёрточка */
-.asana-figure__limb {
-  fill: none;
-  stroke: var(--tg-text);
-  stroke-linecap: round;
-  stroke-linejoin: round;
+/* Фигурки-«манекены»: залитые сужающиеся сегменты, дальняя сторона темнее */
+:root {
+  --asana-skin: #edb288;
+  --asana-skin-far: #cf9268;
+  --asana-shorts: #3d5a80;
+  --asana-hair: #4f3b2a;
+  --asana-shadow: rgba(28, 28, 30, 0.08);
 }
 
-.asana-figure__arm {
-  stroke: var(--tg-link);
-  stroke-width: 2.3;
+.asana-figure__side polygon,
+.asana-figure__side circle {
+  fill: var(--asana-skin);
 }
 
-.asana-figure__leg {
-  stroke: var(--tg-text);
-  stroke-width: 3;
-}
-
-.asana-figure__limb--far {
-  opacity: 0.4;
-}
-
-.asana-figure__limb--near {
-  opacity: 1;
-}
-
-.asana-figure__joint--arm {
-  fill: var(--tg-link);
-}
-
-.asana-figure__joint--leg {
-  fill: var(--tg-text);
-}
-
-.asana-figure__joint--far {
-  fill-opacity: 0.4;
-}
-
-.asana-figure__joint--near {
-  fill-opacity: 0.95;
-}
-
-.asana-figure__hand {
-  fill: none;
-  stroke: var(--tg-link);
-  stroke-width: 1.8;
-}
-
-.asana-figure__hand--far {
-  opacity: 0.4;
-}
-
-.asana-figure__hand--near {
-  opacity: 1;
-}
-
-.asana-figure__foot {
-  fill: none;
-  stroke: var(--tg-text);
-  stroke-width: 2.4;
-  stroke-linecap: round;
-}
-
-.asana-figure__foot--far {
-  opacity: 0.4;
-}
-
-.asana-figure__foot--near {
-  opacity: 1;
+.asana-figure__side--far polygon,
+.asana-figure__side--far circle {
+  fill: var(--asana-skin-far);
 }
 
 .asana-figure__torso {
-  fill: var(--tg-text);
-  fill-opacity: 0.1;
-  stroke: var(--tg-text);
-  stroke-width: 1.8;
+  fill: var(--asana-skin);
+  stroke: var(--asana-skin);
+  stroke-width: 2.5;
   stroke-linejoin: round;
 }
 
+.asana-figure__shorts {
+  fill: var(--asana-shorts);
+  stroke: var(--asana-shorts);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.asana-figure__neck {
+  fill: var(--asana-skin);
+}
+
 .asana-figure__head {
-  fill: var(--tg-bg);
-  stroke: var(--tg-text);
-  stroke-width: 2.4;
+  fill: var(--asana-skin);
+}
+
+.asana-figure__hair {
+  fill: var(--asana-hair);
+}
+
+.asana-figure__shadow {
+  fill: var(--asana-shadow);
 }
 
 .asana-figure__drishti {
@@ -685,11 +649,16 @@ body {
 }
 
 .asana-figure__cell {
-  width: 100%;
+  /* Квадрат по меньшей стороне ячейки: иначе slice обрезает голову/ноги.
+     Размер задаём от высоты — % max-height у grid-элемента ненадёжен */
+  display: block;
   height: 100%;
+  width: auto;
+  max-width: 100%;
+  aspect-ratio: 1;
+  margin: auto;
   min-width: 0;
   min-height: 0;
-  display: block;
   overflow: hidden;
 }
 
@@ -697,17 +666,9 @@ body {
   font-size: 10px;
 }
 
-/* Жирнее штрих в плотной сетке — иначе «теряется» на большом экране VK */
-.asana-figure--compact-grid .asana-figure__arm {
-  stroke-width: 2.8;
-}
-
-.asana-figure--compact-grid .asana-figure__leg {
-  stroke-width: 3.4;
-}
-
-.asana-figure--compact-grid .asana-figure__head {
-  stroke-width: 2.8;
+/* В плотной сетке ячейки маленькие — номера кадров крупнее */
+.asana-figure--compact-grid .asana-figure__frame-num {
+  font-size: 11px;
 }
 
 .visually-hidden {
