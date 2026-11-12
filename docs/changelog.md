@@ -2,6 +2,7 @@
 
 ## 2026-11-12 (Telegram + VK)
 
+- Практика/Сурьи во VK: плотнее сетка (`slice`), компактнее таймер, safe-area insets
 - Слой `src/platform`: детект telegram | vk | web; единый init/storage/haptic/back
 - `@vkontakte/vk-bridge`: Init, тема, Storage, Taptic, SetLocation/ChangeFragment
 - Прогресс локален на платформе (без sync TG↔VK)

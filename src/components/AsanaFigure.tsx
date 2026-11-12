@@ -203,20 +203,21 @@ export function AsanaFigure({
           <svg
             key={i}
             viewBox="0 0 100 100"
-            preserveAspectRatio="xMidYMid meet"
+            /* slice: заполняет ячейку по высоте (иначе meet → пустые поля во VK) */
+            preserveAspectRatio="xMidYMid slice"
             className="asana-figure__cell"
             aria-hidden="true"
           >
             {showNumbers && (
               <text
-                x={5}
+                x={4}
                 y={11}
                 className="asana-figure__frame-num asana-figure__frame-num--compact"
               >
                 {i + 1}
               </text>
             )}
-            <g transform="translate(50 52) scale(1.12) translate(-50 -50)">
+            <g transform="translate(50 50) scale(1.08) translate(-50 -50)">
               {drawFigureBody(fig)}
             </g>
           </svg>

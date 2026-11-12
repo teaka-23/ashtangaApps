@@ -6,6 +6,7 @@ import type { HapticKind, PlatformAdapter } from './types';
 type VkConfig = {
   appearance?: 'light' | 'dark';
   scheme?: string;
+  insets?: { top?: number; bottom?: number; left?: number; right?: number };
 };
 
 function isDarkScheme(config: VkConfig): boolean {
@@ -15,8 +16,20 @@ function isDarkScheme(config: VkConfig): boolean {
   return scheme.includes('dark') || scheme === 'space_gray';
 }
 
+function applyVkInsets(insets?: VkConfig['insets']): void {
+  const root = document.documentElement;
+  const set = (name: string, px?: number) => {
+    root.style.setProperty(name, `${Math.max(0, px ?? 0)}px`);
+  };
+  set('--safe-area-top', insets?.top);
+  set('--safe-area-bottom', insets?.bottom);
+  set('--safe-area-left', insets?.left);
+  set('--safe-area-right', insets?.right);
+}
+
 function applyVkConfig(config: VkConfig): void {
   applyThemeColors(isDarkScheme(config) ? THEME_DARK : THEME_LIGHT);
+  applyVkInsets(config.insets);
 }
 
 function hashToVkLocation(hash = window.location.hash): string {
@@ -85,6 +98,8 @@ export const vkAdapter: PlatformAdapter = {
     } catch {
       applyThemeColors(THEME_DARK);
     }
+
+    void bridge.send('VKWebAppDisableSwipeBack').catch(() => undefined);
 
     return true;
   },

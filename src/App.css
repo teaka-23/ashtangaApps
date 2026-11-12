@@ -566,7 +566,15 @@ body {
   height: 100dvh;
   max-height: 100dvh;
   overflow: hidden;
-  padding: 0 14px calc(10px + env(safe-area-inset-bottom));
+  /* VK insets (--safe-area-*) + iOS env() */
+  padding-top: max(0px, var(--safe-area-top, 0px));
+  padding-right: max(14px, var(--safe-area-right, 0px), env(safe-area-inset-right, 0px));
+  padding-bottom: max(
+    10px,
+    var(--safe-area-bottom, 0px),
+    calc(10px + env(safe-area-inset-bottom, 0px))
+  );
+  padding-left: max(14px, var(--safe-area-left, 0px), env(safe-area-inset-left, 0px));
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -672,7 +680,7 @@ body {
   position: relative;
   display: grid;
   grid-auto-rows: 1fr;
-  gap: 2px 4px;
+  gap: 0 2px;
   align-content: stretch;
 }
 
@@ -687,6 +695,19 @@ body {
 
 .asana-figure__frame-num--compact {
   font-size: 10px;
+}
+
+/* Жирнее штрих в плотной сетке — иначе «теряется» на большом экране VK */
+.asana-figure--compact-grid .asana-figure__arm {
+  stroke-width: 2.8;
+}
+
+.asana-figure--compact-grid .asana-figure__leg {
+  stroke-width: 3.4;
+}
+
+.asana-figure--compact-grid .asana-figure__head {
+  stroke-width: 2.8;
 }
 
 .visually-hidden {
@@ -720,6 +741,26 @@ body {
 
 .practice--overview .practice__controls button {
   padding: 9px;
+}
+
+.practice--overview .breath-timer {
+  margin: 2px 0;
+}
+
+.practice--overview .breath-timer__ring {
+  width: 56px;
+  height: 56px;
+}
+
+.practice--overview .breath-timer__count {
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+}
+
+.practice--overview .breath-timer__phase {
+  font-size: 12px;
+  margin-top: 2px;
 }
 
 .practice__info {
