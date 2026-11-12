@@ -1,6 +1,12 @@
+import type { SeriesId } from '../data/types';
 import { storageGet, storageRemove, storageSet } from '../telegram';
 
-export const PROGRESS_KEY = 'ashtanga.practice.progress';
+/** Legacy key (primary only) — migrated on first read */
+export const PROGRESS_KEY_LEGACY = 'ashtanga.practice.progress';
+
+export function progressKey(seriesId: SeriesId): string {
+  return `ashtanga.practice.progress.${seriesId}`;
+}
 
 export interface PracticeProgress {
   currentAsanaId: string;
@@ -8,8 +14,21 @@ export interface PracticeProgress {
   updatedAt: string;
 }
 
-export async function loadProgress(): Promise<PracticeProgress | null> {
-  const raw = await storageGet(PROGRESS_KEY);
+export async function loadProgress(
+  seriesId: SeriesId,
+): Promise<PracticeProgress | null> {
+  const key = progressKey(seriesId);
+  let raw = await storageGet(key);
+
+  // One-time migrate legacy primary progress
+  if (!raw && seriesId === 'primary') {
+    raw = await storageGet(PROGRESS_KEY_LEGACY);
+    if (raw) {
+      await storageSet(key, raw);
+      await storageRemove(PROGRESS_KEY_LEGACY);
+    }
+  }
+
   if (!raw) return null;
 
   try {
@@ -22,6 +41,7 @@ export async function loadProgress(): Promise<PracticeProgress | null> {
 }
 
 export async function saveProgress(
+  seriesId: SeriesId,
   currentAsanaId: string,
   completedIds: string[],
 ): Promise<void> {
@@ -30,9 +50,12 @@ export async function saveProgress(
     completedIds: [...new Set(completedIds)],
     updatedAt: new Date().toISOString(),
   };
-  await storageSet(PROGRESS_KEY, JSON.stringify(payload));
+  await storageSet(progressKey(seriesId), JSON.stringify(payload));
 }
 
-export async function clearProgress(): Promise<void> {
-  await storageRemove(PROGRESS_KEY);
+export async function clearProgress(seriesId: SeriesId): Promise<void> {
+  await storageRemove(progressKey(seriesId));
+  if (seriesId === 'primary') {
+    await storageRemove(PROGRESS_KEY_LEGACY);
+  }
 }

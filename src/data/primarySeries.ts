@@ -1,3 +1,6 @@
+import type { Asana, Section } from './types';
+
+export type { Asana, Section };
 export type SectionId =
   | 'surya-a'
   | 'surya-b'
@@ -5,40 +8,6 @@ export type SectionId =
   | 'seated'
   | 'backbend'
   | 'finishing';
-
-export interface Section {
-  id: SectionId;
-  title: string;
-  subtitle: string;
-}
-
-export interface Asana {
-  id: string;
-  /** Транслитерация санскритского названия (латиницей) */
-  sanskrit: string;
-  /** Название деванагари */
-  devanagari: string;
-  /** Русская транскрипция — как произносится */
-  transcription: string;
-  /** Название на русском */
-  russian: string;
-  /** Ключ SVG-позы из poses.ts */
-  pose: string;
-  /** Количество виньяс (для Сурьи — общее, для асан — до положения) */
-  vinyasa?: number;
-  /** Дришти — точка концентрации взгляда */
-  drishti?: string;
-  /** Число дыханий в удержании асаны */
-  breaths?: number;
-  /**
-   * Нет в Yoga Mala как отдельная позиция — современное дополнение серии.
-   * Состав списка оставляем современным; такие асаны выделяются в UI.
-   */
-  modernAddition?: boolean;
-  /** Заметка: вариации, количество дыханий и т.п. */
-  note?: string;
-  section: SectionId;
-}
 
 export const SECTIONS: Section[] = [
   { id: 'surya-a', title: 'Сурья Намаскар А', subtitle: 'Приветствие Солнцу А · 9 виньяс' },

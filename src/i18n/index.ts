@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react';
-import type { Asana, Section } from '../data/primarySeries';
+import { contentKeyForAsana } from '../data/series';
+import type { Asana, Section, SeriesId } from '../data/types';
 import { DRISHTI_EN, ENGLISH_NAME, NOTE_EN, SECTIONS_EN } from './content';
 import { messages, type Locale, type MessageKey } from './messages';
 
@@ -29,8 +30,22 @@ export function pluralizeAsana(locale: Locale, count: number): string {
   return messages.ru.asanaWord.many;
 }
 
+export function seriesTitle(seriesId: SeriesId, locale: Locale): string {
+  return t(locale, seriesId === 'primary' ? 'seriesPrimary' : 'seriesIntermediate');
+}
+
+export function seriesSubtitle(seriesId: SeriesId, locale: Locale): string {
+  return t(
+    locale,
+    seriesId === 'primary' ? 'seriesPrimarySub' : 'seriesIntermediateSub',
+  );
+}
+
 export function asanaDisplayName(asana: Asana, locale: Locale): string {
-  if (locale === 'en') return ENGLISH_NAME[asana.id] ?? asana.sanskrit;
+  if (locale === 'en') {
+    const key = contentKeyForAsana(asana.id);
+    return ENGLISH_NAME[asana.id] ?? ENGLISH_NAME[key] ?? asana.sanskrit;
+  }
   return asana.russian;
 }
 
@@ -46,17 +61,20 @@ export function asanaDrishti(asana: Asana, locale: Locale): string | undefined {
 }
 
 export function asanaNote(asana: Asana, locale: Locale): string | undefined {
-  if (locale === 'en') return NOTE_EN[asana.id] ?? asana.note;
+  if (locale === 'en') {
+    const key = contentKeyForAsana(asana.id);
+    return NOTE_EN[asana.id] ?? NOTE_EN[key] ?? asana.note;
+  }
   return asana.note;
 }
 
 export function sectionTitle(section: Section, locale: Locale): string {
-  if (locale === 'en') return SECTIONS_EN[section.id].title;
+  if (locale === 'en') return SECTIONS_EN[section.id]?.title ?? section.title;
   return section.title;
 }
 
 export function sectionSubtitle(section: Section, locale: Locale): string {
-  if (locale === 'en') return SECTIONS_EN[section.id].subtitle;
+  if (locale === 'en') return SECTIONS_EN[section.id]?.subtitle ?? section.subtitle;
   return section.subtitle;
 }
 

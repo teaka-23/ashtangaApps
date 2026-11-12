@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { PRIMARY_SERIES, SECTIONS, type Asana, type SectionId } from './data/primarySeries';
 import { POSES } from './data/poses';
+import { getSeries, SERIES_ORDER, type SeriesId } from './data/series';
+import type { Asana } from './data/types';
 import { AsanaFigure } from './components/AsanaFigure';
-import { hideBackButton, initTelegram, showBackButton, storageGet, storageSet } from './telegram';
+import { hideBackButton, initTelegram, showBackButton } from './telegram';
 import { clearProgress, loadProgress, type PracticeProgress } from './practice/progress';
 import { PracticeView } from './practice/PracticeView';
 import { navigate, parseHash, type Route } from './routing';
 import {
-  LOCALE_KEY,
   LocaleContext,
   asanaDisplayName,
   asanaDrishti,
@@ -16,10 +16,15 @@ import {
   pluralizeAsana,
   sectionSubtitle,
   sectionTitle,
+  seriesSubtitle,
+  seriesTitle,
   t,
   type Locale,
 } from './i18n';
 import './App.css';
+
+/** UI locale switcher hidden for now; i18n strings kept for later. */
+const LOCALE: Locale = 'ru';
 
 function defaultFrameIndex(poseKey: string): number {
   const def = POSES[poseKey];
@@ -41,24 +46,29 @@ function useRoute(): Route {
 
 export default function App() {
   const route = useRoute();
-  const [locale, setLocale] = useState<Locale>('ru');
-  const [progress, setProgress] = useState<PracticeProgress | null>(null);
+  const locale = LOCALE;
+  const [progressBySeries, setProgressBySeries] = useState<
+    Partial<Record<SeriesId, PracticeProgress | null>>
+  >({});
   const [practiceCompletedIds, setPracticeCompletedIds] = useState<string[]>([]);
   const [sheetFrame, setSheetFrame] = useState(0);
 
-  useEffect(() => {
-    initTelegram();
-    void loadProgress().then(setProgress);
-    void storageGet(LOCALE_KEY).then((v) => {
-      if (v === 'en' || v === 'ru') setLocale(v);
-    });
-    if (!window.location.hash || window.location.hash === '#') {
-      navigate({ name: 'catalog' }, true);
-    }
-  }, []);
+  const activeSeriesId: SeriesId | null =
+    route.name === 'home' ? null : route.seriesId;
+  const series = activeSeriesId ? getSeries(activeSeriesId) : null;
+  const progress = activeSeriesId ? (progressBySeries[activeSeriesId] ?? null) : null;
 
   useEffect(() => {
+    initTelegram();
     document.documentElement.lang = locale;
+    void Promise.all(
+      SERIES_ORDER.map(async (id) => [id, await loadProgress(id)] as const),
+    ).then((entries) => {
+      setProgressBySeries(Object.fromEntries(entries));
+    });
+    if (!window.location.hash || window.location.hash === '#') {
+      navigate({ name: 'home' }, true);
+    }
   }, [locale]);
 
   useEffect(() => {
@@ -67,51 +77,66 @@ export default function App() {
     el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [route]);
 
-  const goCatalog = useCallback(() => navigate({ name: 'catalog' }), []);
+  const goHome = useCallback(() => navigate({ name: 'home' }), []);
 
-  const openAsana = useCallback((id: string, replace = false) => {
-    navigate({ name: 'asana', id }, replace);
+  const goCatalog = useCallback((seriesId: SeriesId) => {
+    navigate({ name: 'catalog', seriesId });
   }, []);
 
-  const toggleLocale = () => {
-    const next: Locale = locale === 'ru' ? 'en' : 'ru';
-    setLocale(next);
-    void storageSet(LOCALE_KEY, next);
-  };
+  const openAsana = useCallback((seriesId: SeriesId, id: string, replace = false) => {
+    navigate({ name: 'asana', seriesId, id }, replace);
+  }, []);
 
   const startPractice = useCallback(
-    (fromId?: string, resume = false) => {
-      const startId = fromId ?? PRIMARY_SERIES[0].id;
-      if (resume && progress) {
-        setPracticeCompletedIds(progress.completedIds);
+    (seriesId: SeriesId, fromId?: string, resume = false) => {
+      const seriesDef = getSeries(seriesId);
+      const seriesProgress = progressBySeries[seriesId];
+      const startId = fromId ?? seriesDef.asanas[0].id;
+      if (resume && seriesProgress) {
+        setPracticeCompletedIds(seriesProgress.completedIds);
         navigate({
           name: 'practice',
-          startId: progress.currentAsanaId,
+          seriesId,
+          startId: seriesProgress.currentAsanaId,
           resume: true,
         });
         return;
       }
       setPracticeCompletedIds([]);
-      void clearProgress();
-      navigate({ name: 'practice', startId });
+      void clearProgress(seriesId).then(() => {
+        setProgressBySeries((prev) => ({ ...prev, [seriesId]: null }));
+      });
+      navigate({ name: 'practice', seriesId, startId });
     },
-    [progress],
+    [progressBySeries],
   );
 
   const exitPractice = useCallback(() => {
-    void loadProgress().then(setProgress);
-    navigate({ name: 'catalog' });
-  }, []);
+    if (route.name !== 'practice') {
+      navigate({ name: 'home' });
+      return;
+    }
+    const seriesId = route.seriesId;
+    void loadProgress(seriesId).then((p) => {
+      setProgressBySeries((prev) => ({ ...prev, [seriesId]: p }));
+    });
+    navigate({ name: 'catalog', seriesId });
+  }, [route]);
 
   useEffect(() => {
     if (route.name !== 'practice') return;
     if (route.resume) {
-      void loadProgress().then((p) => {
-        setProgress(p);
+      void loadProgress(route.seriesId).then((p) => {
+        setProgressBySeries((prev) => ({ ...prev, [route.seriesId]: p }));
         setPracticeCompletedIds(p?.completedIds ?? []);
         if (p && p.currentAsanaId !== route.startId) {
           navigate(
-            { name: 'practice', startId: p.currentAsanaId, resume: true },
+            {
+              name: 'practice',
+              seriesId: route.seriesId,
+              startId: p.currentAsanaId,
+              resume: true,
+            },
             true,
           );
         }
@@ -122,8 +147,12 @@ export default function App() {
   }, [route]);
 
   const selectedId = route.name === 'asana' ? route.id : null;
-  const selectedIndex = PRIMARY_SERIES.findIndex((a) => a.id === selectedId);
-  const selected = selectedIndex >= 0 ? PRIMARY_SERIES[selectedIndex] : null;
+  const selectedIndex =
+    series && selectedId
+      ? series.asanas.findIndex((a) => a.id === selectedId)
+      : -1;
+  const selected =
+    series && selectedIndex >= 0 ? series.asanas[selectedIndex] : null;
   const sheetFrameCount = selected ? (POSES[selected.pose]?.figures.length ?? 1) : 1;
 
   useEffect(() => {
@@ -134,22 +163,31 @@ export default function App() {
   useEffect(() => {
     if (route.name === 'practice') return;
     if (route.name === 'asana') {
-      showBackButton(goCatalog);
+      showBackButton(() => goCatalog(route.seriesId));
+      return () => hideBackButton();
+    }
+    if (route.name === 'catalog') {
+      showBackButton(goHome);
       return () => hideBackButton();
     }
     hideBackButton();
-  }, [route, goCatalog]);
+  }, [route, goHome, goCatalog]);
 
   const grouped = useMemo(() => {
-    const map = new Map<SectionId, Asana[]>();
-    for (const section of SECTIONS) map.set(section.id, []);
-    for (const asana of PRIMARY_SERIES) map.get(asana.section)?.push(asana);
-    return SECTIONS.map((section) => ({ section, asanas: map.get(section.id) ?? [] }));
-  }, []);
+    if (!series) return [];
+    const map = new Map<string, Asana[]>();
+    for (const section of series.sections) map.set(section.id, []);
+    for (const asana of series.asanas) map.get(asana.section)?.push(asana);
+    return series.sections.map((section) => ({
+      section,
+      asanas: map.get(section.id) ?? [],
+    }));
+  }, [series]);
 
   const go = (delta: number) => {
-    const next = PRIMARY_SERIES[selectedIndex + delta];
-    if (next) openAsana(next.id, true);
+    if (!series || !activeSeriesId) return;
+    const next = series.asanas[selectedIndex + delta];
+    if (next) openAsana(activeSeriesId, next.id, true);
   };
 
   let counter = 0;
@@ -158,7 +196,8 @@ export default function App() {
     <LocaleContext.Provider value={locale}>
       {route.name === 'practice' ? (
         <PracticeView
-          key={`${route.resume && progress?.currentAsanaId ? progress.currentAsanaId : route.startId}-${route.resume ? 'r' : 'n'}`}
+          key={`${route.seriesId}-${route.resume && progress?.currentAsanaId ? progress.currentAsanaId : route.startId}-${route.resume ? 'r' : 'n'}`}
+          seriesId={route.seriesId}
           startId={
             route.resume && progress?.currentAsanaId
               ? progress.currentAsanaId
@@ -167,24 +206,70 @@ export default function App() {
           initialCompletedIds={practiceCompletedIds}
           onExit={exitPractice}
         />
+      ) : route.name === 'home' ? (
+        <div className="app">
+          <header className="header">
+            <h1>{t(locale, 'appTitle')}</h1>
+            <p>{t(locale, 'appSubtitle')}</p>
+          </header>
+
+          <main className="series-picker" aria-label={t(locale, 'chooseSeries')}>
+            {SERIES_ORDER.map((id) => {
+              const def = getSeries(id);
+              const p = progressBySeries[id];
+              return (
+                <article key={id} className="series-card">
+                  <h2>{seriesTitle(id, locale)}</h2>
+                  <p className="series-card__sub">{seriesSubtitle(id, locale)}</p>
+                  <p className="series-card__count">
+                    {def.asanas.length} {pluralizeAsana(locale, def.asanas.length)}
+                  </p>
+                  <div className="series-card__actions">
+                    <button
+                      type="button"
+                      className="header__practice"
+                      onClick={() => goCatalog(id)}
+                    >
+                      {t(locale, 'openCatalog')}
+                    </button>
+                    <button
+                      type="button"
+                      className="header__continue"
+                      onClick={() => startPractice(id)}
+                    >
+                      {t(locale, 'startPractice')}
+                    </button>
+                    {p && (
+                      <button
+                        type="button"
+                        className="header__continue"
+                        onClick={() => startPractice(id, undefined, true)}
+                      >
+                        {t(locale, 'continuePractice')}
+                      </button>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
+          </main>
+        </div>
       ) : (
         <div className="app">
           <header className="header">
-            <div className="header__top">
-              <h1>{t(locale, 'appTitle')}</h1>
-              <button type="button" className="header__lang" onClick={toggleLocale}>
-                {t(locale, 'langSwitch')}
-              </button>
-            </div>
+            <h1>{seriesTitle(route.seriesId, locale)}</h1>
             <p>
-              {t(locale, 'appSubtitle')} · {PRIMARY_SERIES.length}{' '}
-              {pluralizeAsana(locale, PRIMARY_SERIES.length)}
+              {seriesSubtitle(route.seriesId, locale)} · {series!.asanas.length}{' '}
+              {pluralizeAsana(locale, series!.asanas.length)}
             </p>
             <div className="header__actions">
+              <button type="button" className="header__back-series" onClick={goHome}>
+                {t(locale, 'backToSeries')}
+              </button>
               <button
                 type="button"
                 className="header__practice"
-                onClick={() => startPractice()}
+                onClick={() => startPractice(route.seriesId)}
               >
                 {t(locale, 'startPractice')}
               </button>
@@ -192,7 +277,7 @@ export default function App() {
                 <button
                   type="button"
                   className="header__continue"
-                  onClick={() => startPractice(undefined, true)}
+                  onClick={() => startPractice(route.seriesId, undefined, true)}
                 >
                   {t(locale, 'continuePractice')}
                 </button>
@@ -201,8 +286,8 @@ export default function App() {
           </header>
 
           <nav className="section-nav" aria-label="Sections">
-            {SECTIONS.map((s) => (
-              <a key={s.id} href={`#/section/${s.id}`}>
+            {series!.sections.map((s) => (
+              <a key={s.id} href={`#/series/${route.seriesId}/section/${s.id}`}>
                 {sectionTitle(s, locale)}
               </a>
             ))}
@@ -224,7 +309,7 @@ export default function App() {
                         <button
                           type="button"
                           className={`asana-card${asana.modernAddition ? ' asana-card--modern' : ''}`}
-                          onClick={() => openAsana(asana.id)}
+                          onClick={() => openAsana(route.seriesId, asana.id)}
                           aria-label={`${counter}. ${asana.sanskrit}, ${label}`}
                         >
                           <span className="asana-card__num" aria-hidden="true">
@@ -262,7 +347,7 @@ export default function App() {
           </main>
 
           {selected && (
-            <div className="sheet-backdrop" onClick={goCatalog}>
+            <div className="sheet-backdrop" onClick={() => goCatalog(route.seriesId)}>
               <div
                 className="sheet"
                 onClick={(e) => e.stopPropagation()}
@@ -339,7 +424,7 @@ export default function App() {
                 <button
                   type="button"
                   className="sheet__practice"
-                  onClick={() => startPractice(selected.id)}
+                  onClick={() => startPractice(route.seriesId, selected.id)}
                 >
                   {t(locale, 'practiceFromHere')}
                 </button>
@@ -353,7 +438,7 @@ export default function App() {
                   </button>
                   <button
                     type="button"
-                    disabled={selectedIndex >= PRIMARY_SERIES.length - 1}
+                    disabled={selectedIndex >= series!.asanas.length - 1}
                     onClick={() => go(1)}
                   >
                     {t(locale, 'next')}

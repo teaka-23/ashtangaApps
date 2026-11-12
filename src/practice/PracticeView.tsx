@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { PRIMARY_SERIES } from '../data/primarySeries';
+import { getSeries } from '../data/series';
+import type { SeriesId } from '../data/types';
 import { POSES } from '../data/poses';
 import { AsanaFigure } from '../components/AsanaFigure';
 import { haptic, hideBackButton, showBackButton } from '../telegram';
@@ -25,16 +26,24 @@ import {
 } from './breathAudio';
 
 interface Props {
+  seriesId: SeriesId;
   startId: string;
   initialCompletedIds?: string[];
   onExit: () => void;
 }
 
-export function PracticeView({ startId, initialCompletedIds = [], onExit }: Props) {
+export function PracticeView({
+  seriesId,
+  startId,
+  initialCompletedIds = [],
+  onExit,
+}: Props) {
   const locale = useLocale();
+  const series = getSeries(seriesId);
+  const asanas = series.asanas;
   const startIndex = Math.max(
     0,
-    PRIMARY_SERIES.findIndex((a) => a.id === startId),
+    asanas.findIndex((a) => a.id === startId),
   );
   const [index, setIndex] = useState(startIndex);
   const [completedIds, setCompletedIds] = useState<string[]>(initialCompletedIds);
@@ -43,7 +52,7 @@ export function PracticeView({ startId, initialCompletedIds = [], onExit }: Prop
   const [tempo, setTempo] = useState<BreathTempo>(() => loadBreathTempo());
   const [soundOn, setSoundOn] = useState(() => loadBreathSound());
 
-  const asana = PRIMARY_SERIES[index];
+  const asana = asanas[index];
 
   useEffect(() => {
     showBackButton(onExit);
@@ -58,12 +67,12 @@ export function PracticeView({ startId, initialCompletedIds = [], onExit }: Prop
 
   useEffect(() => {
     if (!asana || done) return;
-    void saveProgress(asana.id, completedIds);
-  }, [asana, completedIds, done]);
+    void saveProgress(seriesId, asana.id, completedIds);
+  }, [asana, completedIds, done, seriesId]);
 
   const progressPct = useMemo(
-    () => ((index + (done ? 1 : 0)) / PRIMARY_SERIES.length) * 100,
-    [index, done],
+    () => ((index + (done ? 1 : 0)) / asanas.length) * 100,
+    [index, done, asanas.length],
   );
 
   const advanceTo = useCallback((nextIndex: number) => {
@@ -77,15 +86,15 @@ export function PracticeView({ startId, initialCompletedIds = [], onExit }: Prop
     setCompletedIds((prev) => (prev.includes(asana.id) ? prev : [...prev, asana.id]));
     haptic('success');
 
-    if (index >= PRIMARY_SERIES.length - 1) {
+    if (index >= asanas.length - 1) {
       setDone(true);
-      void clearProgress();
+      void clearProgress(seriesId);
       return;
     }
 
     haptic('medium');
     advanceTo(index + 1);
-  }, [asana, index, advanceTo]);
+  }, [asana, index, advanceTo, asanas.length, seriesId]);
 
   const goPrev = () => {
     if (index <= 0 || done) return;
@@ -94,13 +103,13 @@ export function PracticeView({ startId, initialCompletedIds = [], onExit }: Prop
   };
 
   const finish = () => {
-    void clearProgress();
+    void clearProgress(seriesId);
     onExit();
   };
 
   if (!asana) return null;
 
-  const n = PRIMARY_SERIES.length;
+  const n = asanas.length;
   const doneText = t(locale, 'doneCount').replaceAll('{n}', String(n));
 
   if (done) {
@@ -132,16 +141,16 @@ export function PracticeView({ startId, initialCompletedIds = [], onExit }: Prop
         className="practice__progress"
         role="progressbar"
         aria-valuemin={1}
-        aria-valuemax={PRIMARY_SERIES.length}
+        aria-valuemax={asanas.length}
         aria-valuenow={index + 1}
-        aria-label={`${index + 1} / ${PRIMARY_SERIES.length}`}
+        aria-label={`${index + 1} / ${asanas.length}`}
       >
         <div className="practice__progress-bar" style={{ width: `${progressPct}%` }} />
       </div>
 
       <header className="practice__header">
         <span className="practice__step">
-          {index + 1} / {PRIMARY_SERIES.length}
+          {index + 1} / {asanas.length}
         </span>
         <div className="practice__header-actions">
           <button type="button" className="practice__finish" onClick={finish}>
