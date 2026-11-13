@@ -7,11 +7,13 @@
 
 export const GROUND = 168;
 
-const SKIN = '#f2c29b';
-const SKIN_FAR = '#e4b48f';
-const LINE = '#b98a5e';
-const LINE_FAR = '#c4a184';
-const SHORTS = '#2e2a33';
+const SKIN = '#f3c7a4';
+const SKIN_FAR = '#d7a888';
+const SKIN_LIT = '#fbe3cf';
+const SKIN_LIT_FAR = '#f3d4bc';
+const LINE = '#c19670';
+const LINE_FAR = '#c9aa90';
+const SHORTS = '#3e3942';
 
 const add = (a, b) => [a[0] + b[0], a[1] + b[1]];
 const mul = (a, s) => [a[0] * s, a[1] * s];
@@ -64,10 +66,11 @@ function skin(far) {
 
 /** Стопа. toe +1 — носки вправо. mode: flat | tucked | tops | flex | free | freeFlex.
  *  free смотрит вдоль голени (колено → лодыжка), не по горизонтали. */
-function footPath(ankle, toe, mode, knee) {
+function footPath(ankle, toe, mode, knee, far = false) {
+  const s = toe >= 0 ? 1 : -1;
   const ax = ankle[0];
   const sole = GROUND;
-  const s = toe >= 0 ? 1 : -1;
+  const k = far ? 0.92 : 1;
   if (mode === 'tucked') {
     // подушечка на полу, пятка вверх к голени, пальцы подогнуты вперёд
     const ball = ax + s * 2;
@@ -94,29 +97,47 @@ function footPath(ankle, toe, mode, knee) {
     ].join(' ');
   }
   if (mode === 'flex') {
-    // сидя: пятка на полу, носки вверх
+    // сидя: пятка на полу, носки вверх, большой палец отдельно — видно, какая стопа впереди
+    const heel = ax - s * 5 * k;
+    const ball = ax + s * 4 * k;
+    const tip = ax + s * 2.2 * k;
+    const top = ankle[1] - 16 * k;
     return [
-      `M ${ax - 4},${sole}`,
-      `L ${ax + 5},${sole}`,
-      `Q ${ax + 7},${sole - 2} ${ax + 5},${sole - 8}`,
-      `L ${ax + 3},${ankle[1] - 12}`,
-      `Q ${ax + 2},${ankle[1] - 16} ${ax - 1},${ankle[1] - 14}`,
-      `L ${ax - 2},${sole - 6}`,
-      `Q ${ax - 6},${sole - 1} ${ax - 4},${sole} Z`,
+      `M ${heel},${sole}`,
+      `L ${ball},${sole}`,
+      `Q ${ball + s * 2 * k},${sole - 1} ${ball},${sole - 6 * k}`,
+      `L ${tip + s * 1.4 * k},${top + 6 * k}`,
+      `Q ${tip + s * 2.4 * k},${top} ${tip},${top + 1.5 * k}`,
+      `L ${tip - s * 2.2 * k},${top + 3 * k}`,
+      `L ${ax - s * 1.5 * k},${sole - 7 * k}`,
+      `Q ${heel - s * 2 * k},${sole - 1} ${heel},${sole} Z`,
     ].join(' ');
   }
   if (mode === 'free') {
-    // носок вытянут вдоль голени, от колена через лодыжку
+    // стопа вдоль голени: пятка, подушечка, короткий носок. Не клин и не рог.
     let dir = [s, 0];
     if (knee) {
       const d = sub(ankle, knee);
       if (len(d) > 4) dir = norm(d);
     }
     const side = [-dir[1], dir[0]];
-    const heel = add(ankle, mul(dir, -1.5));
-    const tip = add(ankle, mul(dir, 15));
-    const w = 4.6;
-    return `M ${pt(add(heel, mul(side, w)))} L ${pt(add(tip, mul(side, w * 0.42)))} Q ${pt(add(tip, mul(dir, 3)))} ${pt(add(tip, mul(side, -w * 0.42)))} L ${pt(add(heel, mul(side, -w * 0.85)))} Z`;
+    const reach = far ? 8.5 : 10.5;
+    const w = far ? 4.8 : 5.6;
+    const heel = add(ankle, mul(dir, -2.2));
+    const ball = add(ankle, mul(dir, reach * 0.55));
+    const tip = add(ankle, mul(dir, reach));
+    const toe = add(tip, mul(dir, 2.2));
+    return [
+      `M ${pt(add(heel, mul(side, w * 0.55)))}`,
+      `L ${pt(add(heel, mul(dir, -1.8)))}`,
+      `L ${pt(add(heel, mul(side, -w * 0.7)))}`,
+      `L ${pt(add(ball, mul(side, -w * 0.5)))}`,
+      `L ${pt(add(tip, mul(side, -w * 0.2)))}`,
+      `L ${pt(toe)}`,
+      `L ${pt(add(tip, mul(side, w * 0.45)))}`,
+      `L ${pt(add(ball, mul(side, w * 0.62)))}`,
+      `L ${pt(add(heel, mul(side, w * 0.55)))} Z`,
+    ].join(' ');
   }
   if (mode === 'freeFlex') {
     // нога в воздухе: пятка от себя в сторону toe, носки вверх (стопа вертикально)
@@ -145,18 +166,30 @@ function footPath(ankle, toe, mode, knee) {
       `Q ${ax - 9},${ay + 1} ${ax - 7},${ay + 2} Z`,
     ].join(' ');
   }
-  // flat: пятка сзади, носки вперёд, подошва на линии пола
-  const heel = ax - s * 6;
-  const toeX = ax + s * 16;
+  // flat: круглая пятка, подъём, подушечка и отдельный большой палец. Носок смотрит в toe.
+  const heel = ax - s * 8 * k;
+  const ball = ax + s * 8 * k;
+  const toeX = ax + s * 17 * k;
+  const instep = Math.min(ankle[1] + 2, sole - 6 * k);
   return [
-    `M ${heel},${sole - 6}`,
-    `Q ${heel - s * 3},${sole - 1} ${heel + s * 1},${sole}`,
-    `L ${toeX - s * 2},${sole}`,
-    `Q ${toeX + s * 3},${sole} ${toeX + s * 1},${sole - 4}`,
-    `L ${ax + s * 4},${ankle[1] + 2}`,
-    `Q ${ax},${ankle[1] - 1} ${heel + s * 2},${ankle[1] + 1}`,
-    `Q ${heel},${sole - 3} ${heel},${sole - 6} Z`,
+    `M ${heel},${sole - 6 * k}`,
+    `Q ${heel - s * 3.2 * k},${sole - 1.2} ${heel + s * 2 * k},${sole}`,
+    `L ${ball},${sole}`,
+    `Q ${ball + s * 3 * k},${sole + 0.4} ${toeX - s * 3 * k},${sole}`,
+    `Q ${toeX + s * 1.6 * k},${sole - 0.2} ${toeX},${sole - 3.4 * k}`,
+    `Q ${toeX - s * 1.2 * k},${sole - 4.6 * k} ${toeX - s * 4.2 * k},${sole - 3.2 * k}`,
+    `L ${ax + s * 4 * k},${instep}`,
+    `Q ${ax - s * 1 * k},${ankle[1] - 1} ${heel + s * 3 * k},${ankle[1] + 1}`,
+    `Q ${heel - s * 0.4 * k},${sole - 3 * k} ${heel},${sole - 6 * k} Z`,
   ].join(' ');
+}
+
+/** Перпендикуляр, который смотрит вперёд (+x) или вверх: большой палец не прячется в торс. */
+function outerSide(dir) {
+  const side = [-dir[1], dir[0]];
+  const flip = mul(side, -1);
+  const score = (v) => v[0] * 1.4 - v[1] * 0.35;
+  return score(side) >= score(flip) ? side : flip;
 }
 
 /** Ладонь. hang/reach — кисть в продолжении предплечья. flat — на полу, пальцы в fingers. */
@@ -194,127 +227,316 @@ function handPath(wrist, from, kind, fingers = 1) {
     ].join(' ');
   }
   if (kind === 'hold') {
-    // захват большого пальца ноги: кисть смотрит вниз, пальцы загнуты
-    const tip = add(wrist, mul(dir, 9));
-    const side = [-dir[1], dir[0]];
-    return `M ${pt(add(wrist, mul(side, 4)))} Q ${pt(add(tip, mul(side, 5)))} ${pt(add(tip, mul(dir, 2)))} Q ${pt(add(tip, mul(side, -4)))} ${pt(add(wrist, mul(side, -3.5)))} Z`;
+    // Захват: контур проходит через крюк, не через управляющую точку.
+    const side = outerSide(dir);
+    const knuckle = add(wrist, add(mul(dir, 7.2), mul(side, 3.6)));
+    const curl = add(wrist, add(mul(dir, 4.2), mul(side, 6.4)));
+    const palm = add(wrist, add(mul(dir, 5.5), mul(side, -2.8)));
+    return [
+      `M ${pt(add(wrist, mul(side, 2.2)))}`,
+      `L ${pt(knuckle)}`,
+      `L ${pt(curl)}`,
+      `L ${pt(add(wrist, add(mul(dir, 2.4), mul(side, 3.4))))}`,
+      `L ${pt(palm)}`,
+      `L ${pt(add(wrist, mul(side, -2.4)))}`,
+      `Z`,
+    ].join(' ');
   }
-  // hang | reach | up — варежка по оси предплечья, короче стопы
-  const tip = add(wrist, mul(dir, kind === 'up' ? 10 : 9));
-  const side = [-dir[1], dir[0]];
-  const w = 3.6;
-  const thumb = add(wrist, add(mul(dir, 3.2), mul(side, w + 2.2)));
-  return `M ${pt(add(wrist, mul(side, w)))} Q ${pt(thumb)} ${pt(add(tip, mul(side, w * 0.55)))} Q ${pt(add(tip, mul(dir, 2.2)))} ${pt(add(tip, mul(side, -w * 0.55)))} L ${pt(add(wrist, mul(side, -w)))} Z`;
+  // hang | reach | up — ладонь, большой палец углом, пальцы одним блоком
+  const side = outerSide(dir);
+  const reach = kind === 'up' ? 11 : 9.5;
+  const tip = add(wrist, mul(dir, reach));
+  const palmW = 3.6;
+  const fingerW = 2.3;
+  const thumbBase = add(wrist, add(mul(dir, 2.4), mul(side, palmW * 0.2)));
+  const thumbTip = add(wrist, add(mul(dir, 4.6), mul(side, palmW + 3.4)));
+  const thumbBack = add(wrist, add(mul(dir, 6.6), mul(side, palmW * 0.85)));
+  return [
+    `M ${pt(add(wrist, mul(side, -palmW * 0.8)))}`,
+    `L ${pt(add(tip, mul(side, -fingerW)))}`,
+    `L ${pt(add(tip, mul(dir, 2.1)))}`,
+    `L ${pt(add(tip, mul(side, fingerW)))}`,
+    `L ${pt(thumbBack)}`,
+    `L ${pt(thumbTip)}`,
+    `L ${pt(thumbBase)}`,
+    `Z`,
+  ].join(' ');
 }
 
-function limb(pts, widths, far, extra) {
+function limbSide(pts, i) {
+  const cur = pts[i];
+  const a = i === 0 ? sub(pts[1], pts[0]) : sub(cur, pts[i - 1]);
+  const b = i === pts.length - 1 ? a : sub(pts[i + 1], cur);
+  const na = [-norm(a)[1], norm(a)[0]];
+  const nb = [-norm(b)[1], norm(b)[0]];
+  let side = add(na, nb);
+  side = len(side) < 0.25 ? na : norm(side);
+  return side;
+}
+
+/** Длинные рёбра прямые, углы мягкие. Сплайн не выносит контур за кость. */
+function polySmooth(points, round = 4.2) {
+  const nPts = points.length;
+  const cuts = points.map((p, i) => {
+    const prev = points[(i + nPts - 1) % nPts];
+    const next = points[(i + 1) % nPts];
+    const dp = sub(prev, p);
+    const dn = sub(next, p);
+    const k = Math.min(len(dp) * 0.45, len(dn) * 0.45, round);
+    return [
+      len(dp) < 0.01 ? p : add(p, mul(norm(dp), k)),
+      len(dn) < 0.01 ? p : add(p, mul(norm(dn), k)),
+    ];
+  });
+  let d = `M ${pt(cuts[0][1])}`;
+  for (let i = 1; i <= nPts; i++) {
+    const idx = i % nPts;
+    d += ` L ${pt(cuts[idx][0])} Q ${pt(points[idx])} ${pt(cuts[idx][1])}`;
+  }
+  return `${d} Z`;
+}
+
+/** Одна лента: сужение к кисти и стопе, круглая шапочка, без кружка сустава. */
+function ribbon(pts, radii) {
+  const sides = pts.map((_, i) => limbSide(pts, i));
+  const left = pts.map((p, i) => add(p, mul(sides[i], radii[i])));
+  const right = pts.map((p, i) => add(p, mul(sides[i], -radii[i])));
+  const startDir = norm(sub(pts[0], pts[1]));
+  const endDir = norm(sub(pts[pts.length - 1], pts[pts.length - 2]));
+  const end = pts.length - 1;
+  return polySmooth(
+    [
+      ...left,
+      add(pts[end], mul(endDir, radii[end] * 1.05)),
+      ...right.reverse(),
+      add(pts[0], mul(startDir, radii[0] * 0.72)),
+    ],
+    3.6,
+  );
+}
+
+function limb(pts, radii, far, extra) {
   const stroke = far ? LINE_FAR : LINE;
   const fill = far ? SKIN_FAR : SKIN;
-  const chunks = [];
-  for (let i = 0; i < pts.length - 1; i++) {
-    chunks.push(
-      `<path d="${capsule(pts[i], pts[i + 1], widths[i])}" fill="${fill}" stroke="${stroke}" stroke-width="1.6" stroke-linejoin="round"/>`,
-    );
-  }
-  if (pts.length === 3) {
-    const outer = pointOuter(pts[0], pts[1], pts[2]);
-    const c = add(pts[1], mul(outer, len(outer) ? 3.4 : 0));
-    const jr = (widths[0] + widths[1]) * 0.42;
-    chunks.push(
-      `<circle cx="${n(c)[0]}" cy="${n(c)[1]}" r="${n([jr])[0]}" fill="${fill}" stroke="${stroke}" stroke-width="1.6"/>`,
-    );
-  }
-  if (extra) chunks.push(extra);
-  return chunks.join('\n');
+  const hi = far ? SKIN_LIT_FAR : SKIN_LIT;
+  const light = [-0.18, -0.98];
+  const shifted = pts.map((p, i) => {
+    const side = limbSide(pts, i);
+    const toward = side[0] * light[0] + side[1] * light[1] >= 0 ? side : mul(side, -1);
+    return add(p, mul(toward, radii[i] * 0.2));
+  });
+  return [
+    `<path d="${ribbon(pts, radii)}" fill="${fill}" stroke="${stroke}" stroke-width="1.15" stroke-linejoin="round"/>`,
+    `<path d="${ribbon(shifted, radii.map((r) => r * 0.28))}" fill="${hi}" opacity="0.22"/>`,
+    extra || '',
+  ].join('\n');
 }
 
 function leg(hip, knee, ankle, opt) {
   const { far = false, foot = 'flat', toe = 1 } = opt;
-  const w = far ? [7.2, 5.8] : [8.1, 6.5];
-  const footSvg = `<path d="${footPath(ankle, toe, foot, knee)}" ${skin(far)} stroke-width="1.5" stroke-linejoin="round"/>`;
-  return limb([hip, knee, ankle], w, far, footSvg);
+  const radii = far ? [6.2, 5.3, 4.2] : [6.9, 5.9, 4.6];
+  let sole = '';
+  if (foot === 'free' && knee) {
+    const d = sub(ankle, knee);
+    if (len(d) > 4) {
+      const dir = norm(d);
+      const side = [-dir[1], dir[0]];
+      const reach = far ? 8.5 : 10.5;
+      const w = far ? 4.8 : 5.6;
+      const heel = add(ankle, add(mul(dir, -2.2), mul(side, -w * 0.55)));
+      const ball = add(ankle, add(mul(dir, reach * 0.7), mul(side, -w * 0.28)));
+      sole = `<path d="M ${pt(heel)} L ${pt(ball)}" fill="none" stroke="${far ? LINE_FAR : LINE}" stroke-width="1.15" stroke-linecap="round"/>`;
+    }
+  }
+  const footSvg = `<path d="${footPath(ankle, toe, foot, knee, far)}" ${skin(far)} stroke-width="1.2" stroke-linejoin="round"/>${sole}`;
+  return limb([hip, knee, ankle], radii, far, footSvg);
 }
 
 function arm(shoulder, elbow, wrist, opt) {
   const { far = false, hand = 'hang', fingers = 1 } = opt;
-  const w = far ? [4.6, 3.9] : [5.3, 4.5];
-  const handSvg = `<path d="${handPath(wrist, elbow, hand, fingers)}" ${skin(far)} stroke-width="1.4" stroke-linejoin="round"/>`;
-  return limb([shoulder, elbow, wrist], w, far, handSvg);
+  const radii = far ? [4.0, 3.3, 2.8] : [4.4, 3.6, 3.0];
+  const handSvg = `<path d="${handPath(wrist, elbow, hand, fingers)}" ${skin(far)} stroke-width="1.15" stroke-linejoin="round"/>`;
+  return limb([shoulder, elbow, wrist], radii, far, handSvg);
+}
+
+/** Ось «плечи — таз» по самим точкам. */
+function trunkAxis(pts) {
+  const c = [0, 0];
+  for (const p of pts) {
+    c[0] += p[0];
+    c[1] += p[1];
+  }
+  c[0] /= pts.length;
+  c[1] /= pts.length;
+  let xx = 0;
+  let xy = 0;
+  let yy = 0;
+  for (const p of pts) {
+    const dx = p[0] - c[0];
+    const dy = p[1] - c[1];
+    xx += dx * dx;
+    xy += dx * dy;
+    yy += dy * dy;
+  }
+  const disc = Math.sqrt(Math.max(0, (xx - yy) ** 2 + 4 * xy * xy));
+  const l1 = (xx + yy + disc) / 2;
+  const axis = norm(Math.abs(xy) < 1e-4 ? (xx >= yy ? [1, 0] : [0, 1]) : [xy, l1 - xx]);
+  return { c, axis, side: [-axis[1], axis[0]] };
+}
+
+/**
+ * Плечи и таз остаются, середина уходит в талию.
+ * Если талия уже нарисована точками, почти не трогаем.
+ */
+function shapeTorso(pts) {
+  const { c, axis, side } = trunkAxis(pts);
+  const proj = pts.map((p) => {
+    const d = sub(p, c);
+    return [d[0] * axis[0] + d[1] * axis[1], d[0] * side[0] + d[1] * side[1]];
+  });
+  let tMin = Infinity;
+  let tMax = -Infinity;
+  for (const [t] of proj) {
+    tMin = Math.min(tMin, t);
+    tMax = Math.max(tMax, t);
+  }
+  const span = tMax - tMin;
+  if (span < 10) return pts;
+  const bins = [0, 0, 0, 0, 0];
+  for (const [t, s] of proj) {
+    const b = Math.min(4, Math.floor(((t - tMin) / span) * 5));
+    bins[b] = Math.max(bins[b], Math.abs(s));
+  }
+  const endW = Math.max(bins[0], bins[4], 1);
+  const midW = Math.max(bins[1], bins[2], bins[3]);
+  const sack = midW / endW;
+  const pinchAmt = sack > 0.96 ? 0.38 : sack > 0.9 ? 0.26 : sack > 0.82 ? 0.14 : 0;
+  return pts.map((p, i) => {
+    const t = (proj[i][0] - tMin) / span;
+    const along = Math.exp(-((t - 0.56) ** 2) / 0.05);
+    const lateral = proj[i][1] * (1 - pinchAmt * along);
+    return add(c, add(mul(axis, proj[i][0]), mul(side, lateral)));
+  });
 }
 
 function torso(pts) {
-  return `<path d="${smoothClosed(pts)}" fill="${SKIN}" stroke="${LINE}" stroke-width="1.7" stroke-linejoin="round"/>`;
+  // Один силуэт: плечи, талия, таз. Без второго контура внутри.
+  const shaped = shapeTorso(pts);
+  return `<path d="${polySmooth(shaped, 4.6)}" fill="${SKIN}" stroke="${LINE}" stroke-width="1.15" stroke-linejoin="round"/>`;
+}
+
+function clamp(v, lo, hi) {
+  return Math.min(hi, Math.max(lo, v));
+}
+
+/** Пояс к голове, живот в сторону front. Щека сзади, даже если векторы почти параллельны. */
+function garmentAxes(up, front) {
+  const u = norm(up);
+  const raw = norm(front);
+  const dot = u[0] * raw[0] + u[1] * raw[1];
+  let f = [raw[0] - u[0] * dot, raw[1] - u[1] * dot];
+  if (len(f) < 0.28) {
+    const perp = [-u[1], u[0]];
+    const sign = perp[0] * raw[0] + perp[1] * raw[1] >= 0 ? 1 : -1;
+    f = mul(perp, sign);
+  } else f = norm(f);
+  return [u, f];
 }
 
 function shorts(pts) {
   const waist = `M ${pt(pts[0])} L ${pt(pts[1])}`;
-  return `<g data-shorts="1"><path d="${smoothClosed(pts)}" fill="${SHORTS}"/><path d="${waist}" fill="none" stroke="#8d8794" stroke-width="1.5" stroke-linecap="round"/></g>`;
+  const hemLine = pts.length > 5 ? `M ${pt(pts[3])} Q ${pt(pts[4])} ${pt(pts[5])}` : '';
+  const hem = hemLine
+    ? `<path d="${hemLine}" fill="none" stroke="#2a262e" stroke-width="0.85" stroke-linecap="round" opacity="0.45"/>`
+    : '';
+  return `<g data-shorts="1"><path d="${polySmooth(pts, 1.05)}" fill="${SHORTS}"/><path d="${waist}" fill="none" stroke="#d4ced6" stroke-width="1.45" stroke-linecap="round"/>${hem}</g>`;
 }
 
 /**
- * Шорты в осях таза.
- * up — от таза к голове вдоль позвоночника.
- * front — от спины к животу.
- * Ягодицы на −front.
+ * Шорты: пояс на тазу, короткая щека сзади, подол по бедру.
+ * along — стоячая складка: трубка вниз по бедру, без пятна на спине.
  */
 function shortsFrame(hip, up, front, opt = {}) {
-  const u = norm(up);
-  const f = norm(front);
-  const rise = opt.rise ?? 14;
-  const hem = opt.hem ?? 19;
-  const half = opt.half ?? 12.5;
-  const cheek = opt.cheek ?? 16;
+  const [u, f] = garmentAxes(up, front);
+  const rise = clamp(opt.rise ?? 9, 6, opt.along ? 11 : 12);
+  const hem = clamp(opt.hem ?? 9, 6, opt.along ? 14 : 11);
+  const half = clamp(opt.half ?? 8, 6.5, opt.sym ? 10 : 10.5);
   const P = (uu, ff) => add(hip, add(mul(u, uu), mul(f, ff)));
-  // пояс поперёк таза, подол по бедру, щека сзади. Закрывает низ живота и корни ног.
-  return shorts([
-    P(rise, -half * 0.4),
-    P(rise + 1.2, half * 0.25),
-    P(rise * 0.55, half * 1.05),
-    P(-3, half * 1.2),
-    P(-hem * 0.7, half * 0.5),
-    P(-hem * 0.88, half * 0.02),
-    P(-hem * 0.5, -half * 0.12),
-    P(0, -cheek * 0.95),
-    P(rise * 0.55, -cheek * 0.5),
-  ]);
+  let pts;
+  if (opt.along) {
+    // Трубка по бедру: старт выше таза, щека — ширина задней кромки, без пятна.
+    const a = norm(opt.along);
+    const side = [-a[1], a[0]];
+    const w = 7;
+    const top = -rise * 0.45;
+    const Q = (t, s) => add(hip, add(mul(a, t), mul(side, s)));
+    pts = [
+      Q(top, -w),
+      Q(top, w),
+      Q(hem * 0.55, w),
+      Q(hem * 1.35, w * 0.72),
+      Q(hem * 2.05, 0),
+      Q(hem * 1.35, -w * 0.72),
+      Q(hem * 0.45, -w),
+      Q(top + 0.6, -w),
+    ];
+  } else if (opt.sym) {
+    // Спереди: пояс и две штанины, пах выше подола.
+    pts = [
+      P(rise, -half * 0.78),
+      P(rise, half * 0.78),
+      P(rise * 0.08, half),
+      P(-hem, half * 0.62),
+      P(-hem * 0.22, 0),
+      P(-hem, -half * 0.62),
+      P(rise * 0.08, -half),
+    ];
+  } else {
+    // Профиль: пояс короче щеки, подол у бедра, одна ягодица сзади.
+    pts = [
+      P(rise, -half * 0.28),
+      P(rise, half * 0.58),
+      P(rise * 0.12, half * 0.64),
+      P(-hem * 0.12, half * 0.32),
+      P(-hem * 0.78, half * 0.04),
+      P(-hem * 0.42, -half * 0.38),
+      P(-hem * 0.02, -half),
+      P(rise * 0.42, -half * 0.62),
+    ];
+  }
+  return shorts(pts);
+}
+
+/** Пунктир дришти из центра головы. Овал закрывает начало, снаружи остаётся луч. */
+function gazeLine(c, g) {
+  const tip = add(c, mul(norm(g), 22));
+  return `<line x1="${n(c)[0]}" y1="${n(c)[1]}" x2="${n(tip)[0]}" y2="${n(tip)[1]}" stroke="#2481cc" stroke-width="1.15" stroke-dasharray="2.6 2.1" stroke-linecap="round" opacity="0.85"/>`;
 }
 
 function head(c, gaze, crown, neckAt, r = 11.2) {
   const g = norm(gaze);
   const cr = norm(crown);
   const neckTop = add(c, mul(cr, -r * 0.78));
-  const side = [-g[1], g[0]];
-  const noseTip = add(c, mul(g, r + 1.6));
-  const noseBase = add(c, mul(g, r * 0.9));
-  const ear = add(c, add(mul(g, -r * 0.25), mul(side, r * 0.15)));
   return [
-    `<path d="${capsule(neckAt, neckTop, 4.2)}" fill="${SKIN}" stroke="${LINE}" stroke-width="1.4"/>`,
-    `<ellipse cx="${n(c)[0]}" cy="${n(c)[1]}" rx="${r * 0.92}" ry="${r}" fill="${SKIN}" stroke="${LINE}" stroke-width="1.7"/>`,
-    `<ellipse cx="${n(ear)[0]}" cy="${n(ear)[1]}" rx="2.3" ry="3.2" fill="${SKIN}" stroke="${LINE}" stroke-width="1.1"/>`,
-    `<path d="M ${pt(add(noseBase, mul(side, 1.15)))} L ${pt(noseTip)} L ${pt(add(noseBase, mul(side, -1.35)))} Z" fill="${SKIN}" stroke="${LINE}" stroke-width="1.1" stroke-linejoin="round"/>`,
+    gazeLine(c, g),
+    `<path d="${capsule(neckAt, neckTop, 3.6)}" fill="${SKIN}" stroke="${LINE}" stroke-width="1.15"/>`,
+    `<ellipse cx="${n(c)[0]}" cy="${n(c)[1]}" rx="${r * 0.9}" ry="${r}" fill="${SKIN}" stroke="${LINE}" stroke-width="1.35"/>`,
   ].join('\n');
 }
 
-/** Лицо на зрителя: уши по бокам, нос короткий по nose (не боковой клюв). */
+/** Лицо на зрителя: гладкий овал, направление взгляда — пунктир. */
 function headFront(c, neckAt, nose = [0, 1], r = 11.2) {
   const g = norm(nose);
   const neckTop = [c[0], c[1] + (neckAt[1] >= c[1] ? r * 0.72 : -r * 0.72)];
-  const noseTip = add(c, mul(g, r * 0.72));
-  const noseBase = add(c, mul(g, r * 0.22));
-  const side = [-g[1], g[0]];
-  const earL = add(c, [-r * 0.92, 1]);
-  const earR = add(c, [r * 0.92, 1]);
   return [
-    `<path d="${capsule(neckAt, neckTop, 4.2)}" fill="${SKIN}" stroke="${LINE}" stroke-width="1.4"/>`,
-    `<ellipse cx="${n(c)[0]}" cy="${n(c)[1]}" rx="${r * 0.96}" ry="${r}" fill="${SKIN}" stroke="${LINE}" stroke-width="1.7"/>`,
-    `<ellipse cx="${n(earL)[0]}" cy="${n(earL)[1]}" rx="2.1" ry="3.1" fill="${SKIN}" stroke="${LINE}" stroke-width="1.1"/>`,
-    `<ellipse cx="${n(earR)[0]}" cy="${n(earR)[1]}" rx="2.1" ry="3.1" fill="${SKIN}" stroke="${LINE}" stroke-width="1.1"/>`,
-    `<path d="M ${pt(add(noseBase, mul(side, 1.3)))} L ${pt(noseTip)} L ${pt(add(noseBase, mul(side, -1.3)))} Z" fill="${SKIN}" stroke="${LINE}" stroke-width="1.05" stroke-linejoin="round"/>`,
+    gazeLine(c, g),
+    `<path d="${capsule(neckAt, neckTop, 3.6)}" fill="${SKIN}" stroke="${LINE}" stroke-width="1.15"/>`,
+    `<ellipse cx="${n(c)[0]}" cy="${n(c)[1]}" rx="${r * 0.94}" ry="${r}" fill="${SKIN}" stroke="${LINE}" stroke-width="1.35"/>`,
   ].join('\n');
 }
 
 function shadow(cx, rx = 36) {
-  return `<ellipse cx="${cx}" cy="${GROUND + 4}" rx="${rx}" ry="4.2" fill="rgba(70,48,28,0.10)"/>`;
+  return `<ellipse cx="${cx}" cy="${GROUND + 3.5}" rx="${rx}" ry="3.2" fill="rgba(62,42,28,0.08)"/>`;
 }
 
 function groundLine() {
