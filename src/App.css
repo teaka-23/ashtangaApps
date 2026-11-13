@@ -7,6 +7,15 @@
   --tg-secondary-bg: #f2f2f5;
   --modern-bg: #eef6f0;
   --modern-accent: #2f6b4f;
+  /* Тёплый «земляной» акцент бренда — из палитры фигурок асан */
+  --brand: #a85638;
+  --brand-soft: #f7ece5;
+  /* Серия 1: Первая (Йога Чилити) — тёплый акцент */
+  --primary-accent-bg: #fdf3ed;
+  --primary-accent: #c46d3a;
+  /* Серия 2: Промежуточная (Нади Шодхана) — холодный акцент */
+  --intermediate-accent-bg: #edf3fd;
+  --intermediate-accent: #3a7bc4;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,6 +28,12 @@
     --tg-secondary-bg: #2c2c2e;
     --modern-bg: #1e2a24;
     --modern-accent: #7dba98;
+    --brand: #d6947a;
+    --brand-soft: #2e221c;
+    --primary-accent-bg: #2a1f18;
+    --primary-accent: #d6947a;
+    --intermediate-accent-bg: #181f2a;
+    --intermediate-accent: #7aa3d6;
   }
 }
 
@@ -43,6 +58,7 @@ body {
 .header h1 {
   margin: 0;
   font-size: 24px;
+  color: var(--brand);
 }
 
 .header p {
@@ -92,10 +108,12 @@ body {
 }
 
 .series-card {
+  position: relative;
   padding: 18px 16px;
   border-radius: 16px;
   background: var(--tg-secondary-bg);
   cursor: pointer;
+  overflow: hidden;
 }
 
 .series-card:focus-visible {
@@ -103,9 +121,41 @@ body {
   outline-offset: 2px;
 }
 
+.series-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--series-accent);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.series-card:hover::before,
+.series-card:focus-visible::before {
+  opacity: 1;
+}
+
+.series-card__content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.series-card__text {
+  flex: 1;
+  min-width: 0;
+}
+
 .series-card h2 {
   margin: 0;
   font-size: 20px;
+  color: var(--series-accent);
 }
 
 .series-card__sub {
@@ -114,10 +164,42 @@ body {
   font-size: 14px;
 }
 
-.series-card__count {
-  margin: 10px 0 0;
-  font-size: 13px;
-  color: var(--tg-hint);
+.series-card__badge {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 10px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  background: var(--series-accent-bg);
+  color: var(--series-accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.series-card__watermark {
+  position: relative;
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.series-card__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--series-accent-bg);
+  z-index: 1;
+}
+
+.series-card__progress-bar {
+  height: 100%;
+  background: var(--series-accent);
+  border-radius: 0 0 16px 16px;
+  transition: width 0.3s ease;
 }
 
 .series-card__actions {
@@ -125,6 +207,8 @@ body {
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 14px;
+  position: relative;
+  z-index: 1;
 }
 
 .header__practice,
@@ -1005,6 +1089,54 @@ img.sheet__figure {
   font-size: 13px;
   font-weight: 600;
   color: var(--tg-hint);
+}
+
+/* Mantra buttons on home page */
+.mantra-picker {
+  display: flex;
+  gap: 8px;
+  padding: 4px 0 16px;
+}
+
+.mantra-button {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 10px;
+  border: none;
+  border-radius: 12px;
+  background: var(--tg-secondary-bg);
+  color: var(--tg-text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mantra-button__icon {
+  flex-shrink: 0;
+  color: var(--brand);
+}
+
+.mantra-button:active {
+  opacity: 0.7;
+}
+
+/* Mantra bottom sheet */
+.mantra-sheet__note {
+  text-align: left;
+}
+
+.mantra-sheet__heading {
+  margin: 16px 0 8px;
+  font-size: 15px;
+}
+
+.mantra-sheet__text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
 }
 
 /* About Ashtanga block on home page */

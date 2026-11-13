@@ -1,8 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { poseFrameCount } from './data/cartoons';
+import { getMantra, MANTRAS, type MantraId } from './data/mantras';
 import { getSeries, SERIES_ORDER, type SeriesId } from './data/series';
 import type { Asana } from './data/types';
+import { MantraAudioButton } from './components/MantraAudioButton';
 import { PosePicture } from './components/PosePicture';
+import { AsanaFigure } from './components/AsanaFigure';
 import { hideBackButton, initPlatform, showBackButton } from './platform';
 import { clearProgress, loadProgress, type PracticeProgress } from './practice/progress';
 import { PracticeView } from './practice/PracticeView';
@@ -27,6 +30,12 @@ import './App.css';
 /** UI locale switcher hidden for now; i18n strings kept for later. */
 const LOCALE: Locale = 'ru';
 
+/** Series-specific visual config */
+const SERIES_VISUAL: Record<SeriesId, { accentBg: string; accentColor: string; watermarkPose: string }> = {
+  primary: { accentBg: 'var(--primary-accent-bg)', accentColor: 'var(--primary-accent)', watermarkPose: 'padmasana' },
+  intermediate: { accentBg: 'var(--intermediate-accent-bg)', accentColor: 'var(--intermediate-accent)', watermarkPose: 'kapotasana' },
+};
+
 function useRoute(): Route {
   const [route, setRoute] = useState<Route>(() => parseHash());
 
@@ -46,6 +55,7 @@ export default function App() {
     Partial<Record<SeriesId, PracticeProgress | null>>
   >({});
   const [practiceCompletedIds, setPracticeCompletedIds] = useState<string[]>([]);
+  const [mantraId, setMantraId] = useState<MantraId | null>(null);
 
   const activeSeriesId: SeriesId | null =
     route.name === 'home' ? null : route.seriesId;
@@ -201,16 +211,38 @@ export default function App() {
         <div className="app">
           <header className="header">
             <h1>{t(locale, 'appTitle')}</h1>
+            <p>{t(locale, 'appSubtitle')}</p>
           </header>
+
+          <div className="mantra-picker">
+            {MANTRAS.map((mantra) => (
+              <button
+                key={mantra.id}
+                type="button"
+                className="mantra-button"
+                onClick={() => setMantraId(mantra.id)}
+              >
+                <svg className="mantra-button__icon" viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
+                  <text x="50%" y="58%" dominant-baseline="middle" text-anchor="middle" font-size="20">ॐ</text>
+                </svg>
+                <span>{mantra.buttonLabel}</span>
+              </button>
+            ))}
+          </div>
 
           <main className="series-picker" aria-label={t(locale, 'chooseSeries')}>
             {SERIES_ORDER.map((id) => {
               const def = getSeries(id);
               const p = progressBySeries[id];
+              const visual = SERIES_VISUAL[id];
+              const completedCount = p?.completedIds.length ?? 0;
+              const totalCount = def.asanas.length;
+              const progressPercent = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
               return (
                 <article
                   key={id}
                   className="series-card"
+                  style={{ '--series-accent-bg': visual.accentBg, '--series-accent': visual.accentColor } as React.CSSProperties}
                   role="button"
                   tabIndex={0}
                   aria-label={`${seriesTitle(id, locale)}. ${t(locale, 'openCatalog')}`}
@@ -222,11 +254,26 @@ export default function App() {
                     }
                   }}
                 >
-                  <h2>{seriesTitle(id, locale)}</h2>
-                  <p className="series-card__sub">{seriesSubtitle(id, locale)}</p>
-                  <p className="series-card__count">
-                    {def.asanas.length} {pluralizeAsana(locale, def.asanas.length)}
-                  </p>
+                  <div className="series-card__content">
+                    <div className="series-card__text">
+                      <h2>{seriesTitle(id, locale)}</h2>
+                      <p className="series-card__sub">{seriesSubtitle(id, locale)}</p>
+                      <span className="series-card__badge">
+                        {totalCount} {pluralizeAsana(locale, totalCount)}
+                      </span>
+                    </div>
+                    <AsanaFigure
+                      pose={visual.watermarkPose}
+                      className="series-card__watermark"
+                      thumbnail
+                      aria-hidden="true"
+                    />
+                  </div>
+                  {p && (
+                    <div className="series-card__progress" role="progressbar" aria-valuenow={progressPercent} aria-valuemin={0} aria-valuemax={100} aria-label={t(locale, 'practiceProgress')}>
+                      <div className="series-card__progress-bar" style={{ width: `${progressPercent}%` }} />
+                    </div>
+                  )}
                   <div
                     className="series-card__actions"
                     onClick={(e) => e.stopPropagation()}
@@ -361,6 +408,47 @@ export default function App() {
               </p>
             </div>
           </details>
+
+          {mantraId && (
+            <div className="sheet-backdrop" onClick={() => setMantraId(null)}>
+              <div
+                className="sheet mantra-sheet"
+                onClick={(e) => e.stopPropagation()}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="mantra-title"
+              >
+                <div className="sheet__grip" />
+                <h3 className="sheet__sanskrit" id="mantra-title">
+                  {getMantra(mantraId).title}
+                </h3>
+                {getMantra(mantraId).note && (
+                  <p className="sheet__note mantra-sheet__note">
+                    {getMantra(mantraId).note}
+                  </p>
+                )}
+                <MantraAudioButton id={mantraId} />
+                <h4 className="mantra-sheet__heading">Произношение</h4>
+                <p className="mantra-sheet__text">
+                  {getMantra(mantraId).pronunciation.map((line, i) => (
+                    <Fragment key={i}>
+                      {line}
+                      <br />
+                    </Fragment>
+                  ))}
+                </p>
+                <h4 className="mantra-sheet__heading">Дословный перевод</h4>
+                <p className="mantra-sheet__text">
+                  {getMantra(mantraId).translation.map((line, i) => (
+                    <Fragment key={i}>
+                      {line}
+                      <br />
+                    </Fragment>
+                  ))}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="app">
