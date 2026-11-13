@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { POSES } from './data/poses';
+import { poseFrameCount } from './data/cartoons';
 import { getSeries, SERIES_ORDER, type SeriesId } from './data/series';
 import type { Asana } from './data/types';
-import { AsanaFigure } from './components/AsanaFigure';
+import { PosePicture } from './components/PosePicture';
 import { hideBackButton, initPlatform, showBackButton } from './platform';
 import { clearProgress, loadProgress, type PracticeProgress } from './practice/progress';
 import { PracticeView } from './practice/PracticeView';
@@ -148,7 +148,7 @@ export default function App() {
   const selected =
     series && selectedIndex >= 0 ? series.asanas[selectedIndex] : null;
   const sheetMultiFrame = selected
-    ? (POSES[selected.pose]?.figures.length ?? 1) > 1
+    ? poseFrameCount(selected.pose) > 1
     : false;
 
   useEffect(() => {
@@ -423,7 +423,7 @@ export default function App() {
                           <span className="asana-card__num" aria-hidden="true">
                             {counter}
                           </span>
-                          <AsanaFigure
+                          <PosePicture
                             pose={asana.pose}
                             className="asana-card__figure"
                             thumbnail
@@ -461,7 +461,7 @@ export default function App() {
                 aria-labelledby="sheet-title"
               >
                 <div className="sheet__grip" />
-                <AsanaFigure
+                <PosePicture
                   pose={selected.pose}
                   className={`sheet__figure${sheetMultiFrame ? ' sheet__figure--overview' : ''}`}
                   numbered={sheetMultiFrame}

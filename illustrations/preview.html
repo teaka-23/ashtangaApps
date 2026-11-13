@@ -42,6 +42,12 @@
   <div class="row" id="surya"></div>
   <h2>СТОЯЧИЕ</h2>
   <div class="row" id="standing"></div>
+  <h2>СИДЯЧИЕ 1</h2>
+  <div class="row" id="seated1"></div>
+  <h2>СИДЯЧИЕ 2</h2>
+  <div class="row" id="seated2"></div>
+  <h2>ФИНИШ</h2>
+  <div class="row" id="finishing"></div>
 <script>
   const SURYA = [
     '01-samasthitih', '02-urdhva-hastasana', '03-uttanasana', '04-ardha-uttanasana',
@@ -49,15 +55,43 @@
     '09-virabhadrasana-1', '10-virabhadrasana-1-left',
   ];
   const STANDING = [
-    '11-padangusthasana', '12-pada-hastasana', '13-utthita-trikonasana-a',
-    '14-utthita-trikonasana-b', '15-utthita-parshvakonasana-a',
-    '16-utthita-parshvakonasana-b', '17-prasarita-padottanasana-a',
+    '11-padangusthasana', '12-pada-hastasana',     '13-utthita-trikonasana-a',
+    '14-utthita-trikonasana-b', '14b-parivrtta-trikonasana',
+    '15-utthita-parshvakonasana-a',
+    '16-utthita-parshvakonasana-b', '16b-parivrtta-parshvakonasana',
+    '17-prasarita-padottanasana-a',
     '18-prasarita-padottanasana-b', '19-prasarita-padottanasana-c',
     '20-prasarita-padottanasana-d', '21-parshvottanasana',
     '22-utthita-hasta-padangusthasana-a', '23-utthita-hasta-padangusthasana-b',
     '24-ardha-baddha-padmottanasana', '25-virabhadrasana-2',
   ];
-  for (const [id, dir, list] of [['surya', 'surya', SURYA], ['standing', 'standing', STANDING]]) {
+  const SEATED1 = [
+    '25b-dandasana',
+    '26-paschimattanasana-a', '27-paschimattanasana-b', '28-paschimattanasana-c',
+    '29-paschimattanasana-d', '30-purvattanasana',
+    '31-ardha-baddha-padma-paschimattanasana', '32-triang-mukhaikapada-paschimattanasana',
+    '33-janu-sirshasana-a', '34-janu-sirshasana-b', '35-janu-sirshasana-c',
+    '36-marichyasana-a', '37-marichyasana-b', '38-marichyasana-c', '39-marichyasana-d',
+    '40-navasana-a', '41-navasana-b',
+  ];
+  const SEATED2 = [
+    '42-bhujapidasana', '43-kurmasana', '44-supta-kurmasana', '45-garbha-pindasana',
+    '46-kukkutasana', '47-baddha-konasana-a', '48-baddha-konasana-b',
+    '49-upavishta-konasana', '50-supta-konasana', '51-supta-padangusthasana',
+    '52-ubhaya-padangusthasana', '53-urdhva-mukha-paschimottanasana', '54-setu-bandhasana',
+  ];
+  const FINISHING = [
+    '55-urdhva-dhanurasana', '56-salamba-sarvangasana', '57-halasana', '58-karnapidasana',
+    '59-urdhva-padmasana', '60-pindasana', '61-matsyasana', '62-uttana-padasana',
+    '63-sirsasana', '64-baddha-padmasana', '65-padmasana', '66-utpluthih', '67-savasana',
+  ];
+  for (const [id, dir, list] of [
+    ['surya', 'surya', SURYA],
+    ['standing', 'standing', STANDING],
+    ['seated1', 'seated1', SEATED1],
+    ['seated2', 'seated2', SEATED2],
+    ['finishing', 'finishing', FINISHING],
+  ]) {
     const row = document.getElementById(id);
     for (const f of list) {
       const div = document.createElement('div');

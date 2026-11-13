@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getSeries } from '../data/series';
 import type { SeriesId } from '../data/types';
-import { POSES } from '../data/poses';
-import { AsanaFigure } from '../components/AsanaFigure';
+import { PosePicture } from '../components/PosePicture';
+import { poseFrameCount } from '../data/cartoons';
 import { haptic, hideBackButton, showBackButton } from '../platform';
 import {
   asanaDescription,
@@ -130,7 +130,7 @@ export function PracticeView({
   const label = asanaDisplayName(asana, locale);
   const drishti = asanaDrishti(asana, locale);
   const note = asanaNote(asana, locale);
-  const frameCount = POSES[asana.pose]?.figures.length ?? 1;
+  const frameCount = poseFrameCount(asana.pose);
   const multiFrame = frameCount > 1;
   const metaParts = [
     asana.vinyasa !== undefined ? `${t(locale, 'vinyasas')} ${asana.vinyasa}` : null,
@@ -163,7 +163,7 @@ export function PracticeView({
       </header>
 
       <div className="practice__visual">
-        <AsanaFigure
+        <PosePicture
           pose={asana.pose}
           className="practice__figure"
           numbered={multiFrame}

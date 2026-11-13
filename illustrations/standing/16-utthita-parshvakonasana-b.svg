@@ -8,21 +8,20 @@
 <path d="M 56,162 Q 59,167 55,168 L 36,168 Q 31,168 33,164 L 46,160 Q 50,157 54,159 Q 56,165 56,162 Z" fill="#e4b48f" stroke="#c4a184" stroke-width="1.5" stroke-linejoin="round"/>
 <path d="M 101.1,109.5 L 137.1,123.5 A 8.1 8.1 0 0 1 142.9,108.5 L 106.9,94.5 A 8.1 8.1 0 0 1 101.1,109.5 Z" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.6" stroke-linejoin="round"/>
 <path d="M 133.5,116 L 133.5,158 A 6.5 6.5 0 0 1 146.5,158 L 146.5,116 A 6.5 6.5 0 0 1 133.5,116 Z" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.6" stroke-linejoin="round"/>
-<circle cx="141.3" cy="115.1" r="6.1" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.6"/>
+<circle cx="142.8" cy="114.1" r="6.1" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.6"/>
 <path d="M 134,162 Q 131,167 135,168 L 154,168 Q 159,168 157,164 L 144,160 Q 140,157 136,159 Q 134,165 134,162 Z" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.5" stroke-linejoin="round"/>
 <path d="M 115.3,71.3 L 143.3,43.3 A 4.6 4.6 0 0 1 136.7,36.7 L 108.7,64.7 A 4.6 4.6 0 0 1 115.3,71.3 Z" fill="#e4b48f" stroke="#c4a184" stroke-width="1.6" stroke-linejoin="round"/>
 <path d="M 142.3,43.1 L 166.3,25.1 A 3.9 3.9 0 0 1 161.7,18.9 L 137.7,36.9 A 3.9 3.9 0 0 1 142.3,43.1 Z" fill="#e4b48f" stroke="#c4a184" stroke-width="1.6" stroke-linejoin="round"/>
 <circle cx="140" cy="40" r="3.6" fill="#e4b48f" stroke="#c4a184" stroke-width="1.6"/>
-<path d="M 166.5,25.4 L 175.4,17.2 Q 176,13 171.8,12.4 L 161.5,18.6 Z" fill="#e4b48f" stroke="#c4a184" stroke-width="1.4" stroke-linejoin="round"/>
+<path d="M 166.2,24.9 Q 170,24.7 173.2,17.6 Q 173.8,14.7 170.8,14.4 L 161.8,19.1 Z" fill="#e4b48f" stroke="#c4a184" stroke-width="1.4" stroke-linejoin="round"/>
 <path d="M 104,64 C 108,63.3 115.3,66.7 118,70 C 120.7,73.3 121.3,79 120,84 C 118.7,89 114,97 110,100 C 106,103 99.3,103.3 96,102 C 92.7,100.7 90.3,96.7 90,92 C 89.7,87.3 91.7,78.7 94,74 C 96.3,69.3 100,64.7 104,64 Z" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.7" stroke-linejoin="round"/>
-<path d="M 91.4,86.5 C 93.9,85.7 98.3,86.7 101.7,87.5 C 105.2,88.4 110.6,89.8 112.3,91.7 C 114,93.6 113,96.7 111.9,98.7 C 110.8,100.7 108.3,101.2 105.6,103.7 C 102.9,106.2 98.3,112.6 95.7,113.8 C 93.2,114.9 92.5,112.8 90.5,110.6 C 88.4,108.4 83.9,103.7 83.3,100.6 C 82.7,97.6 85.6,94.7 86.9,92.3 C 88.3,90 89,87.3 91.4,86.5 Z" fill="#2e2a33"/>
 <path d="M 97.2,76.3 L 119.2,122.3 A 5.3 5.3 0 0 1 128.8,117.7 L 106.8,71.7 A 5.3 5.3 0 0 1 97.2,76.3 Z" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.6" stroke-linejoin="round"/>
 <path d="M 119.9,121.9 L 137.9,159.9 A 4.5 4.5 0 0 1 146.1,156.1 L 128.1,118.1 A 4.5 4.5 0 0 1 119.9,121.9 Z" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.6" stroke-linejoin="round"/>
 <circle cx="124" cy="120" r="4.1" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.6"/>
-<path d="M 141,161 L 141,168 L 157,168 Q 160,167 157,163 L 144,158 Z" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.4" stroke-linejoin="round"/>
+<path d="M 141,161 L 138,165 Q 137,168 141,168 L 152,168 Q 155,167.5 152,164.5 L 143,159 Z" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.4" stroke-linejoin="round"/>
 <path d="M 114.9,71.1 L 118.6,67.7 A 4.2 4.2 0 0 1 112.9,61.5 L 109.1,64.9 A 4.2 4.2 0 0 1 114.9,71.1 Z" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.4"/>
 <ellipse cx="114" cy="56" rx="10.304" ry="11.2" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.7"/>
 <ellipse cx="114.1" cy="59.3" rx="2.3" ry="3.2" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.1"/>
-<path d="M 120.1,50.2 L 122.2,41.8 L 115.8,47.7 Z" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.2" stroke-linejoin="round"/>
-<path d="M 109,66.9 Q 112.4,53.6 110.6,46.7 Q 115.3,41.8 115.5,42.8 Q 115.1,54.1 109.8,70.7 Z" fill="#4a3527"/>
+<path d="M 120,47.8 L 120.4,44.9 L 117.9,46.6 Z" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.1" stroke-linejoin="round"/>
+<g data-shorts="1"><path d="M 96.7,87.6 C 98.7,86.8 102.1,86.5 104.7,87.9 C 107.3,89.4 111.2,93.2 112.3,96.1 C 113.3,99.1 113.1,103.3 111.3,105.7 C 109.4,108.1 103.8,109.5 101.1,110.6 C 98.3,111.6 95.8,112.5 94.7,111.8 C 93.6,111.2 96.2,108.8 94.6,106.4 C 93,104 85.2,99.7 85,97.4 C 84.7,95 91.1,93.9 93,92.3 C 95,90.7 94.8,88.3 96.7,87.6 Z" fill="#2e2a33"/></g>
 </svg>

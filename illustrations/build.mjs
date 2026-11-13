@@ -7,6 +7,9 @@ const root = dirname(fileURLToPath(import.meta.url));
 const MODULES = [
   ['poses-surya.mjs', 'surya'],
   ['poses-standing.mjs', 'standing'],
+  ['poses-seated1.mjs', 'seated1'],
+  ['poses-seated2.mjs', 'seated2'],
+  ['poses-finishing.mjs', 'finishing'],
 ];
 
 for (const [mod, dirName] of MODULES) {

@@ -7,7 +7,7 @@
  */
 import { draw, svgDocument } from './figure.mjs';
 
-const { leg, arm, torso, shortsFrame, head, shadow, groundLine } = draw;
+const { leg, arm, torso, shortsFrame, head, headFront, shadow, groundLine } = draw;
 
 function doc(parts) {
   return svgDocument([groundLine(), ...parts].join('\n'));
@@ -29,7 +29,7 @@ export function padangusthasana() {
       [100, 96],
       [88, 82],
     ]),
-    shortsFrame([100, 82], [0.25, 1], [0.15, 0.99], { rise: 11, hem: 14, half: 12, cheek: 13 }),
+    shortsFrame([100, 82], [0.75, 0.66], [0.05, 1], { rise: 11, hem: 14, half: 12, cheek: 14 }),
     arm([126, 120], [114, 142], [114, 156], { hand: 'hold' }),
     head([132, 136], [0.15, 0.99], [0.35, -0.25], [124, 124]),
   ]);
@@ -51,7 +51,7 @@ export function padaHastasana() {
       [100, 94],
       [88, 80],
     ]),
-    shortsFrame([100, 80], [0.25, 1], [0.15, 0.99], { rise: 11, hem: 14, half: 12, cheek: 13 }),
+    shortsFrame([100, 80], [0.75, 0.66], [0.05, 1], { rise: 11, hem: 14, half: 12, cheek: 14 }),
     arm([126, 116], [110, 140], [106, 156], { hand: 'hang' }),
     head([130, 134], [0.15, 0.99], [0.35, -0.25], [122, 122]),
   ]);
@@ -101,6 +101,31 @@ export function utthitaTrikonasanaB() {
   ]);
 }
 
+/**
+ * Паривритта триконасана, профиль. Ноги в линию, обе стопы носками вперёд.
+ * Нижняя ладонь снаружи передней стопы, пальцы вперёд, верхняя рука вверх, взгляд вверх.
+ */
+export function parivrttaTrikonasana() {
+  return doc([
+    shadow(100, 54),
+    leg([88, 104], [66, 132], [46, 158], { far: true, foot: 'flat', toe: 1 }),
+    leg([100, 106], [122, 132], [140, 158], { foot: 'flat', toe: 1 }),
+    torso([
+      [82, 90],
+      [102, 70],
+      [124, 84],
+      [132, 100],
+      [116, 114],
+      [94, 116],
+      [80, 104],
+    ]),
+    arm([106, 72], [102, 38], [100, 12], { hand: 'up' }),
+    shortsFrame([94, 108], [0.4, -0.92], [0.22, 0.98], { rise: 12, hem: 14, half: 13, cheek: 14 }),
+    arm([118, 96], [138, 128], [160, 158], { hand: 'flat', fingers: 1 }),
+    head([114, 54], [0.02, -1], [-0.15, -0.99], [108, 70]),
+  ]);
+}
+
 /** Уттхита паршваконасана А: передняя нога 90°, ладонь на полу у стопы, верхняя рука в линию ноги. */
 export function utthitaParshvakonasanaA() {
   return doc([
@@ -145,6 +170,31 @@ export function utthitaParshvakonasanaB() {
   ]);
 }
 
+/**
+ * Паривритта паршваконасана, профиль. Переднее колено над стопой, задняя нога прямая.
+ * Нижняя ладонь снаружи передней стопы, локоть назад, верхняя рука вперёд-вверх, взгляд вверх.
+ */
+export function parivrttaParshvakonasana() {
+  return doc([
+    shadow(104, 56),
+    leg([88, 108], [62, 134], [40, 158], { far: true, foot: 'flat', toe: 1 }),
+    leg([100, 110], [136, 116], [136, 158], { foot: 'flat', toe: 1 }),
+    torso([
+      [90, 72],
+      [108, 66],
+      [122, 82],
+      [118, 104],
+      [104, 114],
+      [88, 112],
+      [84, 90],
+    ]),
+    arm([108, 68], [128, 34], [146, 10], { hand: 'up' }),
+    shortsFrame([96, 110], [0.15, -0.99], [0.85, 0.35], { rise: 12, hem: 14, half: 12, cheek: 14 }),
+    arm([112, 90], [128, 122], [152, 158], { hand: 'flat', fingers: 1 }),
+    head([116, 56], [0.45, -0.89], [-0.15, -0.99], [106, 70]),
+  ]);
+}
+
 /** Общий каркас Прасариты: широкие ноги фронтально, складка, голова макушкой к полу. */
 function prasaritaBase(arms) {
   return doc([
@@ -161,14 +211,14 @@ function prasaritaBase(arms) {
     ]),
     shortsFrame([100, 90], [0, -1], [1, 0], { rise: 12, hem: 14, half: 12, cheek: 14 }),
     ...arms,
-    head([100, 146], [0.1, 1], [0.15, 0.99], [100, 134]),
+    headFront([100, 148], [100, 132], [0, -1]),
   ]);
 }
 
 /** Прасарита падоттанасана А: ладони на полу в линии стоп, локти наружу. */
 export function prasaritaA() {
   return prasaritaBase([
-    arm([92, 104], [76, 128], [72, 158], { far: true, hand: 'flat', fingers: 1 }),
+    arm([92, 104], [76, 128], [72, 158], { far: true, hand: 'flat', fingers: -1 }),
     arm([108, 104], [124, 128], [128, 158], { hand: 'flat', fingers: 1 }),
   ]);
 }
@@ -265,8 +315,7 @@ export function utthitaHastaPadangusthasanaB() {
 export function ardhaBaddhaPadmottanasana() {
   return doc([
     shadow(108, 42),
-    leg([96, 80], [98, 120], [100, 158], { far: true, foot: 'flat', toe: 1 }),
-    leg([106, 80], [108, 120], [108, 158], { foot: 'flat', toe: 1 }),
+    leg([100, 82], [102, 122], [104, 158], { far: true, foot: 'flat', toe: 1 }),
     arm([122, 112], [108, 104], [100, 94], { far: true, hand: 'hold' }),
     torso([
       [92, 70],
@@ -277,8 +326,8 @@ export function ardhaBaddhaPadmottanasana() {
       [100, 96],
       [88, 82],
     ]),
-    shortsFrame([100, 82], [0.25, 1], [0.15, 0.99], { rise: 11, hem: 14, half: 12, cheek: 13 }),
-    leg([102, 86], [126, 112], [104, 88], { far: true, foot: 'free', toe: -1 }),
+    shortsFrame([100, 82], [0.75, 0.66], [0.05, 1], { rise: 11, hem: 14, half: 12, cheek: 14 }),
+    leg([100, 82], [134, 108], [110, 98], { foot: 'free', toe: -1 }),
     arm([126, 118], [120, 142], [116, 158], { hand: 'flat', fingers: 1 }),
     head([132, 134], [0.15, 0.99], [0.35, -0.25], [124, 122]),
   ]);
@@ -310,8 +359,10 @@ export const FILES = [
   ['12-pada-hastasana', padaHastasana],
   ['13-utthita-trikonasana-a', utthitaTrikonasanaA],
   ['14-utthita-trikonasana-b', utthitaTrikonasanaB],
+  ['14b-parivrtta-trikonasana', parivrttaTrikonasana],
   ['15-utthita-parshvakonasana-a', utthitaParshvakonasanaA],
   ['16-utthita-parshvakonasana-b', utthitaParshvakonasanaB],
+  ['16b-parivrtta-parshvakonasana', parivrttaParshvakonasana],
   ['17-prasarita-padottanasana-a', prasaritaA],
   ['18-prasarita-padottanasana-b', prasaritaB],
   ['19-prasarita-padottanasana-c', prasaritaC],

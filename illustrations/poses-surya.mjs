@@ -29,7 +29,7 @@ export function samasthitih() {
       [88, 78],
     ]),
     shortsFrame([100, 96], [0, -1], [1, 0], { rise: 12, hem: 16, half: 12, cheek: 14 }),
-    arm([110, 68], [116, 96], [118, 120], { hand: 'hang' }),
+    arm([108, 66], [120, 102], [122, 130], { hand: 'hang' }),
     head([106, 44], [1, 0.08], [0, -1], [104, 62]),
   ]);
 }
@@ -72,7 +72,7 @@ export function uttanasana() {
       [100, 96],
       [88, 82],
     ]),
-    shortsFrame([100, 82], [0.25, 1], [0.15, 0.99], { rise: 11, hem: 14, half: 12, cheek: 13 }),
+    shortsFrame([100, 82], [0.75, 0.66], [0.05, 1], { rise: 11, hem: 14, half: 12, cheek: 14 }),
     arm([126, 120], [120, 144], [116, 158], { hand: 'flat', fingers: 1 }),
     head([132, 136], [0.15, 0.99], [0.35, -0.25], [124, 124]),
   ]);
@@ -94,7 +94,7 @@ export function ardhaUttanasana() {
       [100, 92],
       [84, 90],
     ]),
-    shortsFrame([96, 88], [0.15, -1], [1, 0.1], { rise: 12, hem: 15, half: 12, cheek: 14 }),
+    shortsFrame([96, 88], [1, -0.12], [0.1, 1], { rise: 12, hem: 14, half: 12, cheek: 14 }),
     arm([128, 76], [118, 106], [110, 130], { hand: 'hang' }),
     head([150, 74], [1, 0], [0.15, -1], [138, 76]),
   ]);
@@ -154,7 +154,7 @@ export function urdhvaMukha() {
 
 /**
  * Адхо мукха. Руки и ноги прямые, таз — пик.
- * Ладони справа (вперёд), носки к ладоням, взгляд к ногам.
+ * Ладони справа. Подушечки и носки на полу к рукам (+x), пятки сзади к полу.
  */
 export function adhoMukha() {
   return doc([
@@ -230,7 +230,7 @@ export function virabhadrasanaFrontLeft() {
   return doc([
     shadow(100, 52),
     leg([108, 100], [146, 126], [164, 158], { far: true, foot: 'flat', toe: 1 }),
-    leg([96, 102], [62, 118], [62, 158], { foot: 'flat', toe: 1 }),
+    leg([96, 102], [62, 118], [62, 158], { foot: 'flat', toe: -1 }),
     arm([100, 60], [96, 34], [94, 14], { far: true, hand: 'up' }),
     torso([
       [94, 56],
