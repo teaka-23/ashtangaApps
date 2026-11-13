@@ -3,7 +3,7 @@ export type Locale = 'ru' | 'en';
 export const messages = {
   ru: {
     appTitle: 'Аштанга-йога',
-    appSubtitle: 'Выберите серию для справочника и практики',
+    appSubtitle: 'Выберите последовательность для просмотра и практики',
     chooseSeries: 'Серии',
     seriesPrimary: 'Первая серия',
     seriesPrimarySub: 'Йога Чикитса — йога-терапия',
@@ -30,7 +30,7 @@ export const messages = {
     finishPractice: 'Завершить практику',
     practiceDone: 'Практика завершена',
     doneCount: 'Пройдено {n} из {n} асан',
-    backToCatalog: 'В справочник',
+    backToCatalog: 'В последовательность',
     flowHint: 'Поток виньяс — переходите вручную',
     inhale: 'Вдох',
     exhale: 'Выдох',
@@ -47,10 +47,11 @@ export const messages = {
       few: 'асаны',
       many: 'асан',
     },
+    practiceProgress: 'Прогресс практики',
   },
   en: {
     appTitle: 'Ashtanga Yoga',
-    appSubtitle: 'Choose a series for the catalog and practice',
+    appSubtitle: 'Choose a sequence to view and practice',
     chooseSeries: 'Series',
     seriesPrimary: 'Primary Series',
     seriesPrimarySub: 'Yoga Chikitsa — yoga therapy',
@@ -77,7 +78,7 @@ export const messages = {
     finishPractice: 'End practice',
     practiceDone: 'Practice complete',
     doneCount: 'Completed {n} of {n} asanas',
-    backToCatalog: 'Back to catalog',
+    backToCatalog: 'Back to sequence',
     flowHint: 'Vinyasa flow — advance manually',
     inhale: 'Inhale',
     exhale: 'Exhale',
@@ -94,6 +95,7 @@ export const messages = {
       few: 'asanas',
       many: 'asanas',
     },
+    practiceProgress: 'Practice progress',
   },
 } as const;
 

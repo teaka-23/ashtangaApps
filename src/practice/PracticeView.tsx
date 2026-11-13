@@ -3,7 +3,7 @@ import { getSeries } from '../data/series';
 import type { SeriesId } from '../data/types';
 import { PosePicture } from '../components/PosePicture';
 import { poseFrameCount } from '../data/cartoons';
-import { haptic, hideBackButton, showBackButton } from '../platform';
+import { haptic, hideBackButton, keepScreenOn, showBackButton } from '../platform';
 import {
   asanaDescription,
   asanaDisplayName,
@@ -64,7 +64,11 @@ export function PracticeView({
   useEffect(() => {
     const root = document.documentElement;
     root.classList.add('practice-lock');
-    return () => root.classList.remove('practice-lock');
+    keepScreenOn(true);
+    return () => {
+      root.classList.remove('practice-lock');
+      keepScreenOn(false);
+    };
   }, []);
 
   useEffect(() => {

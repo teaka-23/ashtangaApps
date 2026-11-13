@@ -7,6 +7,7 @@ import type { HapticKind, PlatformAdapter, PlatformHost } from './types';
 export type { HapticKind, PlatformHost };
 export { detectHost } from './detect';
 export { sanitizeVkStorageKey } from './storageLocal';
+export { keepScreenOn } from './wakeLock';
 
 let adapter: PlatformAdapter = webAdapter;
 let initialized = false;
