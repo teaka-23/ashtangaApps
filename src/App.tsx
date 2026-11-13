@@ -215,19 +215,21 @@ export default function App() {
           </header>
 
           <div className="mantra-picker">
-            {MANTRAS.map((mantra) => (
-              <button
-                key={mantra.id}
-                type="button"
-                className="mantra-button"
-                onClick={() => setMantraId(mantra.id)}
-              >
-                <svg className="mantra-button__icon" viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
-                  <text x="50%" y="58%" dominant-baseline="middle" text-anchor="middle" font-size="20">ॐ</text>
-                </svg>
-                <span>{mantra.buttonLabel}</span>
-              </button>
-            ))}
+            <div className="mantra-segmented" role="group" aria-label={t(locale, 'mantras')}>
+              {MANTRAS.map((mantra) => (
+                <button
+                  key={mantra.id}
+                  type="button"
+                  className="mantra-segment"
+                  onClick={() => setMantraId(mantra.id)}
+                >
+                  <svg className="mantra-segment__icon" viewBox="0 0 24 24" aria-hidden="true" width="18" height="18">
+                    <text x="50%" y="58%" dominant-baseline="middle" text-anchor="middle" font-size="18">ॐ</text>
+                  </svg>
+                  <span>{mantra.buttonLabel}</span>
+                </button>
+              ))}
+            </div>
           </div>
 
           <main className="series-picker" aria-label={t(locale, 'chooseSeries')}>

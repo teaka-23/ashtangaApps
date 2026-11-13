@@ -48,6 +48,7 @@ export const messages = {
       many: 'асан',
     },
     practiceProgress: 'Прогресс практики',
+    mantras: 'Мантры',
   },
   en: {
     appTitle: 'Ashtanga Yoga',
@@ -96,6 +97,7 @@ export const messages = {
       many: 'asanas',
     },
     practiceProgress: 'Practice progress',
+    mantras: 'Mantras',
   },
 } as const;
 
