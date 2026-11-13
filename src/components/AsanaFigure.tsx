@@ -97,11 +97,15 @@ function profileAt(keys: [number, number][], t: number): number {
 }
 
 /**
- * Гладкая «труба» вдоль ломаной с переменной шириной:
- * офсеты по нормали в равномерных станциях + замкнутый сплайн.
- * Концы получаются скруглёнными автоматически.
+ * Труба вдоль ломаной с переменной шириной.
+ * smooth=false — ломаная без сплайна (складка: сплайн самопересекается и «рвёт» ткань).
  */
-function tubePath(poly: Pt[], widthAt: (t: number) => number, samples = 16): string {
+function tubePath(
+  poly: Pt[],
+  widthAt: (t: number) => number,
+  samples = 16,
+  smooth = true,
+): string {
   const segLens = poly.slice(1).map((p, i) => dist(poly[i], p));
   const total = segLens.reduce((a, b) => a + b, 0) || 1;
   const at = (t: number): { p: Pt; d: Pt } => {
@@ -125,7 +129,9 @@ function tubePath(poly: Pt[], widthAt: (t: number) => number, samples = 16): str
     left.push([p[0] - d[1] * w, p[1] + d[0] * w]);
     right.push([p[0] + d[1] * w, p[1] - d[0] * w]);
   }
-  return smoothClosed([...left, ...right.reverse()]);
+  const ring = [...left, ...right.reverse()];
+  if (smooth) return smoothClosed(ring);
+  return `M ${ring.map(pStr).join(' L ')} Z`;
 }
 
 /**
@@ -182,6 +188,8 @@ function limbOutline(
   ground?: number,
   feet?: FootMode,
   fig?: Figure,
+  /** Складка: корень уже под шортами — без широкого колпака у старта */
+  underShorts = false,
 ): string {
   const [root, mid, end] = points;
   const dEnd = dirOf(mid, end);
@@ -296,8 +304,8 @@ function limbOutline(
           [1, tipW],
         ]
       : [
-          [0, 8.5], // бедро у таза
-          [tm * 0.42, 9.1], // квадрицепс
+          [0, underShorts ? 2.2 : 8.5], // под шортами — без колпака-корня
+          [tm * 0.42, underShorts ? 7.2 : 9.1],
           [tm, 5.5], // колено
           [tm + (te - tm) * 0.35, 6.3], // икра
           [te, 3.5], // лодыжка
@@ -350,6 +358,27 @@ function drawSide(
   }
 
   const rootW = limbKind === 'arm' ? 6.1 : 8.5;
+  /* Стоячая складка: таз выше плеч, стопы под тазом */
+  const standingFoldFig =
+    !!fig?.torso &&
+    fig.ground !== undefined &&
+    !!fig.legs &&
+    (() => {
+      const midS = lerp(fig.torso![0]!, fig.torso![1]!, 0.5);
+      const midH = lerp(fig.torso![2]!, fig.torso![3]!, 0.5);
+      if (!(midH[1] < midS[1] - 6)) return false;
+      const aL = fig.legs!.left[fig.legs!.left.length - 1]!;
+      const aR = fig.legs!.right[fig.legs!.right.length - 1]!;
+      const foot = lerp(aL, aR, 0.5);
+      return (
+        Math.abs(foot[1] - fig.ground!) < 10 &&
+        Math.abs(foot[0] - midH[0]) < 16
+      );
+    })();
+  /* Складка: корень бедра прячем под шорты */
+  const foldHip = limbKind === 'leg' && standingFoldFig;
+  /* В складке шары плеч у таза читаются как «корни ног» — прячем */
+  const hideRootBall = foldHip || (limbKind === 'arm' && standingFoldFig);
   /* Намёк на пальцы: две короткие поперечные линии на кисти */
   let fingers: { a: Pt; b: Pt }[] | undefined;
   if (limbKind === 'arm') {
@@ -364,13 +393,27 @@ function drawSide(
       };
     });
   }
+  /* Под подол: корень без колпака; старт ноги внутри ткани */
+  const limbPts: Limb = foldHip
+    ? ([
+        [
+          root[0] + dirOf(root, mid)[0] * 7.5,
+          root[1] + dirOf(root, mid)[1] * 7.5,
+        ],
+        mid,
+        end,
+      ] as Limb)
+    : points;
   return (
     <g className={sideClass}>
-      {joint && <path d={bridgePath(joint, root, rootW, rootW)} fill={fill} />}
-      {/* Шарнир в корне: нога/рука всегда срастается с туловищем */}
-      <circle cx={root[0]} cy={root[1]} r={(rootW / 2) * 0.85} fill={fill} />
+      {!hideRootBall && joint && (
+        <path d={bridgePath(joint, root, rootW, rootW)} fill={fill} />
+      )}
+      {!hideRootBall && (
+        <circle cx={root[0]} cy={root[1]} r={(rootW / 2) * 0.85} fill={fill} />
+      )}
       <path
-        d={limbOutline(limbKind, points, ground, fig?.feet, fig)}
+        d={limbOutline(limbKind, limbPts, ground, fig?.feet, fig, foldHip)}
         fill={fill}
       />
       {fingers?.map((ln, i) => (
@@ -478,6 +521,32 @@ function drawTorso(fig: Figure, skinFill: string, shortsFill: string) {
   let body: Pt[];
   let band: Pt;
   let shoulderPts: [Pt, Pt];
+  /* Сидя: стопы не сильно ниже таза */
+  let seated = false;
+  if (fig.legs) {
+    const aL = fig.legs.left[fig.legs.left.length - 1]!;
+    const aR = fig.legs.right[fig.legs.right.length - 1]!;
+    const footY = (aL[1] + aR[1]) / 2;
+    seated = Math.abs(footY - midH[1]) < Math.max(16, torsoLen * 0.45);
+  }
+  /* Стоячая складка (уттана/пада́нгуштха): таз выше плеч, стопы ПОД тазом.
+     Не Адхо: там стопы впереди, иначе ломаются шорты на всей Сурье. */
+  const standingFold =
+    !!fig.legs &&
+    fig.ground !== undefined &&
+    midH[1] < midS[1] - 6 &&
+    (() => {
+      const aL = fig.legs!.left[fig.legs!.left.length - 1]!;
+      const aR = fig.legs!.right[fig.legs!.right.length - 1]!;
+      const foot = lerp(aL, aR, 0.5);
+      return (
+        Math.abs(foot[1] - fig.ground!) < 10 &&
+        Math.abs(foot[0] - midH[0]) < 16
+      );
+    })();
+  /* Складка: ягодицы сверху (сидя вдоль пола или стоячий jackknife) */
+  const folded =
+    standingFold || (seated && Math.abs(sx) > Math.abs(sy) * 0.55);
 
   if (sideOn) {
     const { belly, back } = bellyBackSigns(fig, midS, midH, px, py);
@@ -496,62 +565,64 @@ function drawTorso(fig: Figure, skinFill: string, shortsFill: string) {
     const waist = lerp(midS, midH, 0.48);
     const hip = lerp(midS, midH, 0.72);
     const glute = lerp(midS, midH, 0.88);
-    /* Сидя / складка: стопы не сильно ниже таза */
-    let seated = false;
-    if (fig.legs) {
-      const aL = fig.legs.left[fig.legs.left.length - 1]!;
-      const aR = fig.legs.right[fig.legs.right.length - 1]!;
-      const footY = (aL[1] + aR[1]) / 2;
-      seated = Math.abs(footY - midH[1]) < Math.max(16, torsoLen * 0.45);
-    }
-    /* Складка: торс почти вдоль ног — ягодицы читаются сверху */
-    const folded = seated && Math.abs(sx) > Math.abs(sy) * 0.55;
     /* Грудь вперёд, талия уже, ягодицы сзади — S-профиль как на cheat-sheet */
     const cBelly = depth * 1.08;
     const cBack = depth * 0.68;
-    const wBelly = depth * 0.58;
-    const wBack = depth * 0.52;
-    const hBelly = depth * 0.7;
-    const hBack = depth * 1.35;
-    const gBelly = depth * 0.55;
-    const pelBelly = depth * 0.55;
+    const wBelly = depth * (standingFold ? 0.48 : 0.58);
+    const wBack = depth * (standingFold ? 0.42 : 0.52);
+    /* Складка: кожа таза уже шорт — объём ягодиц/корней даёт ткань */
+    const hBack = depth * (standingFold ? 0.45 : 1.35);
+    const gBelly = depth * (standingFold ? 0.4 : 0.55);
+    const pelBelly = depth * (standingFold ? 0.38 : 0.55);
+    const hBelly = standingFold ? depth * 0.5 : depth * 0.7;
 
-    const [sBelly, sBack] = side(midS, depth * 0.88, depth * 0.76);
+    const [sBelly, sBack] = side(
+      midS,
+      depth * (standingFold ? 1.05 : 0.88),
+      depth * (standingFold ? 0.95 : 0.76),
+    );
     const [cBellyP, cBackP] = side(chest, cBelly, cBack);
     const [wBellyP, wBackP] = side(waist, wBelly, wBack);
     const [hBellyP] = side(hip, hBelly, hBack);
     const [gBellyP] = side(glute, gBelly, gBelly);
     const [pBelly] = side(midH, pelBelly, pelBelly);
 
-    /* Ягодицы: короткая дуга сзади (не шар) — поясница → пик → складка у бедра */
-    const gC: Pt = [
-      midH[0] + px * back * (depth * 0.18) - sx * (folded ? 0.3 : seated ? 0.8 : 1.4),
-      midH[1] +
-        py * back * (depth * 0.18) -
-        sy * (folded ? 0.3 : seated ? 0.8 : 1.4) -
-        (folded ? 1.6 : seated ? 0.8 : 0),
-    ];
-    const gR = depth * (folded ? 0.58 : seated ? 0.62 : 0.55);
+    /*
+     * Ягодицы: короткая дуга сзади. В стоячей складке дуги нет —
+     * объём и силуэт дают шорты (иначе щека «светит» мимо ткани).
+     */
     const gluteArc: Pt[] = [];
-    /* Угол ~35°…145°: только задняя «щека», без полного полукруга */
-    const a0 = Math.PI * 0.22;
-    const a1 = Math.PI * 0.78;
-    for (let i = 0; i <= 5; i++) {
-      const ang = a0 + (i / 5) * (a1 - a0);
-      gluteArc.push([
-        gC[0] - sx * Math.cos(ang) * gR + px * back * Math.sin(ang) * gR,
-        gC[1] - sy * Math.cos(ang) * gR + py * back * Math.sin(ang) * gR,
-      ]);
+    if (!standingFold) {
+      const gC: Pt = [
+        midH[0] + px * back * (depth * 0.18) - sx * (seated ? 0.8 : 1.4),
+        midH[1] +
+          py * back * (depth * 0.18) -
+          sy * (seated ? 0.8 : 1.4) -
+          (seated ? 0.8 : 0),
+      ];
+      const gR = depth * (seated ? 0.62 : 0.55);
+      const a0 = Math.PI * 0.22;
+      const a1 = Math.PI * 0.78;
+      for (let i = 0; i <= 5; i++) {
+        const ang = a0 + (i / 5) * (a1 - a0);
+        gluteArc.push([
+          gC[0] - sx * Math.cos(ang) * gR + px * back * Math.sin(ang) * gR,
+          gC[1] - sy * Math.cos(ang) * gR + py * back * Math.sin(ang) * gR,
+        ]);
+      }
     }
-    /* Поясница уже — чтобы читался переход талия → ягодицы */
     const lumbar: Pt = [
-      lerp(waist, midH, 0.58)[0] + px * back * (depth * 0.36),
-      lerp(waist, midH, 0.58)[1] + py * back * (depth * 0.36),
+      lerp(waist, midH, 0.58)[0] +
+        px * back * (depth * (standingFold ? 0.12 : 0.36)),
+      lerp(waist, midH, 0.58)[1] +
+        py * back * (depth * (standingFold ? 0.12 : 0.36)),
     ];
-    const crease: Pt = [
-      midH[0] + px * back * (depth * 0.42) + sx * 2.8,
-      midH[1] + py * back * (depth * 0.42) + sy * 2.8,
-    ];
+    const crease: Pt = standingFold
+      ? [midH[0] + sx * 0.4, midH[1] + sy * 0.4]
+      : [
+          midH[0] + px * back * (depth * 0.42) + sx * 2.8,
+          midH[1] + py * back * (depth * 0.42) + sy * 2.8,
+        ];
 
     body = [
       sBack,
@@ -567,18 +638,21 @@ function drawTorso(fig: Figure, skinFill: string, shortsFill: string) {
       wBackP,
       cBackP,
     ];
-    /* Пояс выше — больше ткани, ягодицы под шортами, не «светят» */
-    band = lerp(midS, midH, 0.42);
-    shoulderPts = [
-      [
-        midS[0] + px * belly * (depth * 0.35),
-        midS[1] + py * belly * (depth * 0.35),
-      ],
-      [
-        midS[0] + px * back * (depth * 0.32),
-        midS[1] + py * back * (depth * 0.32),
-      ],
-    ];
+    /* Складка: пояс у таза (не на торсе — иначе ось ломается) */
+    band = lerp(midS, midH, standingFold ? 0.92 : 0.42);
+    /* Шары плеч = корни рук (совпадают с началом рукавов) */
+    shoulderPts = fig.arms
+      ? [fig.arms.left[0]!, fig.arms.right[0]!]
+      : [
+          [
+            midS[0] + px * belly * (depth * 0.35),
+            midS[1] + py * belly * (depth * 0.35),
+          ],
+          [
+            midS[0] + px * back * (depth * 0.32),
+            midS[1] + py * back * (depth * 0.32),
+          ],
+        ];
   } else {
     const midW = lerp(midS, midH, 0.42);
     const leftW = lerp(lerp(s0, h0, 0.4), midW, 0.3);
@@ -616,33 +690,68 @@ function drawTorso(fig: Figure, skinFill: string, shortsFill: string) {
   let shortsD: string;
   let bandEdge: [Pt, Pt];
   if (sideOn) {
-    const { back } = bellyBackSigns(fig, midS, midH, px, py);
-    /* Толстая трубка со смещением к спине — ягодицы под тканью, подол ниже */
-    const axis: Pt[] = [
-      band,
-      [
-        midH[0] + px * back * 3.2,
-        midH[1] + py * back * 3.2,
-      ],
-      [
-        hipJ[0] + along[0] * 9.5 + px * back * 2.2,
-        hipJ[1] + along[1] * 9.5 + py * back * 2.2,
-      ],
-    ];
-    shortsD = tubePath(
-      axis,
-      (t) =>
-        profileAt(
+    /* Одна трубка пояс → щека → подол (как Сурья А). В складке ось только вниз по бедру. */
+    const { back: backSign } = bellyBackSigns(fig, midS, midH, px, py);
+    const back: 1 | -1 = standingFold
+      ? px * (fig.head[0] < midH[0] ? 1 : -1) > 0
+        ? 1
+        : -1
+      : backSign;
+    /*
+     * Ягодицы + основания ног всегда под тканью.
+     * Складка: прямая ось (2 точки) выше таза → вниз по бедру.
+     * Без peak-излома — иначе трубка «ломается» и корни светят.
+     */
+    const hemLen = standingFold ? 13.5 : 9.5;
+    if (standingFold) {
+      /* Тихая трубка как у Сурьи: без щеки-пятна и без кирпича. */
+      void back;
+      const top: Pt = [
+        hipJ[0] - along[0] * 2.4,
+        hipJ[1] - along[1] * 2.4,
+      ];
+      const bottom: Pt = [
+        hipJ[0] + along[0] * hemLen,
+        hipJ[1] + along[1] * hemLen,
+      ];
+      shortsD = tubePath(
+        [top, bottom],
+        (t) =>
+          profileAt(
+            [
+              [0, 13.8],
+              [0.32, 14.8],
+              [0.68, 13.2],
+              [1, 11.2],
+            ],
+            t,
+          ),
+        20,
+        true,
+      );
+    } else {
+      shortsD = tubePath(
+        [
+          band,
+          [midH[0] + px * back * 3.2, midH[1] + py * back * 3.2],
           [
-            [0, 13.5],
-            [0.3, 15.5],
-            [0.6, 14.5],
-            [1, 11.5],
+            hipJ[0] + along[0] * hemLen + px * back * 2.2,
+            hipJ[1] + along[1] * hemLen + py * back * 2.2,
           ],
-          t,
-        ),
-      24,
-    );
+        ],
+        (t) =>
+          profileAt(
+            [
+              [0, 13.5],
+              [0.3, 15.5],
+              [0.6, 14.5],
+              [1, 11.5],
+            ],
+            t,
+          ),
+        24,
+      );
+    }
     bandEdge = [
       [band[0] + px * 6.5, band[1] + py * 6.5],
       [band[0] - px * 6.5, band[1] - py * 6.5],
@@ -670,37 +779,51 @@ function drawTorso(fig: Figure, skinFill: string, shortsFill: string) {
     ];
   }
 
-  const shoulderR = Math.max(2.4, Math.min(shoulderSpan, 14) * 0.12);
+  /* В складке шары плеч у таза = ложные «корни ног» — не рисуем */
+  const shoulderR = fig.arms
+    ? Math.max(
+        3.6,
+        Math.min(dist(fig.arms.left[0]!, fig.arms.right[0]!) || shoulderSpan, 14) *
+          0.24,
+      )
+    : Math.max(2.4, Math.min(shoulderSpan, 14) * 0.12);
   return {
     torso: (
       <>
         <path d={bodyD} fill={skinFill} className="asana-figure__torso" />
-        <circle
-          cx={shoulderPts[0][0]}
-          cy={shoulderPts[0][1]}
-          r={shoulderR}
-          fill={skinFill}
-          className="asana-figure__torso"
-        />
-        <circle
-          cx={shoulderPts[1][0]}
-          cy={shoulderPts[1][1]}
-          r={shoulderR}
-          fill={skinFill}
-          className="asana-figure__torso"
-        />
+        {!standingFold && (
+          <>
+            <circle
+              cx={shoulderPts[0][0]}
+              cy={shoulderPts[0][1]}
+              r={shoulderR}
+              fill={skinFill}
+              className="asana-figure__torso"
+            />
+            <circle
+              cx={shoulderPts[1][0]}
+              cy={shoulderPts[1][1]}
+              r={shoulderR}
+              fill={skinFill}
+              className="asana-figure__torso"
+            />
+          </>
+        )}
       </>
     ),
     shorts: (
       <>
         <path d={shortsD} fill={shortsFill} className="asana-figure__shorts" />
-        <line
-          x1={bandEdge[0][0]}
-          y1={bandEdge[0][1]}
-          x2={bandEdge[1][0]}
-          y2={bandEdge[1][1]}
-          className="asana-figure__shorts-band"
-        />
+        {/* Складка: линия пояса режет единую ткань на два куска */}
+        {!standingFold && (
+          <line
+            x1={bandEdge[0][0]}
+            y1={bandEdge[0][1]}
+            x2={bandEdge[1][0]}
+            y2={bandEdge[1][1]}
+            className="asana-figure__shorts-band"
+          />
+        )}
       </>
     ),
   };
@@ -813,8 +936,9 @@ function FigDefs({ uid }: { uid: string }) {
         <stop offset="1" stopColor="#ba7a46" />
       </linearGradient>
       <linearGradient id={`${uid}-shorts`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="#34343e" />
-        <stop offset="1" stopColor="#131318" />
+        {/* Светлее фона шторки — иначе подол = «дыра» и корни «торчат» */}
+        <stop offset="0" stopColor="#5a5a66" />
+        <stop offset="1" stopColor="#3e3e48" />
       </linearGradient>
       <radialGradient id={`${uid}-shadow`} cx="0.5" cy="0.5" r="0.5">
         <stop offset="0" stopColor="rgba(24, 24, 28, 0.22)" />
@@ -831,20 +955,21 @@ function drawFigureBody(fig: Figure, uid: string) {
   const shorts = `url(#${uid}-shorts)`;
   const torsoParts = fig.torso ? drawTorso(fig, skin, shorts) : undefined;
   /*
-   * Near/far — по лицу, не по передней ноге: иначе 8 и 12 (один −x,
-   * разная нога) совпадают. Лицом в −x → правый бок к камере; в +x → левый.
+   * Near/far как на всей схеме: правая = far (темнее), левая = near.
+   * Лицом в −x (Адхо/воины) → left near; в +x → right near.
+   * Не привязывать к передней ноге — иначе 8/12 ломают конвенцию.
    */
   const leftNear = (() => {
     if (fig.torso && fig.torso.length >= 4) {
       const midH = lerp(fig.torso[2]!, fig.torso[3]!, 0.5);
       const toHead = dirOf(midH, fig.head);
-      if (Math.abs(toHead[0]) > 0.28) return toHead[0] > 0;
+      if (Math.abs(toHead[0]) > 0.28) return toHead[0] < 0;
     }
     if (fig.drishti) {
       const face = dirOf(fig.head, fig.drishti);
-      if (Math.abs(face[0]) > 0.28) return face[0] > 0;
+      if (Math.abs(face[0]) > 0.28) return face[0] < 0;
     }
-    return false;
+    return true;
   })();
   const farLeg = fig.legs
     ? leftNear
