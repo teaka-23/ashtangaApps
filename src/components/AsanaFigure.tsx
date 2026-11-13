@@ -544,9 +544,6 @@ function drawTorso(fig: Figure, skinFill: string, shortsFill: string) {
         Math.abs(foot[0] - midH[0]) < 16
       );
     })();
-  /* Складка: ягодицы сверху (сидя вдоль пола или стоячий jackknife) */
-  const folded =
-    standingFold || (seated && Math.abs(sx) > Math.abs(sy) * 0.55);
 
   if (sideOn) {
     const { belly, back } = bellyBackSigns(fig, midS, midH, px, py);
