@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Иллюстрации — превью</title>
+<style>
+  body {
+    margin: 0;
+    padding: 32px 24px;
+    background: #faf8f5;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #5a4632;
+  }
+  h2 {
+    font-size: 15px;
+    letter-spacing: 0.18em;
+    margin: 36px 0 12px;
+    color: #8a6f4d;
+  }
+  .row { display: flex; flex-wrap: wrap; gap: 6px; padding-bottom: 8px; }
+  .fig { flex: 0 0 auto; width: 132px; text-align: center; }
+  .fig img {
+    width: 132px;
+    height: 132px;
+    background: #fff;
+    border: 1px solid #ece4d8;
+    border-radius: 10px;
+    display: block;
+  }
+  .fig span {
+    display: block;
+    margin-top: 6px;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: #8a6f4d;
+  }
+</style>
+</head>
+<body>
+  <h2>СУРЬЯ (генератор)</h2>
+  <div class="row" id="surya"></div>
+  <h2>СТОЯЧИЕ</h2>
+  <div class="row" id="standing"></div>
+<script>
+  const SURYA = [
+    '01-samasthitih', '02-urdhva-hastasana', '03-uttanasana', '04-ardha-uttanasana',
+    '05-chaturanga', '06-urdhva-mukha', '07-adho-mukha', '08-utkatasana',
+    '09-virabhadrasana-1', '10-virabhadrasana-1-left',
+  ];
+  const STANDING = [
+    '11-padangusthasana', '12-pada-hastasana', '13-utthita-trikonasana-a',
+    '14-utthita-trikonasana-b', '15-utthita-parshvakonasana-a',
+    '16-utthita-parshvakonasana-b', '17-prasarita-padottanasana-a',
+    '18-prasarita-padottanasana-b', '19-prasarita-padottanasana-c',
+    '20-prasarita-padottanasana-d', '21-parshvottanasana',
+    '22-utthita-hasta-padangusthasana-a', '23-utthita-hasta-padangusthasana-b',
+    '24-ardha-baddha-padmottanasana', '25-virabhadrasana-2',
+  ];
+  for (const [id, dir, list] of [['surya', 'surya', SURYA], ['standing', 'standing', STANDING]]) {
+    const row = document.getElementById(id);
+    for (const f of list) {
+      const div = document.createElement('div');
+      div.className = 'fig';
+      div.innerHTML = `<img src="${dir}/${f}.svg" alt="${f}"><span>${f}</span>`;
+      row.appendChild(div);
+    }
+  }
+</script>
+</body>
+</html>
