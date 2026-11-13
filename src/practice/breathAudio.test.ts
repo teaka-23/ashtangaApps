@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import {
   BREATH_TEMPO_MS,
+  LOOK_HOLD_MS,
   loadBreathSound,
   loadBreathTempo,
   saveBreathSound,
@@ -19,6 +20,8 @@ describe('breathAudio settings', () => {
     expect(loadBreathTempo()).toBe('normal');
     expect(loadBreathSound()).toBe(true);
     expect(BREATH_TEMPO_MS.normal).toBe(4000);
+    expect(LOOK_HOLD_MS).toBeGreaterThanOrEqual(1000);
+    expect(LOOK_HOLD_MS).toBeLessThanOrEqual(3000);
   });
 
   it('persists tempo and sound', () => {

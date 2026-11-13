@@ -28,13 +28,16 @@ export function playBreathCue(phase: 'inhale' | 'exhale'): void {
   osc.type = 'sine';
   osc.frequency.value = phase === 'inhale' ? 523.25 : 392; // C5 / G4
   gain.gain.setValueAtTime(0.0001, now);
-  gain.gain.exponentialRampToValueAtTime(0.045, now + 0.02);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+  gain.gain.exponentialRampToValueAtTime(0.28, now + 0.03);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
   osc.connect(gain);
   gain.connect(audio.destination);
   osc.start(now);
-  osc.stop(now + 0.24);
+  osc.stop(now + 0.44);
 }
+
+/** Пауза на новой асане, чтобы успеть увидеть рисунок до отсчёта дыханий. */
+export const LOOK_HOLD_MS = 2000;
 
 export const BREATH_TEMPO_MS = {
   slow: 5000,

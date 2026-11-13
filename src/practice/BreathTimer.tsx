@@ -8,6 +8,8 @@ interface Props {
   paused: boolean;
   /** Duration of one inhale or exhale phase in ms */
   phaseMs: number;
+  /** Clock stays put this long after mount so the pose can be seen. */
+  lookMs?: number;
   soundEnabled: boolean;
   inhaleLabel: string;
   exhaleLabel: string;
@@ -22,6 +24,7 @@ export function BreathTimer({
   breaths,
   paused,
   phaseMs,
+  lookMs = 0,
   soundEnabled,
   inhaleLabel,
   exhaleLabel,
@@ -31,6 +34,7 @@ export function BreathTimer({
 }: Props) {
   const [current, setCurrent] = useState(1);
   const [phase, setPhase] = useState<Phase>('inhale');
+  const [looking, setLooking] = useState(lookMs > 0);
   const doneRef = useRef(false);
   const onCompleteRef = useRef(onComplete);
   const onBreathRef = useRef(onBreath);
@@ -46,12 +50,21 @@ export function BreathTimer({
   }, [soundEnabled]);
 
   useEffect(() => {
-    if (paused || doneRef.current) return;
-    if (soundRef.current) playBreathCue('inhale');
-  }, [paused]);
+    if (lookMs <= 0) return;
+    setLooking(true);
+    const id = window.setTimeout(() => setLooking(false), lookMs);
+    return () => window.clearTimeout(id);
+  }, [lookMs]);
+
+  const held = paused || looking;
 
   useEffect(() => {
-    if (paused || doneRef.current) return;
+    if (held || doneRef.current) return;
+    if (soundRef.current) playBreathCue('inhale');
+  }, [held]);
+
+  useEffect(() => {
+    if (held || doneRef.current) return;
 
     const id = window.setInterval(() => {
       setPhase((prev) => {
@@ -64,7 +77,7 @@ export function BreathTimer({
           if (c >= breaths) {
             if (!doneRef.current) {
               doneRef.current = true;
-              onCompleteRef.current();
+              window.setTimeout(() => onCompleteRef.current(), 0);
             }
             return c;
           }
@@ -78,7 +91,7 @@ export function BreathTimer({
     }, phaseMs);
 
     return () => window.clearInterval(id);
-  }, [paused, breaths, phaseMs]);
+  }, [held, breaths, phaseMs]);
 
   const label = phase === 'inhale' ? inhaleLabel : exhaleLabel;
   const progress = ((current - 1) * 2 + (phase === 'exhale' ? 1 : 0)) / (breaths * 2);

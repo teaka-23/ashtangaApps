@@ -17,6 +17,7 @@ import { clearProgress, saveProgress } from './progress';
 import { BreathTimer } from './BreathTimer';
 import {
   BREATH_TEMPO_MS,
+  LOOK_HOLD_MS,
   loadBreathSound,
   loadBreathTempo,
   resumeBreathAudio,
@@ -241,6 +242,7 @@ export function PracticeView({
             breaths={asana.breaths}
             paused={paused}
             phaseMs={BREATH_TEMPO_MS[tempo]}
+            lookMs={LOOK_HOLD_MS}
             soundEnabled={soundOn}
             inhaleLabel={t(locale, 'inhale')}
             exhaleLabel={t(locale, 'exhale')}
