@@ -60,8 +60,8 @@ export function urdhvaHastasana() {
 export function uttanasana() {
   return doc([
     shadow(108, 42),
-    leg([96, 78], [98, 118], [100, 158], { far: true, foot: 'flat', toe: 1 }),
-    leg([106, 80], [108, 120], [108, 158], { foot: 'flat', toe: 1 }),
+    leg([96, 78], [90, 120], [86, 158], { far: true, foot: 'flat', toe: 1 }),
+    leg([106, 80], [116, 122], [120, 158], { foot: 'flat', toe: 1 }),
     arm([118, 118], [112, 142], [108, 158], { far: true, hand: 'flat', fingers: 1 }),
     torso([
       [92, 70],
@@ -70,9 +70,9 @@ export function uttanasana() {
       [128, 124],
       [116, 128],
       [100, 96],
-      [88, 82],
+      [96, 84],
     ]),
-    shortsFrame([100, 82], [0.75, 0.66], [0.05, 1], { rise: 11, hem: 14, half: 12, cheek: 14 }),
+    shortsFrame([100, 82], [0.75, 0.66], [0.05, 1], { rise: 11, hem: 14, half: 11, along: [0, 1] }),
     arm([126, 120], [120, 144], [116, 158], { hand: 'flat', fingers: 1 }),
     head([132, 136], [0.15, 0.99], [0.35, -0.25], [124, 124]),
   ]);
@@ -225,12 +225,12 @@ export function virabhadrasanaFrontRight() {
   ]);
 }
 
-/** Вирабхадрасана А, левая нога впереди — всё ещё лицом вправо, передняя стопа слева. */
+/** Вирабхадрасана А, левая нога впереди. Лицо всё так же вправо: меняются ноги, не сторона. */
 export function virabhadrasanaFrontLeft() {
   return doc([
-    shadow(100, 52),
-    leg([108, 100], [146, 126], [164, 158], { far: true, foot: 'flat', toe: 1 }),
-    leg([96, 102], [62, 118], [62, 158], { foot: 'flat', toe: -1 }),
+    shadow(108, 52),
+    leg([106, 102], [142, 118], [142, 158], { far: true, foot: 'flat', toe: 1 }),
+    leg([96, 100], [62, 128], [40, 158], { foot: 'flat', toe: 1 }),
     arm([100, 60], [96, 34], [94, 14], { far: true, hand: 'up' }),
     torso([
       [94, 56],
