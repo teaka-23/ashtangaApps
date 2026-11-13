@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-<line x1="18" y1="168" x2="186" y2="168" stroke="#e4d3c0" stroke-width="1.2"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="2 105 197 81">
+<line x1="10" y1="168" x2="191" y2="168" stroke="#e4d3c0" stroke-width="1.2"/>
 <ellipse cx="100" cy="172" rx="72" ry="4.2" fill="rgba(70,48,28,0.10)"/>
 <path d="M 90.9,140.9 L 52.9,146.9 A 7.2 7.2 0 0 1 55.1,161.1 L 93.1,155.1 A 7.2 7.2 0 0 1 90.9,140.9 Z" fill="#e4b48f" stroke="#c4a184" stroke-width="1.6" stroke-linejoin="round"/>
 <path d="M 53.2,148.3 L 25.2,152.3 A 5.8 5.8 0 0 1 26.8,163.7 L 54.8,159.7 A 5.8 5.8 0 0 1 53.2,148.3 Z" fill="#e4b48f" stroke="#c4a184" stroke-width="1.6" stroke-linejoin="round"/>
@@ -24,5 +24,5 @@
 <ellipse cx="89.7" cy="147" rx="2.1" ry="3.1" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.1"/>
 <ellipse cx="110.3" cy="147" rx="2.1" ry="3.1" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.1"/>
 <path d="M 98.7,148.5 L 100,154.1 L 101.3,148.5 Z" fill="#f2c29b" stroke="#b98a5e" stroke-width="1.05" stroke-linejoin="round"/>
-<g data-shorts="1"><path d="M 94.8,141 C 96.3,140 100.1,139 103.3,139.8 C 106.4,140.6 111.6,143.4 113.7,146 C 115.7,148.5 116.8,152.6 115.6,155 C 114.4,157.4 109.1,159.1 106.5,160.4 C 103.9,161.7 101.6,163 100.3,162.6 C 98.9,162.2 100.4,159.8 98.4,158 C 96.5,156.2 89.3,154 88.6,152 C 87.9,150 93,147.8 94,146 C 95,144.1 93.3,142 94.8,141 Z" fill="#2e2a33"/></g>
+<g data-shorts="1"><path d="M 94.8,141 C 96.3,140 100.1,139 103.3,139.8 C 106.4,140.6 111.6,143.4 113.7,146 C 115.7,148.5 116.8,152.6 115.6,155 C 114.4,157.4 109.1,159.1 106.5,160.4 C 103.9,161.7 101.6,163 100.3,162.6 C 98.9,162.2 100.4,159.8 98.4,158 C 96.5,156.2 89.3,154 88.6,152 C 87.9,150 93,147.8 94,146 C 95,144.1 93.3,142 94.8,141 Z" fill="#2e2a33"/><path d="M 94.8,141 L 103.3,139.8" fill="none" stroke="#8d8794" stroke-width="1.5" stroke-linecap="round"/></g>
 </svg>

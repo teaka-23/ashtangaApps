@@ -58,7 +58,7 @@ export function kurmasana() {
 export function suptaKurmasana() {
   return doc([
     shadow(100, 58),
-    arm([86, 118], [58, 128], [92, 136], { far: true, hand: 'hold' }),
+    arm([86, 118], [64, 108], [98, 114], { far: true, hand: 'hold' }),
     torso([
       [78, 112],
       [122, 112],
@@ -67,11 +67,11 @@ export function suptaKurmasana() {
       [92, 154],
       [84, 136],
     ]),
-    shortsFrame([100, 148], [0, -1], [1, 0], { rise: 11, hem: 12, half: 13, cheek: 12 }),
-    arm([114, 118], [142, 128], [110, 136], { hand: 'hold' }),
+    shortsFrame([100, 128], [0, -1], [1, 0], { rise: 6, hem: 5, half: 10, cheek: 6 }),
+    arm([114, 118], [136, 108], [104, 114], { hand: 'hold' }),
     headFront([100, 156], [100, 142], [0, 1]),
-    leg([90, 146], [34, 96], [78, 124], { far: true, foot: 'free', toe: 1 }),
-    leg([110, 146], [166, 96], [122, 120], { foot: 'free', toe: -1 }),
+    leg([92, 136], [36, 78], [86, 124], { far: true, foot: 'free', toe: 1 }),
+    leg([108, 136], [164, 78], [114, 120], { foot: 'free', toe: -1 }),
   ]);
 }
 
@@ -111,9 +111,9 @@ export function kukkutasana() {
       [94, 104],
       [88, 88],
     ]),
-    shortsFrame([100, 98], [0, -1], [1, 0], { rise: 12, hem: 12, half: 12, cheek: 12 }),
-    leg([96, 98], [48, 116], [88, 108], { far: true, foot: 'free', toe: 1 }),
-    leg([104, 100], [152, 118], [114, 110], { foot: 'free', toe: -1 }),
+    shortsFrame([100, 100], [0, -1], [1, 0], { rise: 7, hem: 5, half: 10, cheek: 6 }),
+    leg([98, 108], [62, 118], [114, 138], { far: true, foot: 'free', toe: 1 }),
+    leg([106, 110], [138, 122], [88, 142], { foot: 'free', toe: -1 }),
     headFront([100, 36], [100, 50], [0, 1]),
   ]);
 }
@@ -284,7 +284,7 @@ export function setuBandhasana() {
       [96, 136],
       [74, 146],
     ]),
-    shortsFrame([128, 112], [-0.72, 0.55], [0.2, -0.98], { rise: 12, hem: 13, half: 12, cheek: 13 }),
+    shortsFrame([132, 108], [-0.45, 0.89], [0.1, -0.99], { rise: 8, hem: 8, half: 11, cheek: 10 }),
     arm([92, 124], [120, 142], [150, 152], { hand: 'hold' }),
     head([60, 150], [-0.15, -0.99], [-0.9, 0.35], [76, 138]),
   ]);

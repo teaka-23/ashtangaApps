@@ -13,24 +13,16 @@ function doc(parts) {
   return svgDocument([groundLine(), ...parts].join('\n'));
 }
 
-/** Общий каркас наклона к прямым ногам: reach — насколько руки за стопы. */
-function paschi(armWristX, headC, arms) {
+/** Наклон к прямым ногам. Руки рисуются после торса, иначе ладони прячутся. */
+function paschi(torsoPts, hip, arms, headC, neck) {
   return doc([
     shadow(112, 56),
     leg([90, 150], [122, 154], [150, 158], { far: true, foot: 'flex', toe: 1 }),
     leg([96, 152], [128, 156], [156, 158], { foot: 'flex', toe: 1 }),
+    torso(torsoPts),
+    shortsFrame(hip, [-0.15, -0.99], [0.25, 0.97], { rise: 11, hem: 9, half: 11, cheek: 10 }),
     ...arms,
-    torso([
-      [82, 136],
-      [98, 128],
-      [124, 138],
-      [134, 148],
-      [124, 158],
-      [94, 150],
-      [80, 146],
-    ]),
-    shortsFrame([92, 150], [0.85, 0.35], [0.35, 0.94], { rise: 12, hem: 15, half: 12, cheek: 13 }),
-    head(headC, [0.3, 0.95], [0.9, 0.35], [126, 142]),
+    head(headC, [0.55, 0.84], [0.8, 0.45], neck),
   ]);
 }
 
@@ -40,7 +32,7 @@ export function dandasana() {
     shadow(112, 52),
     leg([90, 150], [120, 154], [148, 158], { far: true, foot: 'flex', toe: 1 }),
     leg([98, 152], [128, 156], [156, 158], { foot: 'flex', toe: 1 }),
-    arm([88, 100], [80, 130], [76, 158], { far: true, hand: 'flat', fingers: 1 }),
+    arm([88, 78], [76, 118], [70, 158], { far: true, hand: 'flat', fingers: 1 }),
     torso([
       [86, 68],
       [106, 70],
@@ -50,42 +42,84 @@ export function dandasana() {
       [82, 140],
       [82, 96],
     ]),
-    shortsFrame([96, 150], [0, -1], [1, 0], { rise: 13, hem: 15, half: 14, cheek: 15 }),
-    arm([102, 94], [94, 128], [88, 158], { hand: 'flat', fingers: 1 }),
+    shortsFrame([96, 144], [0, -1], [1, 0], { rise: 12, hem: 5, half: 8, cheek: 8 }),
+    arm([104, 76], [108, 116], [102, 158], { hand: 'flat', fingers: 1 }),
     head([98, 48], [1, 0.04], [0, -1], [98, 66]),
   ]);
 }
 
-/** A: пальцы на внешних рёбрах стоп. */
+const FOLD_DEEP = [
+  [82, 136],
+  [98, 128],
+  [124, 138],
+  [134, 148],
+  [124, 158],
+  [94, 150],
+  [80, 146],
+];
+
+/** A: грудь приподнята, локти согнуты, пальцы на больших пальцах. */
 export function paschimattanasanaA() {
-  return paschi(150, [136, 146], [
-    arm([116, 140], [130, 146], [148, 152], { far: true, hand: 'hold' }),
-    arm([124, 140], [138, 148], [154, 152], { hand: 'hold' }),
-  ]);
+  return paschi(
+    [
+      [78, 116],
+      [96, 104],
+      [118, 116],
+      [128, 136],
+      [116, 154],
+      [94, 150],
+      [76, 134],
+    ],
+    [94, 146],
+    [
+      arm([108, 120], [126, 112], [148, 150], { far: true, hand: 'hold' }),
+      arm([116, 118], [138, 108], [158, 148], { hand: 'hold' }),
+    ],
+    [124, 112],
+    [114, 122],
+  );
 }
 
-/** B: ладони на подошвах. */
+/** B: грудь на бёдрах, ладони на подошвах. */
 export function paschimattanasanaB() {
-  return paschi(158, [138, 148], [
-    arm([116, 140], [132, 146], [156, 150], { far: true, hand: 'hold' }),
-    arm([124, 140], [140, 148], [160, 150], { hand: 'hold' }),
-  ]);
+  return paschi(
+    FOLD_DEEP,
+    [92, 148],
+    [
+      arm([114, 138], [136, 148], [158, 154], { far: true, hand: 'hold' }),
+      arm([122, 138], [146, 150], [166, 154], { hand: 'hold' }),
+    ],
+    [140, 146],
+    [126, 140],
+  );
 }
 
-/** C: замок за стопами. */
+/** C: руки прямые за стопы, кисти сходятся в замок. */
 export function paschimattanasanaC() {
-  return paschi(166, [140, 150], [
-    arm([116, 142], [134, 148], [164, 148], { far: true, hand: 'hold' }),
-    arm([124, 142], [142, 150], [168, 148], { hand: 'hold' }),
-  ]);
+  return paschi(
+    FOLD_DEEP,
+    [92, 148],
+    [
+      arm([114, 142], [150, 152], [180, 148], { far: true, hand: 'hold' }),
+      arm([122, 144], [158, 154], [184, 148], { hand: 'hold' }),
+    ],
+    [146, 152],
+    [130, 146],
+  );
 }
 
-/** D: захват запястья за стопами, самая глубокая. */
+/** D: тот же замок, складка ещё ниже. */
 export function paschimattanasanaD() {
-  return paschi(168, [140, 152], [
-    arm([116, 144], [136, 150], [166, 150], { far: true, hand: 'hold' }),
-    arm([124, 144], [144, 152], [170, 150], { hand: 'hold' }),
-  ]);
+  return paschi(
+    FOLD_DEEP,
+    [92, 150],
+    [
+      arm([114, 146], [152, 156], [182, 152], { far: true, hand: 'hold' }),
+      arm([122, 148], [160, 158], [186, 152], { hand: 'hold' }),
+    ],
+    [150, 156],
+    [134, 150],
+  );
 }
 
 /** Пурваттанасана: обратная планка, ладони позади, пальцы назад, таз вверх, голова назад. */
@@ -103,7 +137,7 @@ export function purvattanasana() {
       [102, 120],
       [82, 122],
     ]),
-    shortsFrame([106, 110], [0.9, -0.35], [0.4, 0.92], { rise: 12, hem: 14, half: 12, cheek: 13 }),
+    shortsFrame([112, 108], [-0.85, 0.45], [0.15, -0.99], { rise: 8, hem: 8, half: 11, cheek: 10 }),
     arm([88, 112], [76, 138], [64, 158], { hand: 'flat', fingers: -1 }),
     head([70, 100], [-0.35, -0.94], [-0.92, 0.35], [78, 110]),
   ]);
@@ -114,8 +148,8 @@ export function ardhaBaddhaPadmaPaschi() {
   return doc([
     shadow(112, 56),
     leg([94, 150], [126, 155], [156, 158], { foot: 'flex', toe: 1 }),
-    leg([92, 148], [70, 140], [114, 150], { far: true, foot: 'free', toe: 1 }),
-    arm([114, 138], [100, 138], [102, 132], { far: true, hand: 'hold' }),
+    leg([90, 148], [66, 156], [116, 136], { far: true, foot: 'free', toe: 1 }),
+    arm([86, 122], [68, 132], [110, 138], { far: true, hand: 'hold' }),
     torso([
       [82, 134],
       [98, 126],
@@ -125,7 +159,7 @@ export function ardhaBaddhaPadmaPaschi() {
       [94, 148],
       [80, 144],
     ]),
-    shortsFrame([92, 148], [0.85, 0.35], [0.35, 0.94], { rise: 12, hem: 15, half: 12, cheek: 13 }),
+    shortsFrame([96, 148], [0.9, -0.15], [0.2, 0.98], { rise: 6, hem: 5, half: 8, cheek: 6 }),
     arm([124, 138], [138, 146], [154, 150], { hand: 'hold' }),
     head([138, 144], [0.3, 0.95], [0.9, 0.35], [126, 140]),
   ]);
@@ -135,7 +169,7 @@ export function ardhaBaddhaPadmaPaschi() {
 export function triangMukha() {
   return doc([
     shadow(112, 56),
-    leg([90, 150], [88, 158], [64, 160], { far: true, foot: 'tops', toe: -1 }),
+    leg([92, 150], [72, 158], [50, 158], { far: true, foot: 'tops', toe: -1 }),
     leg([96, 152], [128, 156], [156, 158], { foot: 'flex', toe: 1 }),
     arm([116, 140], [130, 146], [148, 152], { far: true, hand: 'hold' }),
     torso([
@@ -178,7 +212,7 @@ function januBase(foldedLeg, headC) {
 /** Джану Ширшасана А: колено в сторону, стопа к внутренней стороне бедра. */
 export function januA() {
   return januBase(
-    leg([92, 148], [122, 124], [104, 138], { far: true, foot: 'free', toe: -1 }),
+    leg([92, 150], [62, 156], [108, 138], { far: true, foot: 'free', toe: 1 }),
     [138, 146],
   );
 }
@@ -186,7 +220,7 @@ export function januA() {
 /** Джану Ширшасана B: сидя на правой пятке. */
 export function januB() {
   return januBase(
-    leg([92, 146], [120, 150], [92, 158], { far: true, foot: 'tops', toe: -1 }),
+    leg([94, 146], [120, 158], [90, 158], { far: true, foot: 'tops', toe: -1 }),
     [138, 146],
   );
 }
@@ -194,7 +228,7 @@ export function januB() {
 /** Джану Ширшасана C: стопа вертикально, пальцы на полу, пятка вверх. */
 export function januC() {
   return januBase(
-    leg([90, 148], [114, 124], [112, 154], { far: true, foot: 'tucked', toe: 1 }),
+    leg([92, 150], [68, 154], [104, 158], { far: true, foot: 'tucked', toe: 1 }),
     [138, 146],
   );
 }

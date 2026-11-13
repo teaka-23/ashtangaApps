@@ -131,6 +131,20 @@ function footPath(ankle, toe, mode, knee) {
       `Q ${ax - 6},${ay + 1} ${ax - 4},${ay + 5} Z`,
     ].join(' ');
   }
+  if (mode === 'spread') {
+    // одна стопа в воздухе: круглая пятка снизу, носок одним блоком вверх.
+    const ay = ankle[1];
+    return [
+      `M ${ax - 7},${ay + 2}`,
+      `Q ${ax - 10},${ay + 10} ${ax},${ay + 11}`,
+      `Q ${ax + 10},${ay + 10} ${ax + 8},${ay + 2}`,
+      `L ${ax + 6},${ay - 8}`,
+      `Q ${ax + 5},${ay - 18} ${ax + 1},${ay - 19}`,
+      `Q ${ax - 4},${ay - 18} ${ax - 5},${ay - 8}`,
+      `L ${ax - 6},${ay + 1}`,
+      `Q ${ax - 9},${ay + 1} ${ax - 7},${ay + 2} Z`,
+    ].join(' ');
+  }
   // flat: пятка сзади, носки вперёд, подошва на линии пола
   const heel = ax - s * 6;
   const toeX = ax + s * 16;
@@ -161,6 +175,22 @@ function handPath(wrist, from, kind, fingers = 1) {
       `L ${hx + s * 10},${sole}`,
       `Q ${hx + s * 13},${sole - 0.5} ${hx + s * 10},${sole - 3.5}`,
       `L ${hx + s * 1},${Math.min(wrist[1] + 1, sole - 6)} Z`,
+    ].join(' ');
+  }
+  if (kind === 'palm') {
+    // ладонь лежит на полу: пальцы вдоль пола, большой палец в сторону. Низкий силуэт.
+    const s = fingers >= 0 ? 1 : -1;
+    const y = GROUND;
+    const x = wrist[0];
+    return [
+      `M ${x},${Math.min(wrist[1] + 1, y - 7)}`,
+      `L ${x - s * 1},${y - 3}`,
+      `Q ${x - s * 6},${y - 5} ${x - s * 5},${y}`,
+      `Q ${x - s * 2},${y + 0.4} ${x + s * 2},${y}`,
+      `L ${x + s * 14},${y}`,
+      `Q ${x + s * 17},${y - 0.6} ${x + s * 14},${y - 3}`,
+      `L ${x + s * 3},${y - 3.2}`,
+      `L ${x},${Math.min(wrist[1] + 1, y - 7)} Z`,
     ].join(' ');
   }
   if (kind === 'hold') {
@@ -217,7 +247,8 @@ function torso(pts) {
 }
 
 function shorts(pts) {
-  return `<g data-shorts="1"><path d="${smoothClosed(pts)}" fill="${SHORTS}"/></g>`;
+  const waist = `M ${pt(pts[0])} L ${pt(pts[1])}`;
+  return `<g data-shorts="1"><path d="${smoothClosed(pts)}" fill="${SHORTS}"/><path d="${waist}" fill="none" stroke="#8d8794" stroke-width="1.5" stroke-linecap="round"/></g>`;
 }
 
 /**
@@ -304,6 +335,119 @@ export function svgDocument(body) {
 ${[...rest, ...shorts].join('\n')}
 </svg>
 `;
+}
+
+function attr(tag, name) {
+  const m = tag.match(new RegExp(`${name}="([^"]+)"`));
+  return m ? parseFloat(m[1]) : NaN;
+}
+
+/** Точки path. Дуги: радиусы пропускаем, берём конец дуги. */
+function walkPath(d, plot) {
+  const tokens = d.match(/[MLHVCSQTAZ]|-?\d*\.?\d+(?:e[-+]?\d+)?/gi);
+  if (!tokens) return;
+  let i = 0;
+  let cmd = 'M';
+  let cx = 0;
+  let cy = 0;
+  const num = () => parseFloat(tokens[i++]);
+  while (i < tokens.length) {
+    if (/[A-Za-z]/.test(tokens[i])) cmd = tokens[i++];
+    const upper = cmd.toUpperCase();
+    const rel = cmd !== upper;
+    if (upper === 'Z') continue;
+    if (upper === 'H') {
+      const x = num();
+      cx = rel ? cx + x : x;
+      plot(cx, cy);
+      continue;
+    }
+    if (upper === 'V') {
+      const y = num();
+      cy = rel ? cy + y : y;
+      plot(cx, cy);
+      continue;
+    }
+    if (upper === 'A') {
+      num();
+      num();
+      num();
+      num();
+      num();
+      const x = num();
+      const y = num();
+      cx = rel ? cx + x : x;
+      cy = rel ? cy + y : y;
+      plot(cx, cy);
+      continue;
+    }
+    const pairs = { M: 1, L: 1, T: 1, Q: 2, S: 2, C: 3 }[upper] || 1;
+    if (i + pairs * 2 > tokens.length) break;
+    let x = 0;
+    let y = 0;
+    for (let k = 0; k < pairs; k++) {
+      x = num();
+      y = num();
+      plot(rel ? cx + x : x, rel ? cy + y : y);
+    }
+    if (rel) {
+      cx += x;
+      cy += y;
+    } else {
+      cx = x;
+      cy = y;
+    }
+  }
+}
+
+/**
+ * Обрезает пустое поле вокруг фигуры. Пол и тень в расчёт не входят,
+ * иначе широкая линия пола не даёт приблизить складку.
+ * Сурьи не кадрировать: в схеме виньяс масштаб и пол должны совпадать.
+ */
+export function frameToContent(svg, pad = 18) {
+  const tags = svg.match(/<(?:path|circle|ellipse|line)\b[^>]*>/g) || [];
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  const plot = (x, y) => {
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return;
+    minX = Math.min(minX, x);
+    minY = Math.min(minY, y);
+    maxX = Math.max(maxX, x);
+    maxY = Math.max(maxY, y);
+  };
+  for (const tag of tags) {
+    if (tag.includes('rgba') || tag.includes('#e4d3c0')) continue;
+    if (tag.startsWith('<circle')) {
+      const cx = attr(tag, 'cx');
+      const cy = attr(tag, 'cy');
+      const r = attr(tag, 'r');
+      plot(cx - r, cy - r);
+      plot(cx + r, cy + r);
+    } else if (tag.startsWith('<ellipse')) {
+      const cx = attr(tag, 'cx');
+      const cy = attr(tag, 'cy');
+      plot(cx - attr(tag, 'rx'), cy - attr(tag, 'ry'));
+      plot(cx + attr(tag, 'rx'), cy + attr(tag, 'ry'));
+    } else if (tag.startsWith('<path')) {
+      const d = tag.match(/\bd="([^"]+)"/)?.[1];
+      if (d) walkPath(d, plot);
+    }
+  }
+  if (!Number.isFinite(minX)) return svg;
+  minX -= pad;
+  minY -= pad;
+  maxX += pad;
+  maxY += pad;
+  const vb = `${n([minX])[0]} ${n([minY])[0]} ${n([maxX - minX])[0]} ${n([maxY - minY])[0]}`;
+  return svg
+    .replace(/viewBox="[^"]+"/, `viewBox="${vb}"`)
+    .replace(
+      /<line x1="[\d.-]+" y1="([\d.-]+)" x2="[\d.-]+" y2="([\d.-]+)"/,
+      `<line x1="${n([minX + 8])[0]}" y1="$1" x2="${n([maxX - 8])[0]}" y2="$2"`,
+    );
 }
 
 export const draw = {

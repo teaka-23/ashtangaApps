@@ -48,6 +48,8 @@
   <div class="row" id="seated2"></div>
   <h2>ФИНИШ</h2>
   <div class="row" id="finishing"></div>
+  <h2>ВТОРАЯ СЕРИЯ</h2>
+  <div class="row" id="intermediate"></div>
 <script>
   const SURYA = [
     '01-samasthitih', '02-urdhva-hastasana', '03-uttanasana', '04-ardha-uttanasana',
@@ -80,6 +82,20 @@
     '49-upavishta-konasana', '50-supta-konasana', '51-supta-padangusthasana',
     '52-ubhaya-padangusthasana', '53-urdhva-mukha-paschimottanasana', '54-setu-bandhasana',
   ];
+  const INTERMEDIATE = [
+    '70-pasasana', '71-krounchasana', '72-salabhasana-a', '73-salabhasana-b',
+    '74-bhekasana', '75-dhanurasana', '76-parsva-dhanurasana', '77-ustrasana',
+    '78-laghu-vajrasana', '79-kapotasana', '80-supta-vajrasana', '81-bakasana-a',
+    '82-bakasana-b', '83-bharadvajasana', '84-ardha-matsyendrasana',
+    '85-eka-pada-sirsasana', '86-dwi-pada-sirsasana', '87-yoga-nidrasana',
+    '88-tittibhasana-a', '89-tittibhasana-b', '90-tittibhasana-c',
+    '91-pincha-mayurasana', '92-karandavasana', '93-mayurasana', '94-nakrasana',
+    '95-vatayanasana', '96-parighasana', '97-gomukhasana-a', '98-gomukhasana-b',
+    '99-supta-urdhva-pada-vajrasana', '100-mukta-hasta-sirsasana-a',
+    '101-mukta-hasta-sirsasana-b', '102-mukta-hasta-sirsasana-c',
+    '103-baddha-hasta-sirsasana-a', '104-baddha-hasta-sirsasana-b',
+    '105-baddha-hasta-sirsasana-c', '106-baddha-hasta-sirsasana-d',
+  ];
   const FINISHING = [
     '55-urdhva-dhanurasana', '56-salamba-sarvangasana', '57-halasana', '58-karnapidasana',
     '59-urdhva-padmasana', '60-pindasana', '61-matsyasana', '62-uttana-padasana',
@@ -91,6 +107,7 @@
     ['seated1', 'seated1', SEATED1],
     ['seated2', 'seated2', SEATED2],
     ['finishing', 'finishing', FINISHING],
+    ['intermediate', 'intermediate', INTERMEDIATE],
   ]) {
     const row = document.getElementById(id);
     for (const f of list) {

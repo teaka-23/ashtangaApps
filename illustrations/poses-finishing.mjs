@@ -28,7 +28,7 @@ export function urdhvaDhanurasana() {
       [98, 114],
       [74, 124],
     ]),
-    shortsFrame([128, 88], [-0.8, 0.45], [0.2, -0.98], { rise: 12, hem: 13, half: 12, cheek: 13 }),
+    shortsFrame([132, 96], [-0.55, 0.84], [0.15, -0.99], { rise: 8, hem: 8, half: 11, cheek: 10 }),
     head([60, 136], [-0.1, 0.99], [-0.95, -0.2], [76, 112]),
   ]);
 }
@@ -60,8 +60,8 @@ export function halasana() {
     shadow(80, 48),
     arm([96, 128], [82, 150], [108, 140], { far: true, hand: 'hold' }),
     arm([104, 124], [90, 148], [116, 136], { hand: 'hold' }),
-    leg([124, 68], [78, 100], [32, 158], { far: true, foot: 'flat', toe: -1 }),
-    leg([130, 72], [84, 104], [42, 158], { foot: 'flat', toe: -1 }),
+    leg([122, 64], [74, 108], [28, 158], { far: true, foot: 'flat', toe: -1 }),
+    leg([130, 68], [82, 112], [38, 158], { foot: 'flat', toe: -1 }),
     torso([
       [86, 136],
       [104, 128],
@@ -102,9 +102,9 @@ export function karnapidasana() {
 export function urdhvaPadmasana() {
   return doc([
     shadow(90, 40),
-    leg([96, 78], [68, 62], [100, 48], { far: true, foot: 'free', toe: 1 }),
-    leg([106, 80], [134, 64], [104, 52], { foot: 'free', toe: -1 }),
-    arm([84, 124], [70, 92], [72, 66], { far: true, hand: 'hold' }),
+    leg([96, 80], [54, 112], [122, 68], { far: true, foot: 'free', toe: 1 }),
+    leg([108, 82], [150, 116], [72, 72], { foot: 'free', toe: -1 }),
+    arm([82, 126], [60, 118], [56, 114], { far: true, hand: 'hold' }),
     torso([
       [78, 142],
       [96, 134],
@@ -114,8 +114,8 @@ export function urdhvaPadmasana() {
       [88, 104],
       [76, 134],
     ]),
-    shortsFrame([102, 80], [0.05, 1], [1, 0], { rise: 12, hem: 13, half: 11, cheek: 12 }),
-    arm([108, 120], [128, 90], [130, 66], { hand: 'hold' }),
+    shortsFrame([102, 84], [0, 1], [1, 0], { rise: 7, hem: 5, half: 9, cheek: 7 }),
+    arm([116, 124], [146, 120], [148, 116], { hand: 'hold' }),
     head([60, 152], [0.3, -0.95], [-0.5, 0.87], [74, 142]),
   ]);
 }
@@ -124,9 +124,9 @@ export function urdhvaPadmasana() {
 export function pindasana() {
   return doc([
     shadow(92, 40),
-    leg([98, 108], [74, 124], [96, 96], { far: true, foot: 'free', toe: 1 }),
-    leg([108, 110], [132, 122], [108, 98], { foot: 'free', toe: -1 }),
-    arm([86, 128], [74, 112], [78, 128], { far: true, hand: 'hold' }),
+    leg([96, 106], [46, 138], [118, 118], { far: true, foot: 'free', toe: 1 }),
+    leg([110, 108], [154, 140], [82, 122], { foot: 'free', toe: -1 }),
+    arm([84, 130], [70, 124], [74, 132], { far: true, hand: 'hold' }),
     torso([
       [80, 146],
       [98, 138],
@@ -136,8 +136,8 @@ export function pindasana() {
       [88, 118],
       [78, 138],
     ]),
-    shortsFrame([104, 108], [0.1, 1], [1, 0], { rise: 11, hem: 12, half: 11, cheek: 12 }),
-    arm([110, 124], [128, 112], [124, 128], { hand: 'hold' }),
+    shortsFrame([104, 110], [0.15, 1], [1, 0], { rise: 6, hem: 5, half: 9, cheek: 6 }),
+    arm([112, 128], [132, 122], [126, 132], { hand: 'hold' }),
     head([70, 152], [0.25, -0.97], [-0.4, 0.92], [82, 142]),
   ]);
 }
@@ -213,18 +213,18 @@ export function baddhaPadmasana() {
     shadow(100, 46),
     leg([92, 148], [60, 156], [104, 132], { far: true, foot: 'free', toe: 1 }),
     leg([108, 148], [140, 156], [100, 136], { foot: 'free', toe: -1 }),
-    arm([84, 112], [62, 126], [84, 142], { far: true, hand: 'hold' }),
+    arm([86, 128], [64, 140], [96, 136], { far: true, hand: 'hold' }),
     torso([
-      [76, 104],
-      [124, 104],
-      [118, 134],
-      [108, 152],
-      [92, 152],
-      [82, 134],
+      [78, 124],
+      [122, 124],
+      [116, 140],
+      [108, 154],
+      [92, 154],
+      [84, 140],
     ]),
-    shortsFrame([100, 150], [0, -1], [1, 0], { rise: 11, hem: 12, half: 13, cheek: 12 }),
-    arm([116, 112], [138, 126], [116, 142], { hand: 'hold' }),
-    headFront([100, 122], [100, 108], [0, 1]),
+    shortsFrame([100, 150], [0, -1], [1, 0], { rise: 8, hem: 8, half: 12, cheek: 11 }),
+    arm([114, 128], [136, 140], [108, 136], { hand: 'hold' }),
+    headFront([100, 138], [100, 124], [0, 1]),
   ]);
 }
 
@@ -253,8 +253,8 @@ export function padmasana() {
 export function utpluthih() {
   return doc([
     shadow(100, 40),
-    arm([82, 104], [64, 132], [54, 158], { far: true, hand: 'flat', fingers: -1 }),
-    arm([118, 104], [136, 132], [146, 158], { hand: 'flat', fingers: 1 }),
+    arm([90, 108], [82, 134], [78, 158], { far: true, hand: 'flat', fingers: -1 }),
+    arm([110, 108], [118, 134], [122, 158], { hand: 'flat', fingers: 1 }),
     torso([
       [84, 72],
       [116, 72],
