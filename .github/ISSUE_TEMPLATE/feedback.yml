@@ -1,0 +1,56 @@
+name: Замечание пользователя
+description: Реестр обратной связи (после сообщения в Telegram-бот)
+title: '[feedback] '
+labels: ['feedback', 'needs-triage']
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: Тип
+      options:
+        - баг
+        - неудобство / UX
+        - ошибка в асане / контент
+        - иллюстрация
+        - идея
+        - другое
+    validations:
+      required: true
+  - type: dropdown
+    id: source
+    attributes:
+      label: Источник
+      options:
+        - Telegram
+        - VK
+        - Web
+        - другое
+    validations:
+      required: true
+  - type: input
+    id: screen
+    attributes:
+      label: Экран / асана
+      description: Например practice / primary / paschimottanasana
+  - type: textarea
+    id: summary
+    attributes:
+      label: Суть замечания
+      description: Что написал пользователь (можно вставить целиком)
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Приоритет
+      options:
+        - P0 — ломает практику
+        - P1 — сильное неудобство
+        - P2 — стоит улучшить
+        - P3 — идея / позже
+      default: 2
+  - type: textarea
+    id: context
+    attributes:
+      label: Контекст из шаблона
+      description: Платформа, UA, hash — блок «Контекст» из сообщения

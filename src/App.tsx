@@ -3,6 +3,7 @@ import { poseFrameCount } from './data/cartoons';
 import { getMantra, MANTRAS, type MantraId } from './data/mantras';
 import { getSeries, SERIES_ORDER, type SeriesId } from './data/series';
 import type { Asana } from './data/types';
+import { FeedbackButton } from './components/FeedbackButton';
 import { MantraAudioButton } from './components/MantraAudioButton';
 import { PosePicture } from './components/PosePicture';
 import { AsanaFigure } from './components/AsanaFigure';
@@ -407,6 +408,8 @@ export default function App() {
               </p>
             </div>
           </details>
+
+          <FeedbackButton context={{ screen: '#/' }} />
 
           {mantraId && (
             <div className="sheet-backdrop" onClick={() => setMantraId(null)}>

@@ -49,6 +49,9 @@ export const messages = {
     },
     practiceProgress: 'Прогресс практики',
     mantras: 'Мантры',
+    feedback: 'Обратная связь',
+    feedbackCopied: 'Шаблон скопирован — вставьте в чат',
+    feedbackOpened: 'Откройте чат и опишите замечание',
   },
   en: {
     appTitle: 'Ashtanga Yoga',
@@ -98,6 +101,9 @@ export const messages = {
     },
     practiceProgress: 'Practice progress',
     mantras: 'Mantras',
+    feedback: 'Feedback',
+    feedbackCopied: 'Template copied — paste it in the chat',
+    feedbackOpened: 'Open the chat and describe the issue',
   },
 } as const;
 
