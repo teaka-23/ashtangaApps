@@ -29,7 +29,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 8,
     drishti: 'Нос',
     breaths: 5,
-    note: 'Полуприсед, скручивание с захватом за спиной.',
+    note: 'Глубокий присед, пятки на полу, колени вместе. Скрутите корпус в сторону, обведите руку вокруг коленей снаружи и сцепите руки в замок за спиной.',
     section: 'intermediate',
   },
   {
@@ -42,7 +42,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 8,
     drishti: 'Нос',
     breaths: 5,
-    note: 'Одна нога на полу, вторая выпрямлена вверх.',
+    note: 'Сидя: одна нога согнута назад (стопа у бедра), вторую выпрямите вертикально вверх, обхватите стопу обеими руками и тяните подбородок к колену.',
     section: 'intermediate',
   },
   {
@@ -56,7 +56,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     drishti: 'Нос',
     breaths: 5,
     modernAddition: true,
-    note: 'Грудная кобра; подъём груди и ног.',
+    note: 'Лёжа на животе: руки вытянуты вдоль тела ладонями вниз (или под бёдрами), приподнимите грудь, голову и обе прямые ноги над полом.',
     section: 'intermediate',
   },
   {
@@ -70,7 +70,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     drishti: 'Нос',
     breaths: 5,
     modernAddition: true,
-    note: 'Руки назад, подъём груди и ног.',
+    note: 'Лёжа на животе: поставьте ладони на пол на уровне нижних рёбер, локти прижаты к бокам; отталкиваясь от пола, поднимите грудь и прямые ноги выше.',
     section: 'intermediate',
   },
   {
@@ -83,7 +83,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 8,
     drishti: 'Нос',
     breaths: 5,
-    note: 'Лёжа, захват стоп, пятки к бёдрам.',
+    note: 'Поза лягушки: лёжа на животе, согните колени и ладонями прижмите подъёмы стоп к внешней стороне таза, поднимая грудь и направляя локти вверх.',
     section: 'intermediate',
   },
   {
@@ -96,7 +96,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 9,
     drishti: 'Нос',
     breaths: 5,
-    note: 'Захват лодыжек, прогиб лёжа.',
+    note: 'Лёжа на животе: захватите лодыжки снаружи и на вдохе потяните грудь и бёдра высоко вверх, формируя ровную натянутую дугу.',
     section: 'intermediate',
   },
   {
@@ -109,7 +109,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 9,
     drishti: 'В сторону',
     breaths: 5,
-    note: 'Перекат на бок в луке.',
+    note: 'Из позы лука, сохраняя крепкий захват лодыжек, перекатитесь на правый, затем на левый бок; держите плечи и колени в раскрытой дуге.',
     section: 'intermediate',
   },
   {
@@ -122,7 +122,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 8,
     drishti: 'Вверх',
     breaths: 5,
-    note: 'Колени на полу, руки на пятках.',
+    note: 'Стоя на коленях на ширине таза: подайте бёдра вперёд, раскройте грудную клетку вверх и опустите ладони на пятки, не заламывая поясницу.',
     section: 'intermediate',
   },
   {
@@ -135,7 +135,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 8,
     drishti: 'Вверх',
     breaths: 5,
-    note: 'Глубокий прогиб из верблюда.',
+    note: 'Из положения на коленях захватите лодыжки или бёдра руками, прогнитесь назад, выводя таз вперёд, пока макушка не коснётся пола позади стоп.',
     section: 'intermediate',
   },
   {
@@ -148,7 +148,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 10,
     drishti: 'Нос',
     breaths: 5,
-    note: 'Глубокий прогиб, голова к стопам.',
+    note: 'Стоя на коленях, уйдите в глубокий прогиб назад: опустите локти и предплечья на пол, захватите руками пятки или стопы и потяните макушку к ним.',
     section: 'intermediate',
   },
   {
@@ -161,7 +161,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 9,
     drishti: 'Третий глаз',
     breaths: 5,
-    note: 'Спина на полу между пятками.',
+    note: 'Сидя между пяток, аккуратно опуститесь назад: поставьте макушку на пол, прогните грудь вверх, ладони на бёдрах; выход без опоры на руки.',
     section: 'intermediate',
   },
   {
@@ -175,7 +175,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     drishti: 'Нос',
     breaths: 5,
     modernAddition: true,
-    note: 'Баланс на руках, колени на трицепсах.',
+    note: 'Присядьте на корточки, поставьте ладони на пол, уприте колени в тыльную сторону плеч и перенесите вес вперёд на руки, оторвав стопы от пола.',
     section: 'intermediate',
   },
   {
@@ -189,7 +189,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     drishti: 'Нос',
     breaths: 5,
     modernAddition: true,
-    note: 'Прыжок из адхо мукха в бакасану.',
+    note: 'Прыжок из собаки мордой вниз в высокий баланс на руках: локти почти прямые, колени высоко у подмышек, стопы подтянуты к ягодицам.',
     section: 'intermediate',
   },
   {
@@ -202,7 +202,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 9,
     drishti: 'В сторону',
     breaths: 5,
-    note: 'Скрутка сидя на боку стоп.',
+    note: 'Сидя: одна нога в полулотосе, голень второй уложена сбоку у таза. Скрутите корпус, захватите рукой за спиной стопу полулотоса, вторая рука под коленом.',
     section: 'intermediate',
   },
   {
@@ -215,7 +215,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 9,
     drishti: 'В сторону',
     breaths: 5,
-    note: 'Скрутка с опорой локтем за колено.',
+    note: 'Нижняя нога согнута у таза, стопа второй перешагнула за колено на пол. Скрутка к верхнему колену: плечо за колено, захват за стопу или замок за спиной.',
     section: 'intermediate',
   },
   {
@@ -228,7 +228,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 10,
     drishti: 'Нос',
     breaths: 5,
-    note: 'Нога за головой, сидя.',
+    note: 'Сидя с одной прямой ногой: заведите вторую ногу за плечо и шею (голень за затылком), выпрямите спину и сложите ладони в намасте у груди.',
     section: 'intermediate',
   },
   {
@@ -241,7 +241,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 11,
     drishti: 'Нос',
     breaths: 5,
-    note: 'Обе ноги за плечами.',
+    note: 'Сидя: заведите обе ноги за плечи и скрестите лодыжки за шеей, упритесь ладонями в пол по бокам таза и поднимите тело в баланс.',
     section: 'intermediate',
   },
   {
@@ -254,7 +254,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 11,
     drishti: 'Нос',
     breaths: 5,
-    note: 'Ноги за головой, тело на боку.',
+    note: 'Лёжа на спине: обе ноги заведены за голову и скрещены за шеей, руки обхватывают бёдра и соединяются в замок за поясницей.',
     section: 'intermediate',
   },
   {
@@ -268,7 +268,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     drishti: 'Нос',
     breaths: 5,
     modernAddition: true,
-    note: 'Руки между ног, выпрямление ног.',
+    note: 'Заведите плечи глубоко под бёдра, поставьте ладони на пол за пятками, поднимите таз и выпрямите обе ноги вперёд над полом.',
     section: 'intermediate',
   },
   {
@@ -282,6 +282,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     drishti: 'Нос',
     breaths: 5,
     modernAddition: true,
+    note: 'Стоя в широком наклоне с руками за голенями: обхватите лодыжки или пятки сзади и пройдите шагами вперёд, держа макушку к полу.',
     section: 'intermediate',
   },
   {
@@ -295,6 +296,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     drishti: 'Нос',
     breaths: 5,
     modernAddition: true,
+    note: 'Из положения Б сцепите руки в замок за спиной на пояснице, сохраняя глубокий наклон стоя с ногами на ширине плеч или шире.',
     section: 'intermediate',
   },
   {
@@ -307,7 +309,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 11,
     drishti: 'Нос',
     breaths: 8,
-    note: 'Перевёрнутая V на предплечьях.',
+    note: 'Стойка на предплечьях: локти строго под плечами, предплечья параллельны на полу; вытяните прямые ноги вертикально вверх, отталкиваясь от плеч.',
     section: 'intermediate',
   },
   {
@@ -320,7 +322,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 12,
     drishti: 'Нос',
     breaths: 8,
-    note: 'Лотос в стойке на предплечьях.',
+    note: 'Из Пинча Майурасаны в воздухе сложите ноги в полный лотос и плавно опустите колени на плечи или грудь, сохраняя баланс на предплечьях.',
     section: 'intermediate',
   },
   {
@@ -333,7 +335,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 11,
     drishti: 'Нос',
     breaths: 5,
-    note: 'Баланс на руках, корпус параллелен полу.',
+    note: 'Поза павлина: стоя на коленях, поставьте ладони на пол пальцами назад к ногам, уприте локти в живот и вытяните тело и прямые ноги горизонтально полу.',
     section: 'intermediate',
   },
   {
@@ -346,7 +348,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 14,
     drishti: 'Вперёд',
     breaths: 5,
-    note: 'Прыжки в чатуранге вперёд по каретке.',
+    note: 'Поза крокодила: в низкой планке (чатуранга с локтями под 90°) выполните 5 ритмичных прыжков вперёд всем телом на несколько сантиметров над полом.',
     section: 'intermediate',
   },
   {
@@ -359,7 +361,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 9,
     drishti: 'В сторону',
     breaths: 5,
-    note: 'Полулотос в коленном упоре.',
+    note: 'Стоя в полулотосе: согните опорную ногу в глубокий баланс/присед, спина прямая, ладони соединены в намасте перед грудью.',
     section: 'intermediate',
   },
   {
@@ -372,7 +374,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 8,
     drishti: 'Вверх',
     breaths: 5,
-    note: 'Колено на полу, боковое вытяжение.',
+    note: 'Стоя на одном колене, вытяните вторую прямую ногу в сторону (стопа на полу) и выполните глубокий боковой наклон к прямой ноге, накрывая ухо верхней рукой.',
     section: 'intermediate',
   },
   {
@@ -386,7 +388,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     drishti: 'В сторону',
     breaths: 5,
     modernAddition: true,
-    note: 'Скрещённые ноги, руки вверх/вниз.',
+    note: 'Сидя: уложите одно колено точно над другим в центре, стопы по бокам таза. Одну руку заведите сверху за голову, вторую снизу за спину и сцепите пальцы.',
     section: 'intermediate',
   },
   {
@@ -400,7 +402,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     drishti: 'Нос',
     breaths: 5,
     modernAddition: true,
-    note: 'Наклон вперёд в гомукхасане.',
+    note: 'Сохраняя скрещённые колени и замок рук за спиной из Гомукхасаны А, на выдохе выполните наклон вперёд, опуская подбородок на верхнее колено.',
     section: 'intermediate',
   },
   {
@@ -413,7 +415,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     vinyasa: 10,
     drishti: 'Третий глаз',
     breaths: 5,
-    note: 'Спина и ноги подняты, опора на макушке.',
+    note: 'Опора на затылок и плечи: поднимите таз и прямые ноги под углом вверх и захватите стопы вытянутыми руками.',
     section: 'intermediate',
   },
   {
@@ -427,6 +429,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     drishti: 'Нос',
     breaths: 8,
     modernAddition: true,
+    note: 'Стойка на голове А: макушка на полу, ладони упираются в пол по бокам от головы, локти согнуты под 90°, тело и ноги строго вертикально.',
     section: 'intermediate',
   },
   {
@@ -440,6 +443,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     drishti: 'Нос',
     breaths: 8,
     modernAddition: true,
+    note: 'Стойка на голове Б: макушка на полу, прямые руки вытянуты вперёд на полу перед лицом ладонями вниз, ноги вертикально вверх.',
     section: 'intermediate',
   },
   {
@@ -453,6 +457,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     drishti: 'Нос',
     breaths: 8,
     modernAddition: true,
+    note: 'Стойка на голове В: макушка на полу, прямые руки широко разведены в стороны на полу ладонями вниз, тело и ноги вертикально вверх.',
     section: 'intermediate',
   },
   {
@@ -466,6 +471,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     drishti: 'Нос',
     breaths: 8,
     modernAddition: true,
+    note: 'Связанная стойка А: предплечья на полу, ладони обхватывают противоположные локти, макушка на полу за руками, ноги вертикально вверх.',
     section: 'intermediate',
   },
   {
@@ -479,6 +485,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     drishti: 'Нос',
     breaths: 8,
     modernAddition: true,
+    note: 'Связанная стойка Б: предплечья треугольником на полу, пальцы сцеплены в замок за затылком, макушка на полу, ноги вертикально вверх.',
     section: 'intermediate',
   },
   {
@@ -492,6 +499,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     drishti: 'Нос',
     breaths: 8,
     modernAddition: true,
+    note: 'Связанная стойка В: локти на полу, предплечья скрещены перед головой, ладони лежат на противоположных плечах, ноги вертикально вверх.',
     section: 'intermediate',
   },
   {
@@ -505,6 +513,7 @@ export const INTERMEDIATE_UNIQUE: Asana[] = [
     drishti: 'Нос',
     breaths: 8,
     modernAddition: true,
+    note: 'Связанная стойка Г: макушка на полу, прямые руки сцеплены в замок и вытянуты на полу за затылком, ноги вертикально вверх.',
     section: 'intermediate',
   },
 ];

@@ -18,10 +18,11 @@ describe('series registry', () => {
     }
   });
 
-  it('has a pose for every asana', () => {
+  it('has a pose and beginner note for every asana', () => {
     for (const id of SERIES_ORDER) {
       for (const asana of SERIES[id].asanas) {
         expect(POSES[asana.pose], `${id}:${asana.id}`).toBeTruthy();
+        expect(asana.note?.trim(), `${id}:${asana.id} note`).toBeTruthy();
       }
     }
   });

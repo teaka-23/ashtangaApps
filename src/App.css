@@ -363,9 +363,7 @@ body {
 .asana-card__sanskrit,
 .asana-card__transcription,
 .asana-card__russian {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .asana-card__sanskrit {
@@ -888,10 +886,8 @@ img.sheet__figure {
   margin: 2px 0 0;
   color: var(--tg-hint);
   font-size: 13px;
-  line-height: 1.3;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
 .practice__meta-line {
@@ -908,14 +904,17 @@ img.sheet__figure {
   border-radius: 10px;
   padding: 6px 10px;
   font-size: 12px;
-  line-height: 1.35;
+  line-height: 1.3;
   text-align: left;
-  margin: 6px 0 0;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  overflow: hidden;
+  margin: 5px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.practice--overview .practice__note {
+  font-size: 11px;
+  line-height: 1.25;
+  padding: 4px 8px;
+  margin-top: 4px;
 }
 
 .practice__flow-hint {
