@@ -1,37 +1,42 @@
 # Обратная связь
 
-Цель: быстро собирать неудобства и вести реестр для улучшений — без бэкенда.
+Цель: собирать замечания в одну таблицу и разбирать их без бэкенда.
 
 ## Поток
 
-1. Пользователь в приложении нажимает **«Обратная связь»** на home.
-2. Копируется шаблон + открывается личный чат [`@d_teaka`](https://t.me/d_teaka).
-3. Пользователь вставляет шаблон, дописывает суть и отправляет.
-4. Владелец заносит запись в **GitHub Issues** по шаблону
-   [Замечание пользователя](https://github.com/teaka-23/ashtangaApps/issues/new?template=feedback.yml)
-   (labels: `feedback`, `needs-triage`).
+1. Пользователь на home нажимает **«Обратная связь»**.
+2. Открывается **Google Form** (`FEEDBACK_FORM_URL` в `src/feedback.ts`).
+3. Ответы падают в связанную **Google Sheet** (Ответы → таблица).
+4. Раз в неделю triage: дубликаты → приоритет → при необходимости
+   [GitHub Issue](https://github.com/teaka-23/ashtangaApps/issues/new?template=feedback.yml).
 
-## Как реально получать сообщения
+## Форма
 
-Сейчас замечания идут в личку [`@d_teaka`](https://t.me/d_teaka)
-(`FEEDBACK_CHAT_USERNAME` в `src/feedback.ts`).
+Актуальная форма уже создана и прописана в `FEEDBACK_FORM_URL`.
 
-Реестр для анализа и приоритетов — **GitHub Issues**, не чат.
-Позже при необходимости: Google Form → таблица или forwarder на бота Mini App.
+Поля сейчас:
+
+| Поле | Тип |
+|------|-----|
+| Тип | Один из списка |
+| где | Один из списка |
+| Что не так | Абзац |
+
+Ответы смотрите во вкладке **«Ответы»** формы / в связанной таблице Sheets.
+
+(Опционально позже) Добавьте вопрос «Технический контекст» (текст-строка) →
+⋮ → «Получить ссылку для предзаполнения» → цифры `entry.XXXXXXXX`
+в `FEEDBACK_FORM_ENTRY_CONTEXT` — приложение подставит platform / screen / asana.
 
 ## Реестр и triage
 
-| Статус label | Смысл |
-|--------------|--------|
-| `needs-triage` | Только что занесено |
-| `feedback` | Из пользовательской обратной связи |
-| убрать `needs-triage`, добавить область | `ux` / `bug` / `content` / `illustration` |
+Источник истины для анализа — **таблица Forms**.  
+GitHub Issues — только то, что уходит в работу (labels: `feedback`, `needs-triage`).
 
-Раз в неделю: дубликаты → приоритет P0–P3 → в работу или закрыть `wontfix`.
-
-Иллюстрации: пользовательский issue с `illustration` → править `poses.ts` только в текущем ревью; в `docs/illustration-review.md` переносить после «ок» владельца.
+Иллюстрации: строка в таблице → issue с `illustration` → править `poses.ts`
+только в текущем ревью; в `docs/illustration-review.md` — после «ок» владельца.
 
 ## Код
 
-- `src/feedback.ts` — шаблон, clipboard, open bot
-- `src/components/FeedbackButton.tsx` — UI
+- `src/feedback.ts` — URL формы, предзаполнение контекста, openLink
+- `src/components/FeedbackButton.tsx` — тихая кнопка на home

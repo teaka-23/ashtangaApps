@@ -56,7 +56,7 @@ Mini App для практикующих (Telegram **и** VK): выбор сер
 | F-22 | Платформенные BackButton (TG) / in-app назад (VK/web), haptics |
 | F-23 | Детект хоста telegram \| vk \| web; `initPlatform` (тема, storage, haptic) |
 | F-24 | VK: sync hash ↔ `VKWebAppSetLocation` / `VKWebAppChangeFragment` |
-| F-25 | Обратная связь: кнопка на home → шаблон в буфер + чат `@d_teaka`; реестр — GitHub Issues (`docs/feedback.md`) |
+| F-25 | Обратная связь: кнопка на home → Google Form; ответы в Sheets; triage → GitHub Issues (`docs/feedback.md`) |
 
 ### Контент / иллюстрации
 

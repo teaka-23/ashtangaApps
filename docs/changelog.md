@@ -2,8 +2,8 @@
 
 ## 2026-11-14 (обратная связь)
 
-- Кнопка «Обратная связь» на home (тихий футер): копирует шаблон и открывает чат `@d_teaka`
-- Реестр замечаний: GitHub Issue template + `docs/feedback.md`
+- Кнопка «Обратная связь» на home (тихий футер) → Google Form; ответы в Sheets
+- Реестр triage: GitHub Issue template + `docs/feedback.md`
 
 ## 2026-11-14 (иллюстрации, лист правок)
 

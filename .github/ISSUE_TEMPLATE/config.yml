@@ -1,5 +1,5 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Написать в Telegram
-    url: https://t.me/d_teaka
-    about: Пользователи отправляют замечания сюда; в Issues заносит владелец
+  - name: Форма обратной связи
+    url: https://docs.google.com/forms/d/e/1FAIpQLSdGWRdEMhbLZebpYOC6IGy6dRkw8q_6fWXykXOL2y4rBgpozw/viewform
+    about: Пользователи заполняют Google Form; в Issues заносит владелец после triage

@@ -12,18 +12,16 @@ export function FeedbackButton({ context, className }: Props) {
   const locale = useLocale();
   const [hint, setHint] = useState<string | null>(null);
 
-  const onClick = useCallback(async () => {
+  const onClick = useCallback(() => {
     haptic('light');
-    const copied = await startFeedback(context);
-    setHint(
-      copied ? t(locale, 'feedbackCopied') : t(locale, 'feedbackOpened'),
-    );
-    window.setTimeout(() => setHint(null), 3500);
+    startFeedback(context);
+    setHint(t(locale, 'feedbackOpened'));
+    window.setTimeout(() => setHint(null), 2500);
   }, [context, locale]);
 
   return (
     <div className={`feedback-btn${className ? ` ${className}` : ''}`}>
-      <button type="button" className="feedback-btn__action" onClick={() => void onClick()}>
+      <button type="button" className="feedback-btn__action" onClick={onClick}>
         {t(locale, 'feedback')}
       </button>
       {hint && (

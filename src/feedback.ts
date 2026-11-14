@@ -1,16 +1,22 @@
 import { getPlatformHost } from './platform';
 
 /**
- * Куда открывать чат для замечаний.
- * Бот Mini App принимает личные сообщения только если есть обработчик
- * (forwarder / getUpdates). Иначе смените на личный @username.
+ * Ссылка для респондентов (Forms → Отправить → ссылка).
+ * Предзаполнение: Forms → ⋮ → «Получить ссылку для предзаполнения»
+ * → скопировать entry.XXXX в FEEDBACK_FORM_ENTRY_CONTEXT.
  * См. docs/feedback.md
  */
-export const FEEDBACK_CHAT_USERNAME = 'd_teaka';
-/** Личный чат владельца — шаблон вставляется из буфера. */
-export const FEEDBACK_BOT_URL = `https://t.me/${FEEDBACK_CHAT_USERNAME}`;
+export const FEEDBACK_FORM_URL =
+  'https://docs.google.com/forms/d/e/1FAIpQLSdGWRdEMhbLZebpYOC6IGy6dRkw8q_6fWXykXOL2y4rBgpozw/viewform';
 
-/** Реестр для triage владельцем (не публичная форма для всех). */
+/**
+ * ID поля «Технический контекст» (только цифры из entry.123456789).
+ * Сейчас в форме этого поля нет — предзаполнение выключено.
+ * Добавите поле → Forms ⋮ → ссылка для предзаполнения → цифры сюда.
+ */
+export const FEEDBACK_FORM_ENTRY_CONTEXT = '';
+
+/** Реестр triage (после разбора ответов в таблице Forms). */
 export const FEEDBACK_ISSUES_URL =
   'https://github.com/teaka-23/ashtangaApps/issues/new?template=feedback.yml';
 
@@ -21,7 +27,7 @@ export interface FeedbackContext {
   screen?: string;
 }
 
-export function buildFeedbackMessage(ctx: FeedbackContext = {}): string {
+export function buildFeedbackContextLine(ctx: FeedbackContext = {}): string {
   const host = getPlatformHost();
   const screen =
     ctx.screen ??
@@ -30,51 +36,37 @@ export function buildFeedbackMessage(ctx: FeedbackContext = {}): string {
     typeof navigator !== 'undefined' ? navigator.userAgent.slice(0, 140) : '—';
 
   return [
-    'Замечание по приложению Аштанга',
-    '',
-    'Тип: [баг / неудобно / ошибка в асане / иллюстрация / идея]',
-    'Где: [практика / каталог / шторка / другое]',
-    'Что не так:',
-    '',
-    '',
-    '---',
-    'Контекст (не удаляйте):',
-    `Платформа: ${host}`,
-    `Экран: ${screen}`,
-    `Серия: ${ctx.seriesId ?? '—'}`,
-    `Асана: ${ctx.asanaId ?? '—'}`,
-    `UA: ${ua}`,
-  ].join('\n');
+    `platform=${host}`,
+    `screen=${screen}`,
+    `series=${ctx.seriesId ?? '—'}`,
+    `asana=${ctx.asanaId ?? '—'}`,
+    `ua=${ua}`,
+  ].join('; ');
 }
 
-export async function copyFeedbackTemplate(ctx: FeedbackContext = {}): Promise<boolean> {
-  const text = buildFeedbackMessage(ctx);
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    return false;
+/** URL формы с опциональным предзаполнением контекста. */
+export function buildFeedbackFormUrl(ctx: FeedbackContext = {}): string {
+  const url = new URL(FEEDBACK_FORM_URL);
+  if (FEEDBACK_FORM_ENTRY_CONTEXT) {
+    url.searchParams.set(
+      `entry.${FEEDBACK_FORM_ENTRY_CONTEXT}`,
+      buildFeedbackContextLine(ctx),
+    );
   }
+  return url.toString();
 }
 
-/** Открывает чат бота (в TG Mini App — openTelegramLink). */
-export function openFeedbackChat(): void {
-  const url = FEEDBACK_BOT_URL;
+function openExternalUrl(url: string): void {
   const tg = (
     window as Window & {
       Telegram?: {
         WebApp?: {
-          openTelegramLink?: (url: string) => void;
           openLink?: (url: string) => void;
         };
       };
     }
   ).Telegram?.WebApp;
 
-  if (typeof tg?.openTelegramLink === 'function') {
-    tg.openTelegramLink(url);
-    return;
-  }
   if (typeof tg?.openLink === 'function') {
     tg.openLink(url);
     return;
@@ -83,9 +75,7 @@ export function openFeedbackChat(): void {
   window.open(url, '_blank', 'noopener,noreferrer');
 }
 
-/** Копирует шаблон и открывает бота. */
-export async function startFeedback(ctx: FeedbackContext = {}): Promise<boolean> {
-  const copied = await copyFeedbackTemplate(ctx);
-  openFeedbackChat();
-  return copied;
+/** Открывает Google Form (в TG Mini App — openLink). */
+export function startFeedback(ctx: FeedbackContext = {}): void {
+  openExternalUrl(buildFeedbackFormUrl(ctx));
 }

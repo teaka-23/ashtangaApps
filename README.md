@@ -72,6 +72,6 @@ npm run test:e2e     # e2e smoke
 
 - [Требования](docs/requirements.md)
 - [Changelog](docs/changelog.md)
-- [Обратная связь](docs/feedback.md) — сбор замечаний (Telegram) и реестр (GitHub Issues)
+- [Обратная связь](docs/feedback.md) — Google Form → Sheets; triage в GitHub Issues
 - [ADR](docs/adr/) — архитектурные решения (см. ADR-0006 dual-platform)
 - [Технический долг](docs/tech-debt.md)
