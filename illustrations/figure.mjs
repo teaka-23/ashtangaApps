@@ -34,15 +34,6 @@ function capsule(a, b, r) {
   return `M ${pt(add(a, [px, py]))} L ${pt(add(b, [px, py]))} A ${r} ${r} 0 0 1 ${pt(add(b, [-px, -py]))} L ${pt(add(a, [-px, -py]))} A ${r} ${r} 0 0 1 ${pt(add(a, [px, py]))} Z`;
 }
 
-/** Сумма единичных «к концам» смотрит в сгиб. Противоположность — наколенник / олекранон. */
-function pointOuter(a, b, c) {
-  const u = norm(sub(a, b));
-  const v = norm(sub(c, b));
-  const bis = add(u, v);
-  if (len(bis) < 0.35) return [0, 0];
-  return mul(norm(bis), -1);
-}
-
 function smoothClosed(pts) {
   const m = pts.length;
   let d = `M ${pt(pts[0])}`;
@@ -113,30 +104,36 @@ function footPath(ankle, toe, mode, knee, far = false) {
       `Q ${heel - s * 2 * k},${sole - 1} ${heel},${sole} Z`,
     ].join(' ');
   }
-  if (mode === 'free') {
-    // стопа вдоль голени: пятка, подушечка, короткий носок. Не клин и не рог.
+  if (mode === 'free' || mode === 'lotus') {
+    // стопа вдоль голени с округлой пяткой и мягким носком (без шипа-клинa).
     let dir = [s, 0];
     if (knee) {
       const d = sub(ankle, knee);
       if (len(d) > 4) dir = norm(d);
     }
     const side = [-dir[1], dir[0]];
-    const reach = far ? 8.5 : 10.5;
-    const w = far ? 4.8 : 5.6;
-    const heel = add(ankle, mul(dir, -2.2));
-    const ball = add(ankle, mul(dir, reach * 0.55));
+    const isLotus = mode === 'lotus';
+    const reach = isLotus ? (far ? 6.4 : 7.6) : far ? 7.5 : 9.2;
+    const w = isLotus ? (far ? 3.9 : 4.5) : far ? 4.4 : 5.0;
+    const heel = add(ankle, mul(dir, -1.6));
+    const mid = add(ankle, mul(dir, reach * 0.5));
     const tip = add(ankle, mul(dir, reach));
-    const toe = add(tip, mul(dir, 2.2));
+    const hA = add(heel, mul(side, w * 0.56));
+    const hB = add(heel, mul(side, -w * 0.62));
+    const hCap = add(heel, mul(dir, -2.1));
+    const mA = add(mid, mul(side, w * 0.62));
+    const mB = add(mid, mul(side, -w * 0.52));
+    const tA = add(tip, mul(side, w * 0.34));
+    const tB = add(tip, mul(side, -w * 0.28));
+    const tCap = add(tip, mul(dir, 1.5));
     return [
-      `M ${pt(add(heel, mul(side, w * 0.55)))}`,
-      `L ${pt(add(heel, mul(dir, -1.8)))}`,
-      `L ${pt(add(heel, mul(side, -w * 0.7)))}`,
-      `L ${pt(add(ball, mul(side, -w * 0.5)))}`,
-      `L ${pt(add(tip, mul(side, -w * 0.2)))}`,
-      `L ${pt(toe)}`,
-      `L ${pt(add(tip, mul(side, w * 0.45)))}`,
-      `L ${pt(add(ball, mul(side, w * 0.62)))}`,
-      `L ${pt(add(heel, mul(side, w * 0.55)))} Z`,
+      `M ${pt(hA)}`,
+      `Q ${pt(hCap)} ${pt(hB)}`,
+      `L ${pt(mB)}`,
+      `L ${pt(tB)}`,
+      `Q ${pt(tCap)} ${pt(tA)}`,
+      `L ${pt(mA)}`,
+      `Z`,
     ].join(' ');
   }
   if (mode === 'freeFlex') {
@@ -224,6 +221,20 @@ function handPath(wrist, from, kind, fingers = 1) {
       `Q ${x + s * 17},${y - 0.6} ${x + s * 14},${y - 3}`,
       `L ${x + s * 3},${y - 3.2}`,
       `L ${x},${Math.min(wrist[1] + 1, y - 7)} Z`,
+    ].join(' ');
+  }
+  if (kind === 'prayer') {
+    // Сложенные ладони (намасте): узкий силуэт вдоль предплечья без крюка.
+    const side = outerSide(dir);
+    const tip = add(wrist, mul(dir, 9.5));
+    const mid = add(wrist, mul(dir, 4.5));
+    return [
+      `M ${pt(add(wrist, mul(side, -2.5)))}`,
+      `L ${pt(add(mid, mul(side, -2.8)))}`,
+      `L ${pt(tip)}`,
+      `L ${pt(add(mid, mul(side, 2.8)))}`,
+      `L ${pt(add(wrist, mul(side, 2.5)))}`,
+      `Z`,
     ].join(' ');
   }
   if (kind === 'hold') {
@@ -341,15 +352,28 @@ function leg(hip, knee, ankle, opt) {
     if (len(d) > 4) {
       const dir = norm(d);
       const side = [-dir[1], dir[0]];
-      const reach = far ? 8.5 : 10.5;
-      const w = far ? 4.8 : 5.6;
-      const heel = add(ankle, add(mul(dir, -2.2), mul(side, -w * 0.55)));
-      const ball = add(ankle, add(mul(dir, reach * 0.7), mul(side, -w * 0.28)));
+      const reach = far ? 7.5 : 9.2;
+      const w = far ? 4.4 : 5.0;
+      const heel = add(ankle, add(mul(dir, -1.4), mul(side, -w * 0.52)));
+      const ball = add(ankle, add(mul(dir, reach * 0.68), mul(side, -w * 0.26)));
       sole = `<path d="M ${pt(heel)} L ${pt(ball)}" fill="none" stroke="${far ? LINE_FAR : LINE}" stroke-width="1.15" stroke-linecap="round"/>`;
     }
   }
   const footSvg = `<path d="${footPath(ankle, toe, foot, knee, far)}" ${skin(far)} stroke-width="1.2" stroke-linejoin="round"/>${sole}`;
   return limb([hip, knee, ankle], radii, far, footSvg);
+}
+
+function thigh(hip, knee, opt = {}) {
+  const { far = false } = opt;
+  const radii = far ? [6.2, 5.3] : [6.9, 5.9];
+  return limb([hip, knee], radii, far);
+}
+
+function shin(knee, ankle, opt = {}) {
+  const { far = false, foot = 'lotus', toe = 1 } = opt;
+  const radii = far ? [5.3, 4.2] : [5.9, 4.6];
+  const footSvg = `<path d="${footPath(ankle, toe, foot, knee, far)}" ${skin(far)} stroke-width="1.2" stroke-linejoin="round"/>`;
+  return limb([knee, ankle], radii, far, footSvg);
 }
 
 function arm(shoulder, elbow, wrist, opt) {
@@ -443,6 +467,34 @@ function garmentAxes(up, front) {
   return [u, f];
 }
 
+function shortsSleeve(hipLeg, kneeLeg, maxLen, wTop, wBot, fill) {
+  const delta = sub(kneeLeg, hipLeg);
+  const dLen = len(delta);
+  if (dLen < 4) return { body: '', hem: '' };
+  const d = mul(delta, 1 / dLen);
+  const s = [-d[1], d[0]];
+  const L = clamp(maxLen, 8, dLen * 0.58);
+  const root = add(hipLeg, mul(d, -2.6));
+  const end = add(hipLeg, mul(d, L));
+  const hemMid = add(end, mul(d, 1.3));
+  const a0 = add(root, mul(s, wTop));
+  const b0 = add(root, mul(s, -wTop));
+  const a1 = add(end, mul(s, wBot));
+  const b1 = add(end, mul(s, -wBot));
+  const dPath = [
+    `M ${pt(a0)}`,
+    `L ${pt(a1)}`,
+    `Q ${pt(hemMid)} ${pt(b1)}`,
+    `L ${pt(b0)}`,
+    `Z`,
+  ].join(' ');
+  const hem = `<path d="M ${pt(a1)} Q ${pt(hemMid)} ${pt(b1)}" fill="none" stroke="#2a262e" stroke-width="0.9" stroke-linecap="round" opacity="0.5"/>`;
+  return {
+    body: `<path d="${dPath}" fill="${fill}"/>`,
+    hem,
+  };
+}
+
 function shorts(pts) {
   const waist = `M ${pt(pts[0])} L ${pt(pts[1])}`;
   const hemLine = pts.length > 5 ? `M ${pt(pts[3])} Q ${pt(pts[4])} ${pt(pts[5])}` : '';
@@ -453,15 +505,69 @@ function shorts(pts) {
 }
 
 /**
- * Шорты: пояс на тазу, короткая щека сзади, подол по бедру.
- * along — стоячая складка: трубка вниз по бедру, без пятна на спине.
+ * Шорты: пояс на тазу, ягодица и штанины по бёдрам.
+ * thighs — массив пар [hipLeg, kneeLeg] (ближняя, затем опционально дальняя).
+ * inline — остаётся в своём z-слое (под руками/голенями спереди).
  */
 function shortsFrame(hip, up, front, opt = {}) {
   const [u, f] = garmentAxes(up, front);
-  const rise = clamp(opt.rise ?? 9, 6, opt.along ? 11 : 12);
+  const rise = clamp(opt.rise ?? 9, opt.thighs ? 5 : 6, opt.along ? 11 : 12);
   const hem = clamp(opt.hem ?? 9, 6, opt.along ? 14 : 11);
-  const half = clamp(opt.half ?? 8, 6.5, opt.sym ? 10 : 10.5);
+  const half = clamp(opt.half ?? 8, 6.5, opt.thighs ? (opt.sym ? 13 : 11) : (opt.sym ? 10 : 10.5));
   const P = (uu, ff) => add(hip, add(mul(u, uu), mul(f, ff)));
+
+  if (opt.thighs?.length) {
+    const tag = opt.inline ? 'inline' : '1';
+    const legLen = opt.legLen ?? 19;
+    const farLegLen = opt.farLegLen ?? legLen - 2;
+    const wTop = opt.wTop ?? (opt.sym ? 7.4 : 7.5);
+    const wBot = opt.wBot ?? (opt.sym ? 6.4 : 6.6);
+    const parts = [];
+    const hems = [];
+    if (opt.thighs.length >= 2) {
+      const farS = shortsSleeve(opt.thighs[1][0], opt.thighs[1][1], farLegLen, wTop - 0.6, wBot - 0.6, opt.sym ? SHORTS : '#312d35');
+      if (farS.body) { parts.push(farS.body); hems.push(farS.hem); }
+    }
+    let pelvisPts;
+    let waistPath;
+    if (opt.sym) {
+      const crotch = opt.crotch ?? 5.5;
+      const wL = P(rise, -half * 0.84);
+      const wR = P(rise, half * 0.84);
+      pelvisPts = [
+        wL,
+        wR,
+        P(rise * 0.08, half * 0.95),
+        P(-crotch, half * 0.35),
+        P(-crotch * 0.72, 0),
+        P(-crotch, -half * 0.35),
+        P(rise * 0.08, -half * 0.95),
+      ];
+      waistPath = `M ${pt(wL)} L ${pt(wR)}`;
+    } else {
+      const backW = half * (opt.backW ?? 0.78);
+      const frontW = half * (opt.frontW ?? 0.72);
+      const wBack = P(rise, -backW);
+      const wFront = P(rise, frontW);
+      pelvisPts = [
+        wBack,
+        wFront,
+        P(rise * 0.1, frontW * 1.04),
+        P(-4.6, frontW * 0.65),
+        P(-6.0, -backW * 0.15),
+        P(-4.8, -backW * 1.15),
+        P(rise * 0.25, -backW * 1.2),
+      ];
+      waistPath = `M ${pt(wBack)} L ${pt(wFront)}`;
+    }
+    parts.push(`<path d="${polySmooth(pelvisPts, 1.3)}" fill="${SHORTS}"/>`);
+    parts.push(`<path d="${waistPath}" fill="none" stroke="#d4ced6" stroke-width="1.45" stroke-linecap="round"/>`);
+    const nearS = shortsSleeve(opt.thighs[0][0], opt.thighs[0][1], legLen, wTop, wBot, SHORTS);
+    if (nearS.body) { parts.push(nearS.body); hems.push(nearS.hem); }
+    parts.push(...hems);
+    return `<g data-shorts="${tag}">${parts.join('')}</g>`;
+  }
+
   let pts;
   if (opt.along) {
     // Трубка по бедру: старт выше таза, щека — ширина задней кромки, без пятна.
@@ -549,7 +655,7 @@ export function svgDocument(body) {
   const shorts = [];
   const rest = [];
   for (const line of chunks) {
-    if (line.includes('data-shorts')) shorts.push(line);
+    if (line.includes('data-shorts="1"')) shorts.push(line);
     else rest.push(line);
   }
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -674,6 +780,8 @@ export function frameToContent(svg, pad = 18) {
 
 export const draw = {
   leg,
+  thigh,
+  shin,
   arm,
   torso,
   shorts,

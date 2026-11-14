@@ -128,26 +128,22 @@ export default function App() {
   }, [route]);
 
   useEffect(() => {
-    if (route.name !== 'practice') return;
-    if (route.resume) {
-      void loadProgress(route.seriesId).then((p) => {
-        setProgressBySeries((prev) => ({ ...prev, [route.seriesId]: p }));
-        setPracticeCompletedIds(p?.completedIds ?? []);
-        if (p && p.currentAsanaId !== route.startId) {
-          navigate(
-            {
-              name: 'practice',
-              seriesId: route.seriesId,
-              startId: p.currentAsanaId,
-              resume: true,
-            },
-            true,
-          );
-        }
-      });
-    } else {
-      setPracticeCompletedIds([]);
-    }
+    if (route.name !== 'practice' || !route.resume) return;
+    void loadProgress(route.seriesId).then((p) => {
+      setProgressBySeries((prev) => ({ ...prev, [route.seriesId]: p }));
+      setPracticeCompletedIds(p?.completedIds ?? []);
+      if (p && p.currentAsanaId !== route.startId) {
+        navigate(
+          {
+            name: 'practice',
+            seriesId: route.seriesId,
+            startId: p.currentAsanaId,
+            resume: true,
+          },
+          true,
+        );
+      }
+    });
   }, [route]);
 
   const selectedId = route.name === 'asana' ? route.id : null;
@@ -175,23 +171,24 @@ export default function App() {
   }, [route, goHome, goCatalog]);
 
   const grouped = useMemo(() => {
-    if (!series) return [];
-    const map = new Map<string, Asana[]>();
-    for (const section of series.sections) map.set(section.id, []);
-    for (const asana of series.asanas) map.get(asana.section)?.push(asana);
-    return series.sections.map((section) => ({
+    if (!activeSeriesId) return [];
+    const activeSeries = getSeries(activeSeriesId);
+    const map = new Map<string, { asana: Asana; num: number }[]>();
+    for (const section of activeSeries.sections) map.set(section.id, []);
+    activeSeries.asanas.forEach((asana, idx) => {
+      map.get(asana.section)?.push({ asana, num: idx + 1 });
+    });
+    return activeSeries.sections.map((section) => ({
       section,
       asanas: map.get(section.id) ?? [],
     }));
-  }, [series]);
+  }, [activeSeriesId]);
 
   const go = (delta: number) => {
     if (!series || !activeSeriesId) return;
     const next = series.asanas[selectedIndex + delta];
     if (next) openAsana(activeSeriesId, next.id, true);
   };
-
-  let counter = 0;
 
   return (
     <LocaleContext.Provider value={locale}>
@@ -204,7 +201,7 @@ export default function App() {
               ? progress.currentAsanaId
               : route.startId
           }
-          initialCompletedIds={practiceCompletedIds}
+          initialCompletedIds={route.resume ? practiceCompletedIds : []}
           onExit={exitPractice}
         />
       ) : route.name === 'home' ? (
@@ -499,8 +496,7 @@ export default function App() {
                   <span>{sectionSubtitle(section, locale)}</span>
                 </div>
                 <ul className="asana-list">
-                  {asanas.map((asana) => {
-                    counter += 1;
+                  {asanas.map(({ asana, num }) => {
                     const label = asanaDisplayName(asana, locale);
                     return (
                       <li key={asana.id}>
@@ -508,10 +504,10 @@ export default function App() {
                           type="button"
                           className={`asana-card${asana.modernAddition ? ' asana-card--modern' : ''}`}
                           onClick={() => openAsana(route.seriesId, asana.id)}
-                          aria-label={`${counter}. ${asana.sanskrit}, ${label}`}
+                          aria-label={`${num}. ${asana.sanskrit}, ${label}`}
                         >
                           <span className="asana-card__num" aria-hidden="true">
-                            {counter}
+                            {num}
                           </span>
                           <PosePicture
                             pose={asana.pose}

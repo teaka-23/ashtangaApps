@@ -51,7 +51,6 @@ export function BreathTimer({
 
   useEffect(() => {
     if (lookMs <= 0) return;
-    setLooking(true);
     const id = window.setTimeout(() => setLooking(false), lookMs);
     return () => window.clearTimeout(id);
   }, [lookMs]);
