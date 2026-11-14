@@ -188,12 +188,7 @@ export function PracticeView({
         {metaParts.length > 0 && (
           <p className="practice__meta-line">{metaParts.join(' · ')}</p>
         )}
-        {/* Длинная расшифровка виньяс у Сурий — в шторке; на экране мешает таймеру */}
-        {note && !multiFrame && (
-          <p className="practice__note" title={note}>
-            {note}
-          </p>
-        )}
+        {note && <p className="practice__note">{note}</p>}
       </div>
 
       {asana.breaths !== undefined ? (
