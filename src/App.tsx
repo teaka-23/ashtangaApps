@@ -7,6 +7,7 @@ import { FeedbackButton } from './components/FeedbackButton';
 import { MantraAudioButton } from './components/MantraAudioButton';
 import { PosePicture } from './components/PosePicture';
 import { AsanaFigure } from './components/AsanaFigure';
+import { bindSessionLifecycle, startSession } from './analytics/session';
 import { hideBackButton, initPlatform, showBackButton } from './platform';
 import { clearProgress, loadProgress, type PracticeProgress } from './practice/progress';
 import { PracticeView } from './practice/PracticeView';
@@ -64,8 +65,11 @@ export default function App() {
   const progress = activeSeriesId ? (progressBySeries[activeSeriesId] ?? null) : null;
 
   useEffect(() => {
-    void initPlatform();
     document.documentElement.lang = locale;
+    void initPlatform().then(() => {
+      bindSessionLifecycle();
+      startSession('app');
+    });
     void Promise.all(
       SERIES_ORDER.map(async (id) => [id, await loadProgress(id)] as const),
     ).then((entries) => {

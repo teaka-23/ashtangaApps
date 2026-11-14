@@ -66,6 +66,7 @@ npm run test:e2e     # e2e smoke
 - `src/routing.ts` — hash-роутинг
 - `src/i18n/` — ru/en
 - `src/platform/` — Telegram / VK / web адаптеры
+- `src/analytics/` — сессии → Google Sheets (если задан webhook)
 - `e2e/` — Playwright smoke
 
 ## Документация
@@ -73,5 +74,6 @@ npm run test:e2e     # e2e smoke
 - [Требования](docs/requirements.md)
 - [Changelog](docs/changelog.md)
 - [Обратная связь](docs/feedback.md) — Google Form → Sheets; triage в GitHub Issues
+- [Аналитика](docs/analytics.md) — анонимный visitor → одна строка в Sheets
 - [ADR](docs/adr/) — архитектурные решения (см. ADR-0006 dual-platform)
 - [Технический долг](docs/tech-debt.md)

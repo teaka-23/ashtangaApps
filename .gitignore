@@ -28,3 +28,6 @@ playwright/.cache
 *.sw?
 
 .vitest
+
+# API keys
+.env

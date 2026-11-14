@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-15 (аналитика Sheets)
+
+- Анонимный `visitorId` + сессии `app` / `practice` → Apps Script
+- В таблице **одна строка на visitor** с накоплением времени и открытий
+- Настройка: `docs/analytics.md`, secret `VITE_ANALYTICS_WEBHOOK_URL`
+
 ## 2026-11-14 (обратная связь)
 
 - Кнопка «Обратная связь» на home (тихий футер) → Google Form; ответы в Sheets

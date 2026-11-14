@@ -3,6 +3,7 @@ import { getSeries } from '../data/series';
 import type { SeriesId } from '../data/types';
 import { PosePicture } from '../components/PosePicture';
 import { poseFrameCount } from '../data/cartoons';
+import { endSession, startSession } from '../analytics/session';
 import { haptic, hideBackButton, keepScreenOn, showBackButton } from '../platform';
 import {
   asanaDescription,
@@ -60,6 +61,11 @@ export function PracticeView({
     showBackButton(onExit);
     return () => hideBackButton();
   }, [onExit]);
+
+  useEffect(() => {
+    startSession('practice', seriesId);
+    return () => endSession('practice');
+  }, [seriesId]);
 
   useEffect(() => {
     const root = document.documentElement;
