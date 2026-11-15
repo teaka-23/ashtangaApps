@@ -13,22 +13,22 @@ function doc(parts) {
   return svgDocument([groundLine(), ...parts].join('\n'));
 }
 
-/** Наклон к прямым ногам. Руки рисуются после шорт, иначе ладони прячутся. */
+/** Наклон к прямым ногам. Щека в −front (−x), не вверх. */
 function paschi(torsoPts, hip, arms, headC, neck) {
   return doc([
     shadow(112, 56),
-    leg([92, 158], [124, 160], [154, 160], { far: true, foot: 'flex', toe: 1 }),
-    leg([98, 160], [130, 161], [160, 160], { foot: 'flex', toe: 1 }),
+    leg([92, 158], [124, 160], [154, 160], { far: true, foot: 'flex', toe: 1, underShorts: true }),
+    leg([98, 160], [130, 161], [160, 160], { foot: 'flex', toe: 1, underShorts: true }),
     torso(torsoPts),
-    shortsFrame(hip, [0.95, -0.31], [0.31, 0.95], {
-      rise: 7,
-      half: 8.8,
-      backW: 0.85,
-      frontW: 0.65,
-      wTop: 6.7,
-      wBot: 6.0,
+    shortsFrame([hip[0] + 2, hip[1] - 2], [0.25, -0.97], [0.97, 0.25], {
+      rise: 15,
+      half: 12,
+      backW: 1.02,
+      frontW: 0.95,
+      wTop: 8.0,
+      wBot: 6.6,
       thighs: [[[98, 160], [130, 161]], [[92, 158], [124, 160]]],
-      legLen: 18,
+      legLen: 17,
       inline: true,
     }),
     ...arms,
@@ -40,28 +40,32 @@ function paschi(torsoPts, hip, arms, headC, neck) {
 export function dandasana() {
   return doc([
     shadow(112, 52),
-    leg([92, 154], [124, 157], [156, 158], { far: true, foot: 'flex', toe: 1 }),
-    leg([100, 155], [130, 157], [162, 158], { foot: 'flex', toe: 1 }),
-    arm([88, 76], [85, 118], [84, 158], { far: true, hand: 'flat', fingers: 1 }),
+    leg([92, 154], [124, 157], [156, 158], { far: true, foot: 'flex', toe: 1, underShorts: true }),
+    leg([100, 155], [130, 157], [162, 158], { foot: 'flex', toe: 1, underShorts: true }),
+    // Ладонь сбоку от таза, не под седалищем (иначе персик читается как «полпопы»)
+    arm([86, 76], [78, 118], [74, 158], { far: true, hand: 'flat', fingers: 1 }),
     torso([
       [86, 66],
       [96, 62],
       [106, 66],
-      [108, 112],
-      [104, 148],
-      [92, 154],
-      [82, 140],
+      [106, 110],
+      [101, 128],
+      [95, 142],
+      [88, 130],
       [84, 94],
     ]),
     shortsFrame([94, 148], [0, -1], [1, 0], {
-      rise: 9,
-      half: 9.5,
-      backW: 0.9,
+      rise: 14,
+      half: 11,
+      backW: 1.08,
+      frontW: 0.82,
+      wTop: 7.8,
+      wBot: 6.6,
       thighs: [[[100, 155], [130, 157]], [[92, 154], [124, 157]]],
-      legLen: 20,
+      legLen: 18,
       inline: true,
     }),
-    arm([104, 76], [106, 118], [108, 158], { hand: 'flat', fingers: 1 }),
+    arm([106, 76], [110, 118], [112, 158], { hand: 'flat', fingers: 1 }),
     head([98, 46], [1, 0.04], [0, -1], [96, 64]),
   ]);
 }
@@ -80,15 +84,16 @@ const FOLD_DEEP = [
 /** A: грудь приподнята, локти согнуты, пальцы на больших пальцах. */
 export function paschimattanasanaA() {
   return paschi(
+    // Торс обрывается у пояса; седалище/корни — только шорты
     [
-      [88, 153],
-      [98, 140],
-      [116, 128],
-      [132, 132],
+      [96, 150],
+      [108, 138],
+      [122, 128],
+      [136, 130],
       [140, 144],
-      [126, 160],
-      [100, 162],
-      [89, 158],
+      [130, 152],
+      [116, 154],
+      [102, 152],
     ],
     [92, 154],
     [
@@ -146,8 +151,8 @@ export function paschimattanasanaD() {
 export function purvattanasana() {
   return doc([
     shadow(118, 58),
-    leg([114, 122], [140, 140], [166, 158], { far: true, foot: 'tops', toe: 1 }),
-    leg([120, 126], [146, 142], [172, 158], { foot: 'tops', toe: 1 }),
+    leg([114, 122], [140, 140], [166, 158], { far: true, foot: 'tops', toe: 1, underShorts: true }),
+    leg([120, 126], [146, 142], [172, 158], { foot: 'tops', toe: 1, underShorts: true }),
     arm([72, 104], [72, 130], [72, 158], { far: true, hand: 'flat', fingers: 1 }),
     torso([
       [68, 100],
@@ -177,7 +182,7 @@ export function purvattanasana() {
 export function ardhaBaddhaPadmaPaschi() {
   return doc([
     shadow(124, 52),
-    leg([98, 160], [130, 162], [160, 160], { foot: 'flex', toe: 1 }),
+    leg([98, 160], [130, 162], [160, 160], { foot: 'flex', toe: 1, underShorts: true }),
     arm([92, 128], [76, 138], [96, 146], { far: true, hand: 'hold' }),
     torso([
       [82, 148],
@@ -189,7 +194,7 @@ export function ardhaBaddhaPadmaPaschi() {
       [112, 116],
       [92, 128],
     ]),
-    thigh([96, 156], [126, 158], { far: true }),
+    thigh([96, 156], [126, 158], { far: true, underShorts: true }),
     shortsFrame([96, 154], [0.75, -0.66], [0.66, 0.75], {
       rise: 8,
       half: 9,
@@ -207,8 +212,8 @@ export function ardhaBaddhaPadmaPaschi() {
 export function triangMukha() {
   return doc([
     shadow(112, 56),
-    leg([92, 150], [72, 158], [50, 158], { far: true, foot: 'tops', toe: -1 }),
-    leg([96, 152], [128, 156], [156, 158], { foot: 'flex', toe: 1 }),
+    leg([92, 150], [72, 158], [50, 158], { far: true, foot: 'tops', toe: -1, underShorts: true }),
+    leg([96, 152], [128, 156], [156, 158], { foot: 'flex', toe: 1, underShorts: true }),
     arm([116, 140], [130, 146], [148, 152], { far: true, hand: 'hold' }),
     torso([
       [82, 136],
@@ -236,7 +241,7 @@ function januBase(foldedLeg, foldedThigh, headC) {
   return doc([
     shadow(112, 56),
     foldedLeg,
-    leg([96, 152], [128, 156], [156, 158], { foot: 'flex', toe: 1 }),
+    leg([96, 152], [128, 156], [156, 158], { foot: 'flex', toe: 1, underShorts: true }),
     arm([116, 138], [130, 144], [148, 150], { far: true, hand: 'hold' }),
     torso([
       [82, 134],
@@ -264,8 +269,8 @@ function januBase(foldedLeg, foldedThigh, headC) {
 export function januA() {
   return doc([
     shadow(124, 52),
-    leg([102, 160], [134, 162], [164, 160], { foot: 'flex', toe: 1 }),
-    thigh([100, 156], [78, 160], { far: true }),
+    leg([102, 160], [134, 162], [164, 160], { foot: 'flex', toe: 1, underShorts: true }),
+    thigh([100, 156], [78, 160], { far: true, underShorts: true }),
     torso([
       [82, 148],
       [100, 162],
@@ -293,7 +298,7 @@ export function januA() {
 /** Джану Ширшасана B: сидя на правой пятке. */
 export function januB() {
   return januBase(
-    leg([94, 146], [120, 158], [90, 158], { far: true, foot: 'tops', toe: -1 }),
+    leg([94, 146], [120, 158], [90, 158], { far: true, foot: 'tops', toe: -1, underShorts: true }),
     [[94, 146], [120, 158]],
     [138, 146],
   );
@@ -302,7 +307,7 @@ export function januB() {
 /** Джану Ширшасана C: стопа вертикально в паху, пальцы на полу, пятка вверх, колено вперёд. */
 export function januC() {
   return januBase(
-    leg([92, 150], [118, 158], [100, 154], { far: true, foot: 'tucked', toe: 1 }),
+    leg([92, 150], [118, 158], [100, 154], { far: true, foot: 'tucked', toe: 1, underShorts: true }),
     [[92, 150], [118, 158]],
     [138, 146],
   );
@@ -312,7 +317,7 @@ export function januC() {
 export function marichyasanaA() {
   return doc([
     shadow(112, 52),
-    leg([84, 152], [124, 156], [162, 158], { far: true, foot: 'flex', toe: 1 }),
+    leg([84, 152], [124, 156], [162, 158], { far: true, foot: 'flex', toe: 1, underShorts: true }),
     arm([90, 124], [74, 134], [96, 144], { far: true, hand: 'hold' }),
     torso([
       [76, 130],
@@ -323,7 +328,7 @@ export function marichyasanaA() {
       [92, 154],
       [74, 142],
     ]),
-    leg([96, 146], [116, 108], [122, 158], { foot: 'flat', toe: 1 }),
+    leg([96, 146], [116, 108], [122, 158], { foot: 'flat', toe: 1, underShorts: true }),
     shortsFrame([92, 148], [0.45, -0.89], [0.9, 0.35], {
       rise: 9,
       half: 9.5,
@@ -340,7 +345,7 @@ export function marichyasanaA() {
 export function marichyasanaB() {
   return doc([
     shadow(108, 48),
-    thigh([96, 152], [132, 158], { far: true }),
+    thigh([96, 152], [132, 158], { far: true, underShorts: true }),
     shin([132, 158], [100, 146], { far: true, foot: 'lotus', toe: -1 }),
     arm([92, 130], [74, 138], [96, 148], { far: true, hand: 'hold' }),
     torso([
@@ -352,7 +357,7 @@ export function marichyasanaB() {
       [94, 154],
       [74, 144],
     ]),
-    leg([100, 146], [116, 110], [122, 158], { foot: 'flat', toe: 1 }),
+    leg([100, 146], [116, 110], [122, 158], { foot: 'flat', toe: 1, underShorts: true }),
     shortsFrame([94, 148], [0.45, -0.89], [0.9, 0.35], {
       rise: 9,
       half: 9.5,
@@ -369,7 +374,7 @@ export function marichyasanaB() {
 export function marichyasanaC() {
   return doc([
     shadow(108, 52),
-    leg([88, 150], [124, 155], [158, 158], { far: true, foot: 'flex', toe: 1 }),
+    leg([88, 150], [124, 155], [158, 158], { far: true, foot: 'flex', toe: 1, underShorts: true }),
     arm([84, 104], [64, 128], [94, 136], { far: true, hand: 'hold' }),
     torso([
       [82, 86],
@@ -381,7 +386,7 @@ export function marichyasanaC() {
       [80, 136],
       [78, 108],
     ]),
-    leg([102, 144], [126, 106], [114, 158], { foot: 'flat', toe: 1 }),
+    leg([102, 144], [126, 106], [114, 158], { foot: 'flat', toe: 1, underShorts: true }),
     shortsFrame([96, 146], [0.05, -1], [0.98, 0.12], {
       rise: 9,
       half: 9.5,
@@ -398,7 +403,7 @@ export function marichyasanaC() {
 export function marichyasanaD() {
   return doc([
     shadow(106, 46),
-    thigh([96, 150], [132, 158], { far: true }),
+    thigh([96, 150], [132, 158], { far: true, underShorts: true }),
     shin([132, 158], [100, 144], { far: true, foot: 'lotus', toe: -1 }),
     arm([84, 104], [64, 128], [94, 136], { far: true, hand: 'hold' }),
     torso([
@@ -411,7 +416,7 @@ export function marichyasanaD() {
       [80, 136],
       [78, 108],
     ]),
-    leg([102, 146], [126, 104], [114, 158], { foot: 'flat', toe: 1 }),
+    leg([102, 146], [126, 104], [114, 158], { foot: 'flat', toe: 1, underShorts: true }),
     shortsFrame([96, 146], [0.05, -1], [0.98, 0.12], {
       rise: 9,
       half: 9.5,
@@ -428,8 +433,8 @@ export function marichyasanaD() {
 export function navasanaA() {
   return doc([
     shadow(104, 40),
-    leg([94, 142], [124, 112], [150, 88], { far: true, foot: 'free', toe: 1 }),
-    leg([98, 144], [128, 116], [154, 92], { foot: 'free', toe: 1 }),
+    leg([94, 142], [124, 112], [150, 88], { far: true, foot: 'free', toe: 1, underShorts: true }),
+    leg([98, 144], [128, 116], [154, 92], { foot: 'free', toe: 1, underShorts: true }),
     torso([
       [72, 100],
       [86, 96],
@@ -456,8 +461,8 @@ export function navasanaA() {
 export function navasanaB() {
   return doc([
     shadow(104, 40),
-    leg([94, 142], [124, 112], [150, 88], { far: true, foot: 'free', toe: 1 }),
-    leg([98, 144], [128, 116], [154, 92], { foot: 'free', toe: 1 }),
+    leg([94, 142], [124, 112], [150, 88], { far: true, foot: 'free', toe: 1, underShorts: true }),
+    leg([98, 144], [128, 116], [154, 92], { foot: 'free', toe: 1, underShorts: true }),
     torso([
       [72, 100],
       [86, 96],

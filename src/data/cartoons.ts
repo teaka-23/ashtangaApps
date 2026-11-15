@@ -74,7 +74,10 @@ const CARTOONS: Record<string, readonly string[]> = {
   'prasarita-c': [svg('standing/19-prasarita-padottanasana-c')],
   'prasarita-d': [svg('standing/20-prasarita-padottanasana-d')],
   parsvottanasana: [svg('standing/21-parshvottanasana')],
-  'utthita-hasta': [svg('standing/23-utthita-hasta-padangusthasana-b')],
+  'utthita-hasta': [
+    svg('standing/22-utthita-hasta-padangusthasana-a'),
+    svg('standing/23-utthita-hasta-padangusthasana-b'),
+  ],
   'ardha-baddha-padmottanasana': [svg('standing/24-ardha-baddha-padmottanasana')],
   utkatasana: [svg('surya/08-utkatasana')],
   'virabhadrasana-a': [svg('surya/09-virabhadrasana-1')],

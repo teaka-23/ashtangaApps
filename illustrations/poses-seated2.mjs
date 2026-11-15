@@ -11,32 +11,32 @@ function doc(parts) {
   return svgDocument([groundLine(), ...parts].join('\n'));
 }
 
-/** Бхуджапидасана: ¾, бёдра лежат на плечах рук, голени скрещены назад-вниз над полом, ладони на полу. */
+/** Бхуджапидасана: ¾, бёдра высоко на плечах, голени скрещены в воздухе под грудью, ладони на полу. */
 export function bhujapidasana() {
   return doc([
     shadow(100, 44),
-    arm([104, 114], [90, 138], [100, 158], { far: true, hand: 'flat', fingers: 1 }),
+    arm([104, 108], [92, 134], [100, 158], { far: true, hand: 'flat', fingers: 1 }),
     torso([
-      [74, 110],
-      [92, 98],
-      [114, 104],
-      [122, 118],
-      [100, 128],
-      [78, 124],
+      [78, 104],
+      [94, 92],
+      [114, 98],
+      [122, 112],
+      [100, 120],
+      [80, 116],
     ]),
-    thigh([80, 118], [114, 112], { far: true }),
-    arm([112, 118], [98, 140], [110, 158], { hand: 'flat', fingers: 1 }),
-    thigh([84, 122], [122, 118]),
-    shortsFrame([82, 118], [0.92, -0.38], [0.38, 0.92], {
-      rise: 8,
-      half: 8.8,
-      thighs: [[[84, 122], [122, 118]], [[80, 118], [114, 112]]],
-      legLen: 18,
+    thigh([80, 112], [114, 106], { far: true, underShorts: true }),
+    arm([112, 112], [100, 136], [110, 158], { hand: 'flat', fingers: 1 }),
+    thigh([84, 116], [122, 112], { underShorts: true }),
+    shortsFrame([84, 111], [0.92, -0.38], [0.38, 0.92], {
+      rise: 9,
+      half: 10,
+      thighs: [[[84, 116], [122, 112]], [[80, 112], [114, 106]]],
+      legLen: 15,
       inline: true,
     }),
-    shin([114, 112], [86, 134], { far: true, foot: 'lotus', toe: -1 }),
-    shin([122, 118], [94, 138], { foot: 'lotus', toe: -1 }),
-    head([136, 122], [0.95, 0.3], [0.45, -0.89], [118, 116]),
+    shin([114, 106], [88, 126], { far: true, foot: 'lotus', toe: -1 }),
+    shin([122, 112], [96, 130], { foot: 'lotus', toe: -1 }),
+    head([136, 116], [0.95, 0.3], [0.45, -0.89], [118, 110]),
   ]);
 }
 
@@ -46,8 +46,8 @@ export function kurmasana() {
     shadow(100, 72),
     arm([82, 146], [48, 154], [24, 158], { far: true, hand: 'flat', fingers: -1 }),
     arm([118, 146], [152, 154], [176, 158], { hand: 'flat', fingers: 1 }),
-    leg([92, 134], [52, 144], [18, 158], { far: true, foot: 'flex', toe: -1 }),
-    leg([108, 134], [148, 144], [182, 158], { foot: 'flex', toe: 1 }),
+    leg([92, 134], [52, 144], [18, 158], { far: true, foot: 'flex', toe: -1, underShorts: true }),
+    leg([108, 134], [148, 144], [182, 158], { foot: 'flex', toe: 1, underShorts: true }),
     torso([
       [82, 124],
       [118, 124],
@@ -57,10 +57,10 @@ export function kurmasana() {
       [80, 144],
     ]),
     shortsFrame([100, 130], [0, -1], [1, 0], {
-      rise: 7,
-      half: 10,
+      rise: 9,
+      half: 11.5,
       sym: true,
-      crotch: 5,
+      crotch: 6.5,
       thighs: [[[108, 134], [148, 144]], [[92, 134], [52, 144]]],
       legLen: 18,
       inline: true,
@@ -78,21 +78,21 @@ export function suptaKurmasana() {
     shadow(114, 50),
     arm([92, 146], [74, 142], [86, 136], { far: true, hand: 'hold' }),
     torso([
-      [68, 154],
-      [90, 142],
+      [76, 154],
+      [92, 142],
       [118, 146],
       [136, 156],
       [128, 166],
-      [98, 166],
-      [72, 162],
+      [98, 164],
+      [78, 160],
     ]),
-    leg([92, 152], [116, 128], [140, 142], { far: true, foot: 'lotus', toe: 1 }),
-    leg([100, 156], [124, 134], [146, 146], { foot: 'lotus', toe: 1 }),
-    shortsFrame([94, 156], [0.96, -0.15], [0.15, 0.96], {
-      rise: 8,
-      half: 9,
+    leg([92, 152], [116, 128], [140, 142], { far: true, foot: 'lotus', toe: 1, underShorts: true }),
+    leg([100, 156], [124, 134], [146, 146], { foot: 'lotus', toe: 1, underShorts: true }),
+    shortsFrame([93, 155], [0.96, -0.15], [0.15, 0.96], {
+      rise: 9,
+      half: 10,
       thighs: [[[100, 156], [124, 134]], [[92, 152], [116, 128]]],
-      legLen: 16,
+      legLen: 15,
       inline: true,
     }),
     arm([100, 148], [80, 144], [90, 138], { hand: 'hold' }),
@@ -100,7 +100,7 @@ export function suptaKurmasana() {
   ]);
 }
 
-/** Гарбха Пиндасана: лотос, руки продеты к лицу, круглый баланс на седалищных. */
+/** Гарбха Пиндасана: лотос, руки продеты сквозь ноги к лицу, баланс на седалищных. */
 export function garbhaPindasana() {
   return doc([
     shadow(100, 36),
@@ -113,26 +113,26 @@ export function garbhaPindasana() {
       [90, 140],
       [86, 118],
     ]),
-    thigh([90, 140], [64, 126], { far: true }),
-    thigh([110, 140], [136, 126]),
-    shortsFrame([100, 139], [0, -1], [1, 0], {
+    thigh([90, 138], [62, 116], { far: true, underShorts: true }),
+    thigh([110, 138], [138, 116], { underShorts: true }),
+    shortsFrame([100, 137], [0, -1], [1, 0], {
       rise: 9,
       half: 12,
       sym: true,
-      crotch: 5.5,
-      thighs: [[[110, 140], [136, 126]], [[90, 140], [64, 126]]],
-      legLen: 16,
+      crotch: 7.0,
+      thighs: [[[110, 138], [138, 116]], [[90, 138], [62, 116]]],
+      legLen: 15,
       inline: true,
     }),
-    arm([80, 92], [74, 122], [90, 84], { far: true, hand: 'prayer' }),
-    arm([120, 92], [126, 122], [110, 84], { hand: 'prayer' }),
-    shin([64, 126], [114, 132], { far: true, foot: 'lotus', toe: 1 }),
-    shin([136, 126], [86, 132], { foot: 'lotus', toe: -1 }),
-    headFront([100, 70], [100, 86], [0, 1]),
+    arm([82, 92], [72, 124], [88, 82], { far: true, hand: 'prayer' }),
+    arm([118, 92], [128, 124], [112, 82], { hand: 'prayer' }),
+    shin([62, 116], [114, 126], { far: true, foot: 'lotus', toe: 1 }),
+    shin([138, 116], [86, 126], { foot: 'lotus', toe: -1 }),
+    headFront([100, 68], [100, 86], [0, 1]),
   ]);
 }
 
-/** Куккутасана: лотос поднят на руках, руки продеты между бёдрами и голенями, ладони на полу. */
+/** Куккутасана: лотос поднят на руках, руки продеты между бёдрами и голенями внутри колен, ладони на полу. */
 export function kukkutasana() {
   return doc([
     shadow(100, 42),
@@ -145,20 +145,20 @@ export function kukkutasana() {
       [92, 108],
       [86, 90],
     ]),
-    thigh([92, 106], [62, 122], { far: true }),
-    thigh([108, 106], [138, 122]),
+    thigh([92, 106], [56, 116], { far: true, underShorts: true }),
+    thigh([108, 106], [144, 116], { underShorts: true }),
     shortsFrame([100, 104], [0, -1], [1, 0], {
       rise: 9,
       half: 10.5,
       sym: true,
-      thighs: [[[108, 106], [138, 122]], [[92, 106], [62, 122]]],
+      thighs: [[[108, 106], [144, 116]], [[92, 106], [56, 116]]],
       legLen: 15,
       inline: true,
     }),
-    arm([80, 64], [78, 112], [78, 158], { hand: 'flat', fingers: -1 }),
-    arm([120, 64], [122, 112], [122, 158], { hand: 'flat', fingers: 1 }),
-    shin([62, 122], [114, 114], { far: true, foot: 'lotus', toe: 1 }),
-    shin([138, 122], [86, 114], { foot: 'lotus', toe: -1 }),
+    arm([82, 64], [80, 112], [82, 158], { hand: 'flat', fingers: -1 }),
+    arm([118, 64], [120, 112], [118, 158], { hand: 'flat', fingers: 1 }),
+    shin([56, 116], [114, 110], { far: true, foot: 'lotus', toe: 1 }),
+    shin([144, 116], [86, 110], { foot: 'lotus', toe: -1 }),
     headFront([100, 38], [100, 54], [0, 1]),
   ]);
 }
@@ -167,8 +167,8 @@ export function kukkutasana() {
 export function baddhaKonasanaA() {
   return doc([
     shadow(100, 54),
-    thigh([92, 146], [48, 158], { far: true }),
-    thigh([108, 146], [152, 158]),
+    thigh([92, 146], [48, 158], { far: true, underShorts: true }),
+    thigh([108, 146], [152, 158], { underShorts: true }),
     shin([48, 158], [94, 158], { far: true, foot: 'lotus', toe: 1 }),
     shin([152, 158], [106, 158], { foot: 'lotus', toe: -1 }),
     torso([
@@ -181,10 +181,10 @@ export function baddhaKonasanaA() {
       [87, 128],
     ]),
     shortsFrame([100, 144], [0, -1], [1, 0], {
-      rise: 9,
-      half: 11,
+      rise: 10,
+      half: 12,
       sym: true,
-      crotch: 6,
+      crotch: 6.5,
       thighs: [[[108, 146], [152, 158]], [[92, 146], [48, 158]]],
       legLen: 18,
       inline: true,
@@ -199,8 +199,8 @@ export function baddhaKonasanaA() {
 export function baddhaKonasanaB() {
   return doc([
     shadow(100, 54),
-    thigh([92, 148], [48, 158], { far: true }),
-    thigh([108, 148], [152, 158]),
+    thigh([92, 148], [48, 158], { far: true, underShorts: true }),
+    thigh([108, 148], [152, 158], { underShorts: true }),
     shin([48, 158], [94, 158], { far: true, foot: 'lotus', toe: 1 }),
     shin([152, 158], [106, 158], { foot: 'lotus', toe: -1 }),
     torso([
@@ -214,11 +214,11 @@ export function baddhaKonasanaB() {
     ]),
     shortsFrame([100, 146], [0, -1], [1, 0], {
       rise: 9,
-      half: 11,
+      half: 11.5,
       sym: true,
-      crotch: 6,
+      crotch: 7.0,
       thighs: [[[108, 148], [152, 158]], [[92, 148], [48, 158]]],
-      legLen: 18,
+      legLen: 15,
       inline: true,
     }),
     arm([84, 124], [64, 136], [92, 154], { far: true, hand: 'hold' }),
@@ -231,21 +231,21 @@ export function baddhaKonasanaB() {
 export function upavishtaKonasana() {
   return doc([
     shadow(100, 70),
-    leg([92, 148], [56, 154], [28, 158], { far: true, foot: 'flex', toe: -1 }),
-    leg([108, 148], [144, 154], [172, 158], { foot: 'flex', toe: 1 }),
+    leg([92, 148], [56, 154], [28, 158], { far: true, foot: 'flex', toe: -1, underShorts: true }),
+    leg([108, 148], [144, 154], [172, 158], { foot: 'flex', toe: 1, underShorts: true }),
     torso([
-      [76, 128],
-      [124, 128],
-      [116, 148],
-      [108, 162],
-      [92, 162],
-      [84, 148],
+      [78, 124],
+      [122, 124],
+      [118, 140],
+      [110, 150],
+      [90, 150],
+      [82, 140],
     ]),
     shortsFrame([100, 152], [0, -1], [1, 0], {
-      rise: 8,
-      half: 11,
+      rise: 11,
+      half: 12.5,
       sym: true,
-      crotch: 5,
+      crotch: 6.8,
       thighs: [[[108, 148], [144, 154]], [[92, 148], [56, 154]]],
       legLen: 19,
       inline: true,
@@ -260,8 +260,8 @@ export function upavishtaKonasana() {
 export function suptaKonasana() {
   return doc([
     shadow(100, 68),
-    leg([94, 64], [56, 112], [30, 158], { far: true, foot: 'flat', toe: -1 }),
-    leg([106, 64], [144, 112], [170, 158], { foot: 'flat', toe: 1 }),
+    leg([94, 64], [56, 112], [30, 158], { far: true, foot: 'flat', toe: -1, underShorts: true }),
+    leg([106, 64], [144, 112], [170, 158], { foot: 'flat', toe: 1, underShorts: true }),
     arm([88, 126], [50, 142], [34, 156], { far: true, hand: 'hold' }),
     torso([
       [82, 128],
@@ -270,17 +270,18 @@ export function suptaKonasana() {
       [112, 156],
       [114, 146],
       [118, 128],
-      [114, 82],
-      [100, 56],
-      [86, 82],
+      [112, 82],
+      [108, 66],
+      [92, 66],
+      [88, 82],
     ]),
     shortsFrame([100, 66], [0, 1], [1, 0], {
       rise: 9,
       half: 11,
       sym: true,
-      crotch: 5,
+      crotch: 7.0,
       thighs: [[[106, 64], [144, 112]], [[94, 64], [56, 112]]],
-      legLen: 20,
+      legLen: 15,
       inline: true,
     }),
     arm([112, 126], [150, 142], [166, 156], { hand: 'hold' }),
@@ -292,8 +293,8 @@ export function suptaKonasana() {
 export function suptaPadangusthasana() {
   return doc([
     shadow(112, 56),
-    leg([108, 158], [138, 161], [168, 162], { far: true, foot: 'flex', toe: 1 }),
-    leg([104, 154], [112, 106], [116, 56], { foot: 'freeFlex', toe: 1 }),
+    leg([108, 158], [138, 161], [168, 162], { far: true, foot: 'flex', toe: 1, underShorts: true }),
+    leg([104, 154], [112, 106], [116, 56], { foot: 'freeFlex', toe: 1, underShorts: true }),
     torso([
       [56, 150],
       [78, 146],
@@ -307,7 +308,7 @@ export function suptaPadangusthasana() {
       rise: 8,
       half: 9.5,
       thighs: [[[104, 154], [112, 106]], [[108, 158], [138, 161]]],
-      legLen: 18,
+      legLen: 15,
       inline: true,
     }),
     arm([68, 152], [86, 154], [104, 156], { far: true, hand: 'hang' }),
@@ -320,8 +321,8 @@ export function suptaPadangusthasana() {
 export function ubhayaPadangusthasana() {
   return doc([
     shadow(96, 32),
-    leg([94, 146], [118, 100], [140, 54], { far: true, foot: 'freeFlex', toe: 1 }),
-    leg([100, 148], [124, 104], [146, 58], { foot: 'freeFlex', toe: 1 }),
+    leg([94, 146], [118, 100], [140, 54], { far: true, foot: 'freeFlex', toe: 1, underShorts: true }),
+    leg([100, 148], [124, 104], [146, 58], { foot: 'freeFlex', toe: 1, underShorts: true }),
     torso([
       [62, 108],
       [80, 100],
@@ -332,10 +333,13 @@ export function ubhayaPadangusthasana() {
       [60, 118],
     ]),
     shortsFrame([96, 146], [-0.5, -0.87], [0.75, -0.35], {
-      rise: 8,
-      half: 9,
+      rise: 10,
+      half: 11,
+      backW: 1.0,
+      frontW: 0.85,
       thighs: [[[100, 148], [124, 104]], [[94, 146], [118, 100]]],
-      legLen: 18,
+      legLen: 20,
+      crotch: 6.2,
       inline: true,
     }),
     arm([70, 110], [102, 80], [136, 56], { far: true, hand: 'hold' }),
@@ -348,8 +352,8 @@ export function ubhayaPadangusthasana() {
 export function urdhvaMukhaPaschimottanasana() {
   return doc([
     shadow(100, 28),
-    leg([102, 150], [108, 100], [114, 50], { far: true, foot: 'freeFlex', toe: 1 }),
-    leg([108, 152], [114, 102], [120, 52], { foot: 'freeFlex', toe: 1 }),
+    leg([102, 150], [108, 100], [114, 50], { far: true, foot: 'freeFlex', toe: 1, underShorts: true }),
+    leg([108, 152], [114, 102], [120, 52], { foot: 'freeFlex', toe: 1, underShorts: true }),
     torso([
       [86, 88],
       [98, 86],
@@ -363,7 +367,7 @@ export function urdhvaMukhaPaschimottanasana() {
       rise: 8,
       half: 9,
       thighs: [[[108, 152], [114, 102]], [[102, 150], [108, 100]]],
-      legLen: 18,
+      legLen: 15,
       inline: true,
     }),
     arm([90, 92], [102, 68], [114, 50], { far: true, hand: 'hold' }),
@@ -372,31 +376,31 @@ export function urdhvaMukhaPaschimottanasana() {
   ]);
 }
 
-/** Сету Бандхасана: макушка на полу, таз вверх, колени согнуты, захват лодыжек. */
+/** Сету Бандхасана (по плакату аштанги): макушка на полу, таз поднят аркой, ноги прямые вместе (стопы на полу), руки на груди. */
 export function setuBandhasana() {
   return doc([
-    shadow(110, 50),
-    leg([122, 114], [146, 134], [150, 158], { far: true, foot: 'flat', toe: 1 }),
-    leg([130, 118], [154, 138], [158, 158], { foot: 'flat', toe: 1 }),
-    arm([84, 134], [112, 148], [144, 156], { far: true, hand: 'hold' }),
+    shadow(112, 58),
+    leg([116, 122], [142, 140], [168, 158], { far: true, foot: 'flat', toe: 1, underShorts: true }),
+    leg([122, 126], [148, 142], [174, 158], { foot: 'flat', toe: 1, underShorts: true }),
     torso([
-      [76, 142],
-      [100, 116],
-      [124, 104],
-      [138, 118],
-      [122, 130],
-      [96, 140],
-      [74, 152],
+      [68, 142],
+      [94, 118],
+      [118, 114],
+      [126, 128],
+      [108, 138],
+      [82, 144],
+      [68, 152],
     ]),
-    shortsFrame([126, 116], [-0.85, 0.52], [0.52, 0.85], {
-      rise: 8,
-      half: 9,
-      thighs: [[[130, 118], [154, 138]], [[122, 114], [146, 134]]],
-      legLen: 17,
+    shortsFrame([118, 122], [-0.92, -0.32], [0.32, -0.92], {
+      rise: 9,
+      half: 10,
+      thighs: [[[122, 126], [148, 142]], [[116, 122], [142, 140]]],
+      legLen: 15,
       inline: true,
     }),
-    arm([92, 130], [120, 144], [150, 152], { hand: 'hold' }),
-    head([60, 157], [-0.15, -0.99], [-0.9, 0.35], [76, 144]),
+    arm([82, 128], [94, 114], [104, 126], { far: true, hand: 'hold' }),
+    arm([88, 130], [102, 116], [108, 130], { hand: 'hold' }),
+    head([52, 157], [-0.15, -0.99], [-0.92, 0.35], [68, 146]),
   ]);
 }
 
