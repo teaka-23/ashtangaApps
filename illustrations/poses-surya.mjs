@@ -230,7 +230,7 @@ export function utkatasana() {
     shadow(108, 34),
     leg([92, 110], [126, 122], [110, 158], { far: true, foot: 'flat', toe: 1, underShorts: true }),
     leg([100, 112], [134, 126], [118, 158], { foot: 'flat', toe: 1, underShorts: true }),
-    arm([100, 68], [102, 44], [100, 20], { far: true, hand: 'up' }),
+    arm([101, 62], [103, 30], [104, 16], { far: true, hand: 'up' }),
     torso([
       [88, 66],
       [101, 62],
@@ -248,7 +248,7 @@ export function utkatasana() {
       legLen: 19,
       inline: true,
     }),
-    arm([106, 68], [110, 44], [109, 18], { hand: 'up' }),
+    arm([112, 70], [105, 28], [104, 16], { hand: 'up' }),
     head([111, 50], [0.5, -0.87], [-0.25, -0.97], [103, 64]),
   ]);
 }
@@ -262,7 +262,7 @@ export function virabhadrasanaFrontRight() {
     shadow(102, 56),
     leg([90, 110], [60, 134], [32, 158], { far: true, foot: 'flat', toe: 1, underShorts: true }),
     leg([104, 112], [146, 118], [146, 158], { foot: 'flat', toe: 1, underShorts: true }),
-    arm([98, 68], [97, 44], [96, 20], { far: true, hand: 'up' }),
+    arm([101, 66], [99, 30], [102, 14], { far: true, hand: 'up' }),
     torso([
       [90, 66],
       [101, 62],
@@ -280,7 +280,7 @@ export function virabhadrasanaFrontRight() {
       legLen: 20,
       inline: true,
     }),
-    arm([104, 68], [107, 44], [107, 18], { hand: 'up' }),
+    arm([111, 70], [105, 28], [102, 14], { hand: 'up' }),
     head([105, 50], [0.35, -0.94], [-0.15, -1], [102, 66]),
   ]);
 }
@@ -291,7 +291,7 @@ export function virabhadrasanaFrontLeft() {
     shadow(102, 56),
     leg([104, 112], [146, 118], [146, 158], { far: true, foot: 'flat', toe: 1, underShorts: true }),
     leg([90, 110], [60, 134], [32, 158], { foot: 'flat', toe: 1, underShorts: true }),
-    arm([98, 68], [97, 44], [96, 20], { far: true, hand: 'up' }),
+    arm([101, 66], [99, 30], [102, 14], { far: true, hand: 'up' }),
     torso([
       [90, 66],
       [101, 62],
@@ -309,7 +309,7 @@ export function virabhadrasanaFrontLeft() {
       legLen: 20,
       inline: true,
     }),
-    arm([104, 68], [107, 44], [107, 18], { hand: 'up' }),
+    arm([111, 70], [105, 28], [102, 14], { hand: 'up' }),
     head([105, 50], [0.35, -0.94], [-0.15, -1], [102, 66]),
   ]);
 }

@@ -19,7 +19,7 @@ export function padangusthasana() {
     shadow(104, 36),
     leg([98, 76], [96, 118], [94, 158], { far: true, foot: 'flat', toe: 1, underShorts: true }),
     leg([106, 78], [110, 120], [112, 158], { foot: 'flat', toe: 1, underShorts: true }),
-    arm([118, 112], [78, 120], [98, 156], { far: true, hand: 'hold' }),
+    arm([92, 74], [94, 120], [94, 158], { far: true, hand: 'toe' }),
     torso([
       [92, 74],
       [108, 72],
@@ -35,8 +35,8 @@ export function padangusthasana() {
       along: [0.05, 0.999],
       inline: true,
     }),
-    arm([128, 116], [158, 124], [118, 156], { hand: 'hold' }),
-    head([136, 142], [0.2, 0.98], [0.4, -0.2], [126, 128]),
+    arm([108, 72], [112, 120], [112, 158], { hand: 'toe' }),
+    head([116, 100], [0.2, 0.98], [0.4, -0.2], [110, 92], { neckW: 2 }),
   ]);
 }
 
@@ -44,16 +44,16 @@ export function padangusthasana() {
 export function padaHastasana() {
   return doc([
     shadow(104, 36),
-    arm([116, 110], [100, 136], [96, 159], { far: true, hand: 'palm', fingers: -1 }),
+    arm([116, 136], [100, 152], [94, 162], { far: true, hand: 'palm', fingers: -1 }),
     leg([98, 76], [96, 118], [94, 158], { far: true, foot: 'flat', toe: 1, underShorts: true }),
     torso([
-      [92, 72],
-      [108, 70],
-      [126, 102],
-      [130, 126],
-      [118, 132],
-      [100, 96],
-      [92, 82],
+      [92, 144],
+      [108, 142],
+      [126, 150],
+      [130, 158],
+      [118, 162],
+      [100, 152],
+      [92, 148],
     ]),
     shortsFrame([103, 74], [0.35, 0.94], [1, 0.15], {
       rise: 9,
@@ -61,9 +61,9 @@ export function padaHastasana() {
       along: [0.05, 0.999],
       inline: true,
     }),
-    arm([128, 112], [124, 138], [120, 159], { hand: 'palm', fingers: -1 }),
+    arm([128, 138], [124, 154], [112, 162], { hand: 'palm', fingers: -1 }),
     leg([106, 78], [110, 120], [112, 158], { foot: 'flat', toe: 1, underShorts: true }),
-    head([134, 140], [0.2, 0.98], [0.4, -0.2], [124, 126]),
+    head([102, 160], [0.15, 0.99], [0.3, -0.2], [102, 156]),
   ]);
 }
 
@@ -336,30 +336,32 @@ export function prasaritaD() {
 }
 
 /** Паршвоттанасана: обе ноги прямые, намасте за спиной, лоб к передней голени. */
+/** Паршвоттанасана: шаг, складка к передней ноге, намасте за спиной — локти читаются вверх. */
 export function parshvottanasana() {
   return doc([
     shadow(106, 46),
-    leg([92, 100], [74, 130], [56, 158], { far: true, foot: 'flat', toe: 1, underShorts: true }),
-    arm([118, 112], [96, 82], [112, 94], { far: true, hand: 'prayer' }),
+    leg([88, 102], [70, 132], [52, 158], { far: true, foot: 'flat', toe: 1, underShorts: true }),
+    // Намасте за спиной — ладони сцеплены между лопаток, локти назад.
+    arm([84, 98], [66, 102], [76, 96], { far: true, hand: 'prayer' }),
     torso([
-      [88, 96],
-      [104, 86],
-      [134, 112],
-      [148, 128],
-      [134, 136],
-      [108, 114],
-      [88, 106],
+      [84, 98],
+      [102, 84],
+      [136, 114],
+      [152, 132],
+      [136, 140],
+      [108, 116],
+      [84, 108],
     ]),
-    leg([104, 102], [126, 130], [148, 158], { foot: 'flat', toe: 1, underShorts: true }),
-    shortsFrame([96, 101], [0.7, 0.7], [-0.4, 0.92], {
+    leg([106, 104], [130, 132], [152, 158], { foot: 'flat', toe: 1, underShorts: true }),
+    shortsFrame([96, 102], [0.7, 0.7], [-0.4, 0.92], {
       rise: 10,
       half: 10,
-      thighs: [[[104, 102], [126, 130]], [[92, 100], [74, 130]]],
+      thighs: [[[106, 104], [130, 132]], [[88, 102], [70, 132]]],
       legLen: 15,
       inline: true,
     }),
-    arm([122, 114], [100, 84], [116, 96], { hand: 'prayer' }),
-    head([152, 140], [0.3, 0.95], [0.72, -0.12], [138, 126]),
+    arm([102, 84], [70, 92], [74, 100], { hand: 'prayer' }),
+    head([156, 144], [0.28, 0.96], [0.75, -0.1], [140, 128]),
   ]);
 }
 
@@ -418,12 +420,38 @@ export function utthitaHastaPadangusthasanaB() {
   ]);
 }
 
+/** Уттхита хаста падангустхасана C: нога вперёд на весу, баланс без рук, руки на бёдрах. */
+export function utthitaHastaPadangusthasanaC() {
+  return doc([
+    shadow(108, 50),
+    leg([96, 98], [97, 130], [96, 158], { far: true, foot: 'flat', toe: 1, underShorts: true }),
+    leg([104, 100], [128, 96], [152, 92], { foot: 'freeFlex', toe: 1, underShorts: true }),
+    arm([94, 64], [84, 84], [92, 100], { far: true, hand: 'hang' }),
+    torso([
+      [90, 60],
+      [106, 60],
+      [108, 80],
+      [104, 100],
+      [92, 100],
+      [88, 80],
+    ]),
+    shortsFrame([98, 98], [0, -1], [1, 0], {
+      rise: 10,
+      half: 9.5,
+      thighs: [[[104, 100], [128, 96]], [[96, 98], [97, 130]]],
+      legLen: 15,
+    }),
+    arm([106, 64], [106, 80], [106, 100], { hand: 'hang' }),
+    head([99, 44], [1, 0.05], [0, -1], [99, 58]),
+  ]);
+}
+
 /** Ардха баддха падмоттанасана: полулотос стоя (колено чётко впереди опорной ноги), захват за спиной, наклон, ладонь на полу. */
 export function ardhaBaddhaPadmottanasana() {
   return doc([
     shadow(108, 44),
     leg([92, 82], [92, 122], [94, 158], { far: true, foot: 'flat', toe: 1, underShorts: true }),
-    arm([114, 114], [92, 90], [92, 88], { far: true, hand: 'hold' }),
+    arm([114, 114], [90, 100], [98, 112], { far: true, hand: 'hold' }),
     torso([
       [90, 78],
       [104, 76],
@@ -441,9 +469,9 @@ export function ardhaBaddhaPadmottanasana() {
       legLen: 15,
       inline: true,
     }),
-    shin([124, 118], [94, 92], { foot: 'lotus', toe: -1 }),
+    shin([124, 118], [96, 112], { foot: 'lotus', toe: -1 }),
     arm([122, 120], [116, 142], [114, 158], { hand: 'flat', fingers: 1 }),
-    head([130, 138], [0.15, 0.99], [0.35, -0.25], [122, 124]),
+    head([96, 136], [0.15, 0.99], [0.3, -0.2], [98, 100]),
   ]);
 }
 
@@ -494,6 +522,7 @@ export const FILES = [
   ['21-parshvottanasana', parshvottanasana],
   ['22-utthita-hasta-padangusthasana-a', utthitaHastaPadangusthasanaA],
   ['23-utthita-hasta-padangusthasana-b', utthitaHastaPadangusthasanaB],
+  ['23c-utthita-hasta-padangusthasana-c', utthitaHastaPadangusthasanaC],
   ['24-ardha-baddha-padmottanasana', ardhaBaddhaPadmottanasana],
   ['25-virabhadrasana-2', virabhadrasana2],
 ];
