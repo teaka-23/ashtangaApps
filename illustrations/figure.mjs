@@ -742,8 +742,16 @@ function limb(pts, radii, far, extra, { bluntStart = false, softStart = false } 
   ].join('\n');
 }
 
+/**
+ * Нога бедро → колено → голень.
+ * `softKnee`: для согнутой ноги с острым углом в колене (< ~40°). На таком
+ * суставе одна лента разводит митер в спицу (радиус ×1.45, round 1.4), поэтому
+ * бедро и голень идут двумя капсулами, а стык закрывает диск-мыщелок.
+ * Флаг точечный: включается там, где колено действительно острое. Для дальней
+ * ноги не годится — перекрытие двух заливок в силуэте темнеет (45% + 45%).
+ */
 function leg(hip, knee, ankle, opt) {
-  const { far = false, foot = 'flat', toe = 1, underShorts = false } = opt;
+  const { far = false, foot = 'flat', toe = 1, underShorts = false, softKnee = false } = opt;
   const radii = far ? [6.2, 5.3, 4.2] : [6.9, 5.9, 4.6];
   let sole = '';
   if (foot === 'free' && knee) {
@@ -759,6 +767,16 @@ function leg(hip, knee, ankle, opt) {
     }
   }
   const footSvg = `<path d="${footPath(ankle, toe, foot, knee, far)}" ${skin(far)} stroke-width="1.2" stroke-linejoin="round"/>${sole}`;
+  if (softKnee) {
+    const [kx, ky] = n(knee);
+    const rCap = Math.round(radii[1] * 0.97 * 10) / 10;
+    const cap = `<circle cx="${kx}" cy="${ky}" r="${rCap}" ${skin(far)} stroke-width="1.2"/>`;
+    return [
+      limb([hip, knee], [radii[0], radii[1]], far, '', { bluntStart: underShorts }),
+      limb([knee, ankle], [radii[1], radii[2]], far, footSvg),
+      cap,
+    ].join('\n');
+  }
   return limb([hip, knee, ankle], radii, far, footSvg, { bluntStart: underShorts });
 }
 
