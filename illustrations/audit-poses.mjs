@@ -34,7 +34,8 @@ const TRACKED = ['leg', 'thigh', 'shin', 'arm', 'torso', 'head', 'headFront'];
  * - плечо ↔ торс: медиана 7, максимум 20;
  * - таз (бедро) ↔ контур торса: медиана 3.7, p90 8, максимум 17.9;
  * - диагональ торса: минимум 30.5, точек контура минимум 6;
- * - `toe`: запястье ↔ стопа 0–1 (палец ноги сжат), берём запас 12;
+ * - `toe`: запястье ↔ большой палец стопы (щиколотка +17 px вперёд, у дальней 15.6),
+ *   корпус держит 4–9 px, берём запас 12. Кисть у щиколотки — уже не захват;
  * - `flat`/`palm`: запястье на 6–12 px выше пола (ладонь рисуется по y=GROUND).
  * NOTE-эвристики (не валят прогон): центр головы внутри полигона торса и рука,
  * натянутая от таза до стопы (плечо < 10 px к тазу, запястье < 10 px к стопе,
@@ -220,8 +221,20 @@ for (const p of poses) {
     }
   }
 
-  // 3. Кисти: захват `toe` обязан стоять на стопе; `flat`/`palm` рисуются у пола.
+  // 3. Кисти: захват `toe` обязан стоять на большом пальце стопы; `flat`/`palm` рисуются у пола.
   const footPts = [...legs.map((l) => l.args[2]), ...shins.map((s) => s.args[1])];
+  // Большой палец плоской стопы — на 17 px вперёд от щиколотки (у дальней 0.92 от этого).
+  // Прочие режимы стопы не повторяем формулой: там падаем на щиколотку.
+  const toePts = [
+    ...legs.map((l) => {
+      const ankle = l.args[2];
+      const opt = l.args[3] ?? {};
+      if ((opt.foot ?? 'flat') !== 'flat') return ankle;
+      const s = (opt.toe ?? 1) >= 0 ? 1 : -1;
+      return [ankle[0] + s * 17 * (opt.far ? 0.92 : 1), GROUND - 3.4];
+    }),
+    ...shins.map((s) => s.args[1]),
+  ];
   for (const a of arms) {
     const wrist = a.args[2];
     const hand = a.args[3]?.hand;
@@ -230,8 +243,9 @@ for (const p of poses) {
       continue;
     }
     if (hand === 'toe') {
-      const d = footPts.length ? nearest(wrist, footPts) : Infinity;
-      if (d > LIMITS.toeGrip) flags.push(['ERR', 'захват мимо стопы', r1(d)]);
+      // Кисть на щиколотке — это не захват: пальцы обязаны лечь на большой палец.
+      const d = nearest(wrist, toePts);
+      if (d > LIMITS.toeGrip) flags.push(['ERR', 'захват мимо большого пальца', r1(d)]);
     }
     if (hand === 'flat' || hand === 'palm') {
       const dy = wrist[1] - GROUND;
