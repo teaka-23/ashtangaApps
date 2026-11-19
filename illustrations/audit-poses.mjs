@@ -32,14 +32,19 @@ const TRACKED = ['leg', 'thigh', 'shin', 'arm', 'torso', 'head', 'headFront'];
  * Пороги. Сняты с текущего корпуса (108 поз, замер 2026-11-19), а не выдуманы:
  * - голова ↔ торс: медиана 14, максимум 30 (шея-капсула);
  * - плечо ↔ торс: медиана 7, максимум 20;
+ * - таз (бедро) ↔ контур торса: медиана 3.7, p90 8, максимум 17.9;
  * - диагональ торса: минимум 30.5, точек контура минимум 6;
  * - `toe`: запястье ↔ стопа 0–1 (палец ноги сжат), берём запас 12;
  * - `flat`/`palm`: запястье на 6–12 px выше пола (ладонь рисуется по y=GROUND).
+ * NOTE-эвристики (не валят прогон): центр головы внутри полигона торса и рука,
+ * натянутая от таза до стопы (плечо < 10 px к тазу, запястье < 10 px к стопе,
+ * рука прямая) — так выглядят складки, где плечо случайно совпало с тазом.
  * Пропорции и асимметрия считаются от медиан корпуса на каждом прогоне.
  */
 const LIMITS = {
   headGap: 34,
   shoulderGap: 26,
+  hipGap: 24,
   torsoSpan: 26,
   torsoPts: 6,
   toeGrip: 12,
@@ -52,6 +57,31 @@ const LIMITS = {
 const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 const nearest = (p, pts) => Math.min(...pts.map((q) => dist(p, q)));
 const r1 = (v) => Math.round(v * 10) / 10;
+
+/** Расстояние до контура: таз обычно лежит на ребре полигона, а не в вершине. */
+function polyDist(p, pts) {
+  let m = Infinity;
+  for (let i = 0; i < pts.length; i++) {
+    const [a, b] = [pts[i], pts[(i + 1) % pts.length]];
+    const vx = b[0] - a[0];
+    const vy = b[1] - a[1];
+    const len2 = vx * vx + vy * vy;
+    const t = len2 ? Math.max(0, Math.min(1, ((p[0] - a[0]) * vx + (p[1] - a[1]) * vy) / len2)) : 0;
+    m = Math.min(m, Math.hypot(p[0] - (a[0] + vx * t), p[1] - (a[1] + vy * t)));
+  }
+  return m;
+}
+
+/** Точка внутри контура торса: голова, утонувшая в груди, не читается силуэтом. */
+function inPoly(p, pts) {
+  let inside = false;
+  for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+    const [xi, yi] = pts[i];
+    const [xj, yj] = pts[j];
+    if (yi > p[1] !== yj > p[1] && p[0] < ((xj - xi) * (p[1] - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
 
 /** Перехват: pose-модули деструктурируют `draw` на импорте, поэтому патчим до него. */
 let sink = null;
@@ -179,6 +209,15 @@ for (const p of poses) {
       const gap = nearest(a.args[0], tpts);
       if (gap > LIMITS.shoulderGap) flags.push(['ERR', 'плечо оторвано', r1(gap)]);
     }
+    // Таз: бедро обязано расти из торса, иначе фигура «стоит» с телом у пола.
+    for (const hip of [...legs.map((l) => l.args[0]), ...thighs.map((t) => t.args[0])]) {
+      const gap = polyDist(hip, tpts);
+      if (gap > LIMITS.hipGap) flags.push(['ERR', 'таз оторван от торса', r1(gap)]);
+    }
+    // Голова внутри контура торса: шея есть, а силуэт читается безголовым.
+    for (const h of heads) {
+      if (inPoly(h.args[0], tpts)) flags.push(['NOTE', 'голова внутри торса', `${r1(h.args[0][0])},${r1(h.args[0][1])}`]);
+    }
   }
 
   // 3. Кисти: захват `toe` обязан стоять на стопе; `flat`/`palm` рисуются у пола.
@@ -200,7 +239,21 @@ for (const p of poses) {
     }
   }
 
-  // 4. Пропорции. WARN — суммарная длина конечности вне 0.5–1.9 медианы корпуса
+  // 4. Рука, натянутая от таза до стопы, читается третьей ногой: так выглядели
+  // сломанные складки, где плечо случайно совпало с тазом. NOTE, а не ERR: у
+  // балансов на руках плечо действительно рядом с тазом.
+  const hips = [...legs.map((l) => l.args[0]), ...thighs.map((t) => t.args[0])];
+  for (const a of arms) {
+    const [s, e, w] = a.args;
+    if (!hips.length || !footPts.length) continue;
+    const nearHip = nearest(s, hips);
+    const nearFoot = nearest(w, footPts);
+    if (nearHip < 10 && nearFoot < 10 && angleAt(s, e, w) > 2.9) {
+      flags.push(['NOTE', 'рука от таза до стопы', `${r1(nearHip)} / ${r1(nearFoot)}`]);
+    }
+  }
+
+  // 5. Пропорции. WARN — суммарная длина конечности вне 0.5–1.9 медианы корпуса
   // (регрессия координат). NOTE — одиночный сегмент вне коридора: у согнутой
   // конечности хорда короче реальной длины, поэтому такой кадр стоит посмотреть.
   const noteSeg = (key, v) => {

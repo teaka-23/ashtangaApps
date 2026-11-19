@@ -18,8 +18,7 @@ export function padangusthasana() {
   return doc([
     shadow(104, 36),
     leg([98, 76], [96, 118], [94, 158], { far: true, foot: 'flat', toe: 1, underShorts: true }),
-    leg([106, 78], [110, 120], [112, 158], { foot: 'flat', toe: 1, underShorts: true }),
-    arm([92, 74], [94, 120], [94, 158], { far: true, hand: 'toe' }),
+    arm([120, 110], [116, 128], [96, 156], { far: true, hand: 'toe' }),
     torso([
       [92, 74],
       [108, 72],
@@ -35,8 +34,9 @@ export function padangusthasana() {
       along: [0.05, 0.999],
       inline: true,
     }),
-    arm([108, 72], [112, 120], [112, 158], { hand: 'toe' }),
-    head([116, 100], [0.2, 0.98], [0.4, -0.2], [110, 92], { neckW: 2 }),
+    arm([126, 116], [132, 132], [116, 156], { hand: 'toe' }),
+    leg([106, 78], [110, 120], [112, 158], { foot: 'flat', toe: 1, underShorts: true }),
+    head([134, 142], [0.2, 0.98], [0.4, -0.2], [126, 130], { neckW: 2 }),
   ]);
 }
 
@@ -47,13 +47,13 @@ export function padaHastasana() {
     arm([116, 136], [100, 152], [94, 162], { far: true, hand: 'palm', fingers: -1 }),
     leg([98, 76], [96, 118], [94, 158], { far: true, foot: 'flat', toe: 1, underShorts: true }),
     torso([
-      [92, 144],
-      [108, 142],
-      [126, 150],
-      [130, 158],
-      [118, 162],
-      [100, 152],
-      [92, 148],
+      [94, 80],
+      [108, 78],
+      [126, 112],
+      [130, 134],
+      [118, 140],
+      [101, 104],
+      [94, 88],
     ]),
     shortsFrame([103, 74], [0.35, 0.94], [1, 0.15], {
       rise: 9,
@@ -63,7 +63,7 @@ export function padaHastasana() {
     }),
     arm([128, 138], [124, 154], [112, 162], { hand: 'palm', fingers: -1 }),
     leg([106, 78], [110, 120], [112, 158], { foot: 'flat', toe: 1, underShorts: true }),
-    head([102, 160], [0.15, 0.99], [0.3, -0.2], [102, 156]),
+    head([133, 146], [0.2, 0.98], [0.3, -0.25], [127, 136]),
   ]);
 }
 
