@@ -35,6 +35,18 @@ describe('series registry', () => {
     expect(INTERMEDIATE_SERIES.at(-1)?.id).toMatch(/^int-/);
   });
 
+  it('orders paschimottanasana variants A–D', () => {
+    const ids = PRIMARY_SERIES.map((a) => a.id);
+    const start = ids.indexOf('paschimottanasana-a');
+    expect(start).toBeGreaterThan(-1);
+    expect(ids.slice(start, start + 4)).toEqual([
+      'paschimottanasana-a',
+      'paschimottanasana-b',
+      'paschimottanasana-c',
+      'paschimottanasana-d',
+    ]);
+  });
+
   it('strips int- content keys', () => {
     expect(contentKeyForAsana('int-surya-a')).toBe('surya-a');
     expect(contentKeyForAsana('pasasana')).toBe('pasasana');

@@ -111,7 +111,7 @@ alwaysApply: true
   широкий → hull + `dentBetweenHems` (выемка между подолами, не −u/ягодицы).
   Сидячие параллельные на полу — L-контур (danda/paschi).
   Стык торс↔шорты: bluntStart ~1.55, rise thighs +1.
-  Критерий: 1 компонент, topRuns=1; смотреть `tmp-review/shorts-continuity.png`
+  Критерий: 1 компонент, topRuns=1 (сверять по геометрии SVG и `audit`, без PNG)
 
 ## Стоячая складка / шорты (уроки 2026-11-13)
 

@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { frameToContent } from './figure.mjs';
+import { toSilhouette, snapToGround } from './mono.mjs';
 
 const root = dirname(fileURLToPath(import.meta.url));
 
@@ -20,8 +20,12 @@ for (const [mod, dirName] of MODULES) {
   await mkdir(dir, { recursive: true });
   for (const [name, fn] of FILES) {
     const file = join(dir, `${name}.svg`);
-    const svg = fn();
-    await writeFile(file, dirName === 'surya' ? svg : frameToContent(svg));
+    // Анатомия рисуется в системе 200×200, затем переводится в монохромный
+    // силуэт: общий холст, одни чернила, дальние конечности — дымкой.
+    // Пол в силуэт не входит, поэтому прижимаем фигуру к линии пола.
+    const svg = snapToGround(toSilhouette(fn()));
+    await writeFile(file, svg);
     console.log(file);
   }
 }
+

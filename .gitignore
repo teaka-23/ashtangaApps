@@ -29,5 +29,13 @@ playwright/.cache
 
 .vitest
 
+# Разовые артефакты ревью иллюстраций (скриншоты, кропы, выгрузки)
+tmp-review/
+/crop-*.png
+/padangusthasana*.png
+/paschi-before.png
+/ref-*.jpg
+/surya-*.png
+
 # API keys
 .env
