@@ -8,6 +8,12 @@
 
 Общие уроки → `.cursor/rules/figure-quality-bar.mdc` (не дублировать одни и те же ошибки).
 
+Перед приёмкой: `npm run illustrations:audit` и `npm run illustrations:poses`
+(0 ERR). Список `NOTE` из второго отчёта — кадры, которые стоит смотреть
+первыми. Пакет для внешней модели с image input (PNG в `/tmp`, в репозиторий
+не идёт): `npm run illustrations:pack`. Вердикт модели — предфильтр, `✅` всё
+равно ставит владелец.
+
 Образцы: `docs/references/ashtanga-primary-series-cheat-sheet.jpg`,
 `docs/references/ashtanga-finishing-nadi-shodhana.png`.
 

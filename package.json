@@ -10,6 +10,8 @@
     "preview": "vite preview",
     "illustrations": "node illustrations/build.mjs",
     "illustrations:audit": "node illustrations/audit.mjs",
+    "illustrations:poses": "node illustrations/audit-poses.mjs",
+    "illustrations:pack": "node illustrations/review-pack.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
