@@ -869,17 +869,17 @@ function shin(knee, ankle, opt = {}) {
  * из двух брёвен). Согнутая — два сегмента; hairpin — сустав к хорде.
  */
 function arm(shoulder, elbow, wrist, opt) {
-  const { far = false, hand = 'hang', fingers = 1 } = opt;
+  const { far = false, hand = 'hang', fingers = 1, deltoid = 1 } = opt;
   const handSvg = `<path d="${handPath(wrist, elbow, hand, fingers)}" ${skin(far)} stroke-width="1.15" stroke-linejoin="round"/>`;
   const ang = jointAngle(shoulder, elbow, wrist);
 
   // Почти прямая: непрерывный конус плечо→кисть (vira II, urdhva hasta).
   if (ang > 2.55) {
-    const radii = far ? [4.4, 3.5, 2.6] : [5.0, 3.9, 2.8];
+    const radii = far ? [4.4 * deltoid, 3.5, 2.6] : [5.0 * deltoid, 3.9, 2.8];
     return limb([shoulder, elbow, wrist], radii, far, handSvg, { softStart: true });
   }
 
-  const rUpper = far ? [4.4, 3.6] : [5.0, 4.0];
+  const rUpper = far ? [4.4 * deltoid, 3.6] : [5.0 * deltoid, 4.0];
   const rFore = far ? [3.5, 2.6] : [3.9, 2.8];
   let joint = elbow;
   if (ang < 0.85) {
