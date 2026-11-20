@@ -6,7 +6,6 @@ import type { Asana } from './data/types';
 import { FeedbackButton } from './components/FeedbackButton';
 import { MantraAudioButton } from './components/MantraAudioButton';
 import { PosePicture } from './components/PosePicture';
-import { AsanaFigure } from './components/AsanaFigure';
 import { bindSessionLifecycle, startSession } from './analytics/session';
 import { hideBackButton, initPlatform, showBackButton } from './platform';
 import { clearProgress, loadProgress, type PracticeProgress } from './practice/progress';
@@ -34,8 +33,8 @@ const LOCALE: Locale = 'ru';
 
 /** Series-specific visual config */
 const SERIES_VISUAL: Record<SeriesId, { accentBg: string; accentColor: string; watermarkPose: string }> = {
-  primary: { accentBg: 'var(--primary-accent-bg)', accentColor: 'var(--primary-accent)', watermarkPose: 'padmasana' },
-  intermediate: { accentBg: 'var(--intermediate-accent-bg)', accentColor: 'var(--intermediate-accent)', watermarkPose: 'kapotasana' },
+  primary: { accentBg: 'var(--primary-accent-bg)', accentColor: 'var(--primary-accent)', watermarkPose: 'urdhva-dhanurasana' },
+  intermediate: { accentBg: 'var(--intermediate-accent-bg)', accentColor: 'var(--intermediate-accent)', watermarkPose: 'pincha-mayurasana' },
 };
 
 function useRoute(): Route {
@@ -267,7 +266,7 @@ export default function App() {
                       </span>
                     </div>
                     <div className="series-card__preview" aria-hidden="true">
-                      <AsanaFigure
+                      <PosePicture
                         pose={visual.watermarkPose}
                         className="series-card__watermark"
                         thumbnail
