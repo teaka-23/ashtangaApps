@@ -158,8 +158,8 @@
 | 80 | 88 | [tittibhasana-a](http://localhost:5173/#/series/intermediate/asana/tittibhasana-a) | Tittibhasana A — Поза светлячка А | ⬜ | Бёдра на руках, ноги вперёд. |
 | 81 | 89 | [tittibhasana-b](http://localhost:5173/#/series/intermediate/asana/tittibhasana-b) | Tittibhasana B — Поза светлячка Б | ⬜ | Бёдра на руках, ноги вверх. |
 | 82 | 90 | [tittibhasana-c](http://localhost:5173/#/series/intermediate/asana/tittibhasana-c) | Tittibhasana C — Поза светлячка В | ⬜ | Бёдра на руках, ноги разведены в стороны. |
-| 83 | 91 | [pincha-mayurasana](http://localhost:5173/#/series/intermediate/asana/pincha-mayurasana) | Pincha Mayurasana — Стойка на предплечьях | ⬜ | 2026-11-19: локти сведены под плечи (были на 16 px впереди). |
-| 84 | 92 | [karandavasana](http://localhost:5173/#/series/intermediate/asana/karandavasana) | Karandavasana — Поза утёнка | ⬜ | Перекройка 2026-11-19: таз на 100, спина округлена, колени лотоса `[110,140]`/`[92,140]` лежат на руках (2.4/3.1 px от оси), стопы перед грудью; WARN «мелкая фигура=76» принят. |
+| 83 | 91 | [pincha-mayurasana](http://localhost:5173/#/series/intermediate/asana/pincha-mayurasana) | Pincha Mayurasana — Стойка на предплечьях | ⬜ | 2026-11-19: локти сведены под плечи (были на 16 px впереди), во второй версии плечи опущены на 137 — предплечья и ладони лежат на полу одной линией (кисти `[112,164]`/`[132,164]`). |
+| 84 | 92 | [karandavasana](http://localhost:5173/#/series/intermediate/asana/karandavasana) | Karandavasana — Поза утёнка | ⬜ | Перекройка 2026-11-19: плечи на 137 — предплечья и ладони лежат на полу одной линией (кисти `[112,164]`/`[135,164]`, ладонь-клин 163.6→168), таз на 104–106, спина округлена, колени лотоса `[114,143]`/`[84,143]` на осях рук (5.0/0.4 px); WARN «мелкая фигура=70» принят. |
 | 85 | 93 | [mayurasana](http://localhost:5173/#/series/intermediate/asana/mayurasana) | Mayurasana — Поза павлина | ⬜ | Локти в живот, тело — балка. |
 | 86 | 94 | [nakrasana](http://localhost:5173/#/series/intermediate/asana/nakrasana) | Nakrasana — Поза крокодила | ⬜ | Упор на предплечья, ноги назад. |
 | 87 | 95 | [vatayanasana](http://localhost:5173/#/series/intermediate/asana/vatayanasana) | Vatayanasana — Поза лошади | ⬜ | 2026-11-19: присед на опорной ноге (таз ниже на 12 px, колено 109°, стопа на настиле), спина прямая, намасте перед грудью. |
@@ -213,3 +213,5 @@
 | 2026-11-15 | Пах: `dentBetweenHems` на широком шаге (ребро у подолов → к mid); bluntStart 1.55 + rise+1 для стыка торс↔шорты; объём прогибов/sava. |
 | 2026-11-15 | Сложные асаны — 4 слоя: lean-торс (не плита), читаемый жест (far/near), flat/hold ладони, стык плечо/таз. Прогибы: параллельная lean-дуга `arch:true` (как `wheelTorso`); auto-дуга ок если жест сверяют с плакатом. Crow: стопы `free` высоко у таза, не на полу. |
 | 2026-11-19 | Силуэт: пол и тень не рисуются, поэтому фигуру прижимаем к y=168 (`snapToGround`), иначе поза «висит». Контроль без картинок — `npm run illustrations:audit` (должно быть 0 ERR). |
+| 2026-11-19 | Опора на предплечья (пинча, карандавасана): плечи опускаются так, чтобы локоть и кисть встали на пол (`кисть_над_полом` ≈ радиусу предплечья, 4 px при плече 27 вниз → плечи на 137), предплечье горизонтально по полу. Иначе `hand:'flat'` рисует ладонь блоком 10–12 px, свисающим с кисти: ладонь и предплечье обязаны быть одной линией. |
+
