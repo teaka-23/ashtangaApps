@@ -30,6 +30,12 @@ export function saveVoiceEnabled(on: boolean): void {
 }
 
 export function cancelSpeech(): void {
+  speakToken += 1;
+  if (pendingSpeak !== null) {
+    window.clearTimeout(pendingSpeak);
+    pendingSpeak = null;
+  }
+  activeUtterance = null;
   if (!voiceSupported()) return;
   try {
     window.speechSynthesis.cancel();
@@ -37,6 +43,11 @@ export function cancelSpeech(): void {
     /* ignore */
   }
 }
+
+let speakToken = 0;
+let pendingSpeak: number | null = null;
+/** Chrome собирает utterance, если на него нет ссылки, и молчит. */
+let activeUtterance: SpeechSynthesisUtterance | null = null;
 
 function pickVoice(locale: 'ru' | 'en'): SpeechSynthesisVoice | undefined {
   try {
@@ -52,12 +63,17 @@ function pickVoice(locale: 'ru' | 'en'): SpeechSynthesisVoice | undefined {
 /**
  * Проговаривает название асаны. Возвращает false, если озвучка недоступна
  * (Telegram WebView без Speech API) — вызывающий код просто продолжает таймер.
+ *
+ * `speak()` вызывается с задержкой после `cancel()`: в Chrome отмена и запуск
+ * в одном тике гасят новую фразу (из-за этого озвучка «не слышна»).
  */
 export function speakAsana(text: string, locale: 'ru' | 'en'): boolean {
   if (!voiceSupported() || !text.trim()) return false;
   try {
     const synth = window.speechSynthesis;
-    synth.cancel();
+    if (synth.speaking || synth.pending) synth.cancel();
+    const my = ++speakToken;
+
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = locale === 'en' ? 'en-US' : 'ru-RU';
     utterance.rate = 0.92;
@@ -65,7 +81,23 @@ export function speakAsana(text: string, locale: 'ru' | 'en'): boolean {
     utterance.volume = 1;
     const voice = pickVoice(locale);
     if (voice) utterance.voice = voice;
-    synth.speak(utterance);
+    activeUtterance = utterance;
+
+    pendingSpeak = window.setTimeout(() => {
+      pendingSpeak = null;
+      if (my !== speakToken || activeUtterance !== utterance) return;
+      try {
+        if (synth.paused) synth.resume();
+        synth.speak(utterance);
+        // Некоторые WebView стартуют в paused — мягко будим.
+        window.setTimeout(() => {
+          if (my !== speakToken || activeUtterance !== utterance) return;
+          if (!synth.speaking && !synth.pending && synth.paused) synth.resume();
+        }, 400);
+      } catch {
+        /* ignore */
+      }
+    }, 40);
     return true;
   } catch {
     return false;

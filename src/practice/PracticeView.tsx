@@ -65,10 +65,18 @@ export function PracticeView({
 
   const asana = asanas[index];
 
-  useEffect(() => {
-    showBackButton(onExit);
-    return () => hideBackButton();
+  // Выход всегда идёт через onExit/финиш, поэтому речь отменяем там, а не в
+  // cleanup эффекта: в StrictMode cleanup срабатывает сразу после монтирования
+  // и гасит только что запущенную озвучку (было: cancel → speak → cancel).
+  const exitPractice = useCallback(() => {
+    cancelSpeech();
+    onExit();
   }, [onExit]);
+
+  useEffect(() => {
+    showBackButton(exitPractice);
+    return () => hideBackButton();
+  }, [exitPractice]);
 
   useEffect(() => {
     startSession('practice', seriesId);
@@ -103,8 +111,6 @@ export function PracticeView({
     speakAsana(asanaSecondaryName(asana, locale), locale);
   }, [asana, done, voiceOn, locale]);
 
-  useEffect(() => () => cancelSpeech(), []);
-
   const progressPct = useMemo(
     () => ((index + (done ? 1 : 0)) / asanas.length) * 100,
     [index, done, asanas.length],
@@ -138,6 +144,7 @@ export function PracticeView({
   };
 
   const finish = () => {
+    cancelSpeech();
     void clearProgress(seriesId);
     onExit();
   };
@@ -211,7 +218,7 @@ export function PracticeView({
               {t(locale, 'voiceLabel')}
             </button>
           )}
-          <button type="button" className="practice__exit" onClick={onExit}>
+          <button type="button" className="practice__exit" onClick={exitPractice}>
             {t(locale, 'exit')}
           </button>
         </div>
