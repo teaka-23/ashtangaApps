@@ -150,6 +150,33 @@ function footPath(ankle, toe, mode, knee, far = false) {
       `Q ${ax - 6},${ay + 1} ${ax - 4},${ay + 5} Z`,
     ].join(' ');
   }
+  if (mode === 'instep' || mode === 'sole') {
+    // Стопа со стороны подъёма/подошвы (вид сзади или сверху): аккуратный овал
+    // вдоль голени; у `sole` — три бугорка пальцев, чтобы читалась стопа.
+    let dir = [s, 0];
+    if (knee) {
+      const d = sub(ankle, knee);
+      if (len(d) > 4) dir = norm(d);
+    }
+    const side = [-dir[1], dir[0]];
+    const c = add(ankle, mul(dir, 4.4));
+    const rx = mode === 'sole' ? 4.8 : 4.4;
+    const ry = mode === 'sole' ? 6.6 : 6.0;
+    const pts = [];
+    const steps = 18;
+    for (let i = 0; i < steps; i++) {
+      // Обход по часовой: при слиянии с лентой ноги (extraD) одинаковое
+      // направление обхода не даёт «дырки» в месте нахлёста (nonzero).
+      const a = -(i / steps) * Math.PI * 2;
+      let r = 1;
+      // пальцы: три мягких бугорка на дальнем конце (sin(a) > 0.55)
+      if (mode === 'sole' && Math.sin(a) > 0.55) {
+        r += 0.14 * Math.abs(Math.sin(a * 5));
+      }
+      pts.push(add(c, add(mul(dir, Math.cos(a) * ry * r), mul(side, Math.sin(a) * rx * r))));
+    }
+    return polySmooth(pts, 1.1);
+  }
   if (mode === 'spread') {
     // одна стопа в воздухе: круглая пятка снизу, носок одним блоком вверх.
     const ay = ankle[1];
@@ -287,6 +314,30 @@ function handPath(wrist, from, kind, fingers = 1) {
       `Q ${x - s * 5.2},${y - 0.8} ${x - s * 2.2},${y - 3.4}`,
       `Z`,
     ].join(' ');
+  }
+  if (kind === 'wrap') {
+    // Кисть обхватывает кромку стопы: ладонь + три пальца с выемками на
+    // дальнем торце + большой палец сбоку. В силуэте читается как захват,
+    // а не как клин (flat/palm) или гладкая митенка (hold).
+    const side = outerSide(dir);
+    const L = (d, s) => add(wrist, add(mul(dir, d), mul(side, s)));
+    const pts = [
+      L(0.6, -3.4),
+      L(4.8, -3.6),
+      L(6.8, -3.1),
+      L(9.0, -2.7),
+      L(7.1, -1.9),
+      L(9.3, -1.0),
+      L(7.2, -0.2),
+      L(9.3, 0.7),
+      L(7.2, 1.5),
+      L(8.6, 2.7),
+      L(5.0, 3.5),
+      L(2.2, 4.6),
+      L(1.0, 3.2),
+      L(-0.5, 1.4),
+    ];
+    return polySmooth(pts, 0.8);
   }
   // hang | reach | up — ладонь, большой палец углом, пальцы одним блоком
   const side = outerSide(dir);
