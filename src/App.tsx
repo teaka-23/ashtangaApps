@@ -266,12 +266,13 @@ export default function App() {
                         {totalCount} {pluralizeAsana(locale, totalCount)}
                       </span>
                     </div>
-                    <AsanaFigure
-                      pose={visual.watermarkPose}
-                      className="series-card__watermark"
-                      thumbnail
-                      aria-hidden="true"
-                    />
+                    <div className="series-card__preview" aria-hidden="true">
+                      <AsanaFigure
+                        pose={visual.watermarkPose}
+                        className="series-card__watermark"
+                        thumbnail
+                      />
+                    </div>
                   </div>
                   {p && (
                     <div className="series-card__progress" role="progressbar" aria-valuenow={progressPercent} aria-valuemin={0} aria-valuemax={100} aria-label={t(locale, 'practiceProgress')}>

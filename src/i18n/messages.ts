@@ -41,6 +41,9 @@ export const messages = {
     tempoFast: 'Быстро',
     soundOn: 'Звук',
     soundOff: 'Без звука',
+    voiceLabel: 'Озвучка',
+    voiceOn: 'Озвучка асаны включена',
+    voiceOff: 'Озвучка асаны выключена',
     langSwitch: 'EN',
     asanaWord: {
       one: 'асана',
@@ -92,6 +95,9 @@ export const messages = {
     tempoFast: 'Fast',
     soundOn: 'Sound',
     soundOff: 'Muted',
+    voiceLabel: 'Voice',
+    voiceOn: 'Asana voice announcement on',
+    voiceOff: 'Asana voice announcement off',
     langSwitch: 'RU',
     asanaWord: {
       one: 'asana',

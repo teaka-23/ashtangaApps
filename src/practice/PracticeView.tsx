@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { getSeries } from '../data/series';
 import type { SeriesId } from '../data/types';
 import { PosePicture } from '../components/PosePicture';
@@ -16,6 +16,13 @@ import {
 } from '../i18n';
 import { clearProgress, saveProgress } from './progress';
 import { BreathTimer } from './BreathTimer';
+import {
+  cancelSpeech,
+  loadVoiceEnabled,
+  saveVoiceEnabled,
+  speakAsana,
+  voiceSupported,
+} from './voice';
 import {
   BREATH_TEMPO_MS,
   LOOK_HOLD_MS,
@@ -53,6 +60,7 @@ export function PracticeView({
   const [done, setDone] = useState(false);
   const [tempo, setTempo] = useState<BreathTempo>(() => loadBreathTempo());
   const [soundOn, setSoundOn] = useState(() => loadBreathSound());
+  const [voiceOn, setVoiceOn] = useState(() => loadVoiceEnabled());
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const asana = asanas[index];
@@ -81,6 +89,21 @@ export function PracticeView({
     if (!asana || done) return;
     void saveProgress(seriesId, asana.id, completedIds);
   }, [asana, completedIds, done, seriesId]);
+
+  // Название асаны проговаривается при входе в неё; таймер дыханий стартует
+  // после паузы LOOK_HOLD_MS (2 с) — этого хватает, чтобы договорить.
+  const spokenForRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!asana || done || !voiceOn) {
+      cancelSpeech();
+      return;
+    }
+    if (spokenForRef.current === asana.id) return;
+    spokenForRef.current = asana.id;
+    speakAsana(asanaSecondaryName(asana, locale), locale);
+  }, [asana, done, voiceOn, locale]);
+
+  useEffect(() => () => cancelSpeech(), []);
 
   const progressPct = useMemo(
     () => ((index + (done ? 1 : 0)) / asanas.length) * 100,
@@ -167,6 +190,27 @@ export function PracticeView({
           {index + 1} / {asanas.length}
         </span>
         <div className="practice__header-actions">
+          {voiceSupported() && (
+            <button
+              type="button"
+              className={`practice__voice${voiceOn ? ' is-active' : ''}`}
+              aria-pressed={voiceOn}
+              aria-label={voiceOn ? t(locale, 'voiceOn') : t(locale, 'voiceOff')}
+              title={voiceOn ? t(locale, 'voiceOn') : t(locale, 'voiceOff')}
+              onClick={() => {
+                const next = !voiceOn;
+                setVoiceOn(next);
+                saveVoiceEnabled(next);
+                if (next) {
+                  speakAsana(asanaSecondaryName(asana, locale), locale);
+                } else {
+                  cancelSpeech();
+                }
+              }}
+            >
+              {t(locale, 'voiceLabel')}
+            </button>
+          )}
           <button type="button" className="practice__exit" onClick={onExit}>
             {t(locale, 'exit')}
           </button>
