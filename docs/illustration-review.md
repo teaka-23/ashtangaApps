@@ -96,13 +96,13 @@ Surya A/B 13:52–13:53 — восстановлены из журнала се�
 
 | # | id | Асана | Статус | Заметки |
 |---|-----|-------|--------|---------|
-| 1 | `surya-a` | Surya Namaskara A — Приветствие Солнцу А | ⬜ | 2026-11-14 полный аудит Primary+2nd: новичок + колено-шарнир; ждём ок. 2026-11-20 13:52 замечание владельца: «надо улучшить сопряжение таза и ног. 3,4,8 — виньясы бедро оторвано от таза» — **не исправлено**, ждёт команды (кадры 03/04/08: `shortsFrame` идёт `along`-трубкой, корни бёдер [96,78]/[106,80] при оси шорт [100,76]). |
+| 1 | `surya-a` | Surya Namaskara A — Приветствие Солнцу А | ⬜ | 2026-11-14 полный аудит Primary+2nd: новичок + колено-шарнир; ждём ок. 2026-11-20 13:52 замечание владельца: «надо улучшить сопряжение таза и ног. 3,4,8 — виньясы бедро оторвано от таза» — исправлено: кадры 03/04 переведены на `thighs` (подол поперёк обоих бёдер), 04 — развёрнуты оси шорт, 08 — шире дельта/подол; ждём ок. |
 
 ## Сурья Б
 
 | # | id | Асана | Статус | Заметки |
 |---|-----|-------|--------|---------|
-| 2 | `surya-b` | Surya Namaskara B — Приветствие Солнцу Б | ⬜ | 2026-11-14 аппрув отменён владельцем на переработку (наследует А; утката и воины I пр./лев. под `thighs`/`inline`, поля сверху). 2026-11-20 13:53 замечание владельца: «те же проблемы с тазом/бедром» — **не исправлено**, ждёт команды (Б наследует кадры А, правка А пройдёт и сюда). |
+| 2 | `surya-b` | Surya Namaskara B — Приветствие Солнцу Б | ⬜ | 2026-11-14 аппрув отменён владельцем на переработку (наследует А; утката и воины I пр./лев. под `thighs`/`inline`, поля сверху). 2026-11-20 13:53 замечание владельца: «те же проблемы с тазом/бедром» — исправлено вместе с А (Б использует те же кадры); ждём ок. |
 
 ## Стоя
 
@@ -171,7 +171,7 @@ Surya A/B 13:52–13:53 — восстановлены из журнала се�
 
 | # | id | Асана | Статус | Заметки |
 |---|-----|-------|--------|---------|
-| 50 | `salamba-sarvangasana` | Salamba Sarvangasana | ⬜ | 2026-11-19 ракурс сзади: локти — две опоры на полу, кисти под лопатками, макушка на полу — ждём ок |
+| 50 | `salamba-sarvangasana` | Salamba Sarvangasana | ⬜ | 2026-11-19 ракурс сзади: локти — две опоры на полу, кисти под лопатками, макушка на полу — ждём ок 2026-11-20 стопы: `foot: 'spread'` вместо `free` — два читаемых развёрнутых носка вместо клина и блина. |
 | 51 | `halasana` | Halasana | ⬜ | |
 | 52 | `karnapidasana` | Karnapidasana | ⬜ | |
 | 53 | `urdhva-padmasana` | Urdhva Padmasana | ⬜ | |
@@ -203,29 +203,29 @@ Surya A/B 13:52–13:53 — восстановлены из журнала се�
 | 69 | 77 | [ustrasana](http://localhost:5173/#/series/intermediate/asana/ustrasana) | Ustrasana — Поза верблюда | ⬜ | 2026-11-20, 2-я итерация по замечаниям «шею меньше, плечи/руки/ладони, возможно сменить ракурс»: кадр переведён в профиль ¾. Шея 10.3 px оси (0.92 r), видимой на фоне 4.8 px (было 17.6 px); дельты — верхний задний угол торса, руки идут вне силуэта к пяткам (кисти `[77,152]`/`[84,154]` в 4–6 px от щиколоток, ладони `hold`), торс-дуга 9 точек глубиной 30 px, голова `[100,68]` на полке плеч — ждём ок. |
 | 70 | 78 | [laghu-vajrasana](http://localhost:5173/#/series/intermediate/asana/laghu-vajrasana) | Laghu Vajrasana — Малый громовой сиденье | ⬜ | Перекройка 2026-11-19: таз посажен к пяткам (137/140), колени на настиле (162/164), макушка `[62,166]` на полу позади стоп, дуга торса 55/49 px вместо 92 — флагов нет. |
 | 71 | 79 | [kapotasana](http://localhost:5173/#/series/intermediate/asana/kapotasana) | Kapotasana — Поза голубя | ⬜ | 2026-11-19 перекрыта в ¾: локти и колени на полу, кисти на стопах, макушка у стоп; единственный флаг «мелкая фигура=82». |
-| 72 | 80 | [supta-vajrasana](http://localhost:5173/#/series/intermediate/asana/supta-vajrasana) | Supta Vajrasana — Лежащий громовой сиденье | ⬜ | Спина дугой, макушка на полу, голени вдоль бёдер, руки на бёдрах. |
-| 73 | 81 | [bakasana-a](http://localhost:5173/#/series/intermediate/asana/bakasana-a) | Bakasana A — Поза ворона А | ⬜ | Колени на руках, стопы в воздухе. |
-| 74 | 82 | [bakasana-b](http://localhost:5173/#/series/intermediate/asana/bakasana-b) | Bakasana B — Поза ворона Б | ⬜ | Прямые руки, плечи над ладонями. |
+| 72 | 80 | [supta-vajrasana](http://localhost:5173/#/series/intermediate/asana/supta-vajrasana) | Supta Vajrasana — Лежащий громовой сиденье | ⬜ | Спина дугой, макушка на полу, голени вдоль бёдер, руки на бёдрах. 2026-11-20 острые колени: обе ноги собраны `softKnee` (две капсулы + диск-мыщелок), клин-«спица» ушёл. |
+| 73 | 81 | [bakasana-a](http://localhost:5173/#/series/intermediate/asana/bakasana-a) | Bakasana A — Поза ворона А | ⬜ | Колени на руках, стопы в воздухе. 2026-11-20 ракурс сменён на профиль: руки-опоры, колени на трицепсах и сложенные голени со стопами читаются отдельными массами (в ¾ ног не было видно). |
+| 74 | 82 | [bakasana-b](http://localhost:5173/#/series/intermediate/asana/bakasana-b) | Bakasana B — Поза ворона Б | ⬜ | Прямые руки, плечи над ладонями. 2026-11-20 тоже профиль: руки прямее, таз выше, колени у подмышек; голени и стопы видны под торсом. |
 | 75 | 83 | [bharadvajasana](http://localhost:5173/#/series/intermediate/asana/bharadvajasana) | Bharadvajasana — Поза мудреца Бхарадваджи | ⬜ | 2026-11-19: скрутка, кисть на стопе полулотоса. |
-| 76 | 84 | [ardha-matsyendrasana](http://localhost:5173/#/series/intermediate/asana/ardha-matsyendrasana) | Ardha Matsyendrasana — Полуповёрнутый лорд рыб | ⬜ | Скрутка с захватом стопы (замок за спиной в профиле не читался). |
+| 76 | 84 | [ardha-matsyendrasana](http://localhost:5173/#/series/intermediate/asana/ardha-matsyendrasana) | Ardha Matsyendrasana — Полуповёрнутый лорд рыб | ⬜ | Скрутка с захватом стопы (замок за спиной в профиле не читался). 2026-11-20 острое колено: ближняя нога `softKnee` + диск-мыщелок, угол скруглён. |
 | 77 | 85 | [eka-pada-sirsasana](http://localhost:5173/#/series/intermediate/asana/eka-pada-sirsasana) | Eka Pada Sirsasana — Стойка с одной ногой за головой | ⬜ | Нога за головой, захват стопы. |
 | 78 | 86 | [dwi-pada-sirsasana](http://localhost:5173/#/series/intermediate/asana/dwi-pada-sirsasana) | Dwi Pada Sirsasana — Обе ноги за головой сидя | ⬜ | Обе ноги за головой, кисти на полу. |
-| 79 | 87 | [yoga-nidrasana](http://localhost:5173/#/series/intermediate/asana/yoga-nidrasana) | Yoga Nidrasana — Поза йогического сна | ⬜ | 2026-11-19: захват перенесён со стоп на бёдра; длина ноги 162 px — геометрия позы, принято. |
+| 79 | 87 | [yoga-nidrasana](http://localhost:5173/#/series/intermediate/asana/yoga-nidrasana) | Yoga Nidrasana — Поза йогического сна | ⬜ | 2026-11-19: захват перенесён со стоп на бёдра; длина ноги 162 px — геометрия позы, принято. 2026-11-20 ноги заведены за голову: голени идут на высоте головы и заканчиваются слева от неё у пола, голова их перекрывает; торс подтянут (нога 137 вместо 162). |
 | 80 | 88 | [tittibhasana-a](http://localhost:5173/#/series/intermediate/asana/tittibhasana-a) | Tittibhasana A — Поза светлячка А | ⬜ | Бёдра на руках, ноги вперёд. |
 | 81 | 89 | [tittibhasana-b](http://localhost:5173/#/series/intermediate/asana/tittibhasana-b) | Tittibhasana B — Поза светлячка Б | ⬜ | Бёдра на руках, ноги вверх. |
 | 82 | 90 | [tittibhasana-c](http://localhost:5173/#/series/intermediate/asana/tittibhasana-c) | Tittibhasana C — Поза светлячка В | ⬜ | Бёдра на руках, ноги разведены в стороны. |
 | 83 | 91 | [pincha-mayurasana](http://localhost:5173/#/series/intermediate/asana/pincha-mayurasana) | Pincha Mayurasana — Стойка на предплечьях | ✅ | 2026-11-19: локти сведены под плечи (были на 16 px впереди), во второй версии плечи опущены на 137 — предплечья и ладони лежат на полу одной линией (кисти `[112,164]`/`[132,164]`). **2026-11-19 ок владельца.** |
 | 84 | 92 | [karandavasana](http://localhost:5173/#/series/intermediate/asana/karandavasana) | Karandavasana — Поза утёнка | ✅ | Перекройка 2026-11-19: плечи на 137 — предплечья и ладони лежат на полу одной линией (кисти `[112,164]`/`[135,164]`, ладонь-клин 163.6→168), таз на 104–106, спина округлена, колени лотоса `[114,143]`/`[84,143]` на осях рук (5.0/0.4 px); WARN «мелкая фигура=70» принят; **2026-11-19 ок владельца** (ладони и предплечья в одной линии по полу). |
 | 85 | 93 | [mayurasana](http://localhost:5173/#/series/intermediate/asana/mayurasana) | Mayurasana — Поза павлина | ⬜ | Локти в живот, тело — балка. |
-| 86 | 94 | [nakrasana](http://localhost:5173/#/series/intermediate/asana/nakrasana) | Nakrasana — Поза крокодила | ⬜ | Упор на предплечья, ноги назад. |
-| 87 | 95 | [vatayanasana](http://localhost:5173/#/series/intermediate/asana/vatayanasana) | Vatayanasana — Поза лошади | ⬜ | 2026-11-19: присед на опорной ноге (таз ниже на 12 px, колено 109°, стопа на настиле), спина прямая, намасте перед грудью. |
+| 86 | 94 | [nakrasana](http://localhost:5173/#/series/intermediate/asana/nakrasana) | Nakrasana — Поза крокодила | ⬜ | Упор на предплечья, ноги назад. 2026-11-20 сверено с асаной: низкая планка, стопы на полу (`tucked`, подушечки на настиле), таз опущен — стопы больше не висят. |
+| 87 | 95 | [vatayanasana](http://localhost:5173/#/series/intermediate/asana/vatayanasana) | Vatayanasana — Поза лошади | ⬜ | 2026-11-19: присед на опорной ноге (таз ниже на 12 px, колено 109°, стопа на настиле), спина прямая, намасте перед грудью. 2026-11-20 стопа опорной ноги развёрнута носком внутрь-вперёд (`toe: 1`) — не «клубок» наружу. |
 | 88 | 96 | [parighasana](http://localhost:5173/#/series/intermediate/asana/parighasana) | Parighasana — Поза засова | ⬜ | 2026-11-19: колено на настиле, голень назад по полу, наклон к прямой ноге, рука над ухом. |
-| 89 | 97 | [gomukhasana-a](http://localhost:5173/#/series/intermediate/asana/gomukhasana-a) | Gomukhasana A — Поза коровьей морды А | ⬜ | 2026-11-19: кисти сведены в замок за спиной; короткое видимое бедро — стопка коленей, это геометрия позы. |
-| 90 | 98 | [gomukhasana-b](http://localhost:5173/#/series/intermediate/asana/gomukhasana-b) | Gomukhasana B — Поза коровьей морды Б | ⬜ | 2026-11-19: наклон вперёд, подбородок на верхнем колене, голова выведена из силуэта торса. |
+| 89 | 97 | [gomukhasana-a](http://localhost:5173/#/series/intermediate/asana/gomukhasana-a) | Gomukhasana A — Поза коровьей морды А | ⬜ | 2026-11-19: кисти сведены в замок за спиной; короткое видимое бедро — стопка коленей, это геометрия позы. 2026-11-20 стопа на подъёме (`freeFlex`) читается как стопа, а не как продолжение голени. |
+| 90 | 98 | [gomukhasana-b](http://localhost:5173/#/series/intermediate/asana/gomukhasana-b) | Gomukhasana B — Поза коровьей морды Б | ⬜ | 2026-11-19: наклон вперёд, подбородок на верхнем колене, голова выведена из силуэта торса. 2026-11-20 стопа на подъёме (`freeFlex`); снята двойная дымка рук — ближняя рука плотная, не «крыло». |
 | 91 | 99 | [supta-urdhva-pada-vajrasana](http://localhost:5173/#/series/intermediate/asana/supta-urdhva-pada-vajrasana) | Supta Urdhva Pada Vajrasana — Лежащий гром с поднятыми ногами | ⬜ | Макушка на полу, прямые ноги под углом вверх, кисти на стопах. |
 | 92 | 100 | [mukta-hasta-sirsasana-a](http://localhost:5173/#/series/intermediate/asana/mukta-hasta-sirsasana-a) | Mukta Hasta Sirsasana A — Стойка на голове А | ⬜ | Ладони у головы, локти согнуты в стороны. |
-| 93 | 101 | [mukta-hasta-sirsasana-b](http://localhost:5173/#/series/intermediate/asana/mukta-hasta-sirsasana-b) | Mukta Hasta Sirsasana B — Стойка на голове Б | ⬜ | Прямые руки вытянуты вперёд (кадр ¾); WARN «сдвиг по X=131» — следствие вытянутых рук. |
-| 94 | 102 | [mukta-hasta-sirsasana-c](http://localhost:5173/#/series/intermediate/asana/mukta-hasta-sirsasana-c) | Mukta Hasta Sirsasana C — Стойка на голове В | ⬜ | Руки разведены в стороны на 140 px — максимальный размах серии. |
+| 93 | 101 | [mukta-hasta-sirsasana-b](http://localhost:5173/#/series/intermediate/asana/mukta-hasta-sirsasana-b) | Mukta Hasta Sirsasana B — Стойка на голове Б | ⬜ | Прямые руки вытянуты вперёд (кадр ¾); WARN «сдвиг по X=131» — следствие вытянутых рук. 2026-11-20 ладони: новый тип `floor` (широкая ладонь с пальцами и выемкой) вместо тонкого клина `palm`. |
+| 94 | 102 | [mukta-hasta-sirsasana-c](http://localhost:5173/#/series/intermediate/asana/mukta-hasta-sirsasana-c) | Mukta Hasta Sirsasana C — Стойка на голове В | ⬜ | Руки разведены в стороны на 140 px — максимальный размах серии. 2026-11-20 ладони `floor`, как в B: широкие, с пальцами, не клинья. |
 | 95 | 103 | [baddha-hasta-sirsasana-a](http://localhost:5173/#/series/intermediate/asana/baddha-hasta-sirsasana-a) | Baddha Hasta Sirsasana A — Связанная стойка А | ⬜ | 2026-11-19: кисти сведены на противоположные локти (были в 14 px). |
 | 96 | 104 | [baddha-hasta-sirsasana-b](http://localhost:5173/#/series/intermediate/asana/baddha-hasta-sirsasana-b) | Baddha Hasta Sirsasana B — Связанная стойка Б | ⬜ | 2026-11-19: пальцы в замке за затылком (было 20 px между кистями). |
 | 97 | 105 | [baddha-hasta-sirsasana-c](http://localhost:5173/#/series/intermediate/asana/baddha-hasta-sirsasana-c) | Baddha Hasta Sirsasana C — Связанная стойка В | ⬜ | Предплечья скрещены, кисти у противоположных плеч. |

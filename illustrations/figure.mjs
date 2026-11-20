@@ -268,6 +268,26 @@ function handPath(wrist, from, kind, fingers = 1) {
       `Z`,
     ].join(' ');
   }
+  if (kind === 'floor') {
+    // Ладонь на полу в фронте/чуть сверху: широкая пятка, короткие пальцы
+    // с выемкой и большой палец сбоку — не тонкий клин, как `flat` в профиль.
+    const s = fingers >= 0 ? 1 : -1;
+    const y = GROUND;
+    const x = wrist[0];
+    const top = y - 7.4;
+    return [
+      `M ${x - s * 2.2},${y - 3.4}`,
+      `Q ${x - s * 4.2},${top} ${x + s * 0.6},${top}`,
+      `L ${x + s * 7.2},${top}`,
+      `Q ${x + s * 10.4},${top} ${x + s * 10.4},${y - 4.4}`,
+      `L ${x + s * 9.2},${y}`,
+      `L ${x + s * 4.6},${y}`,
+      `Q ${x + s * 3.6},${y - 1.6} ${x + s * 2.6},${y}`,
+      `L ${x - s * 1.8},${y}`,
+      `Q ${x - s * 5.2},${y - 0.8} ${x - s * 2.2},${y - 3.4}`,
+      `Z`,
+    ].join(' ');
+  }
   // hang | reach | up — ладонь, большой палец углом, пальцы одним блоком
   const side = outerSide(dir);
   const reach = kind === 'up' ? 11 : 9.5;
