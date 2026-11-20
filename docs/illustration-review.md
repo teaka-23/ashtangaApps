@@ -145,7 +145,7 @@
 | 67 | 75 | [dhanurasana](http://localhost:5173/#/series/intermediate/asana/dhanurasana) | Dhanurasana — Поза лука | ⬜ | Захват стоп сзади, грудь вверх. |
 | 68 | 76 | [parsva-dhanurasana](http://localhost:5173/#/series/intermediate/asana/parsva-dhanurasana) | Parsva Dhanurasana — Боковой лук | ⬜ | Разворот на бок, тот же захват стоп. |
 | 69 | 77 | [ustrasana](http://localhost:5173/#/series/intermediate/asana/ustrasana) | Ustrasana — Поза верблюда | ⬜ | 2026-11-19: кадр опущен на 8 px, колени на настиле, ладони на пятках, руки одним конусом от плеча к пятке. |
-| 70 | 78 | [laghu-vajrasana](http://localhost:5173/#/series/intermediate/asana/laghu-vajrasana) | Laghu Vajrasana — Малый громовой сиденье | ⬜ | Макушка на полу позади стоп; колени пока на 30 px над настилом — перекройка не сделана. |
+| 70 | 78 | [laghu-vajrasana](http://localhost:5173/#/series/intermediate/asana/laghu-vajrasana) | Laghu Vajrasana — Малый громовой сиденье | ⬜ | Перекройка 2026-11-19: таз посажен к пяткам (137/140), колени на настиле (162/164), макушка `[62,166]` на полу позади стоп, дуга торса 55/49 px вместо 92 — флагов нет. |
 | 71 | 79 | [kapotasana](http://localhost:5173/#/series/intermediate/asana/kapotasana) | Kapotasana — Поза голубя | ⬜ | 2026-11-19 перекрыта в ¾: локти и колени на полу, кисти на стопах, макушка у стоп; единственный флаг «мелкая фигура=82». |
 | 72 | 80 | [supta-vajrasana](http://localhost:5173/#/series/intermediate/asana/supta-vajrasana) | Supta Vajrasana — Лежащий громовой сиденье | ⬜ | Спина дугой, макушка на полу, голени вдоль бёдер, руки на бёдрах. |
 | 73 | 81 | [bakasana-a](http://localhost:5173/#/series/intermediate/asana/bakasana-a) | Bakasana A — Поза ворона А | ⬜ | Колени на руках, стопы в воздухе. |
@@ -159,7 +159,7 @@
 | 81 | 89 | [tittibhasana-b](http://localhost:5173/#/series/intermediate/asana/tittibhasana-b) | Tittibhasana B — Поза светлячка Б | ⬜ | Бёдра на руках, ноги вверх. |
 | 82 | 90 | [tittibhasana-c](http://localhost:5173/#/series/intermediate/asana/tittibhasana-c) | Tittibhasana C — Поза светлячка В | ⬜ | Бёдра на руках, ноги разведены в стороны. |
 | 83 | 91 | [pincha-mayurasana](http://localhost:5173/#/series/intermediate/asana/pincha-mayurasana) | Pincha Mayurasana — Стойка на предплечьях | ⬜ | 2026-11-19: локти сведены под плечи (были на 16 px впереди). |
-| 84 | 92 | [karandavasana](http://localhost:5173/#/series/intermediate/asana/karandavasana) | Karandavasana — Поза утёнка | ⬜ | Лотос висит над плечами (колени в 24–34 px) — перекройка не сделана. |
+| 84 | 92 | [karandavasana](http://localhost:5173/#/series/intermediate/asana/karandavasana) | Karandavasana — Поза утёнка | ⬜ | Перекройка 2026-11-19: таз на 100, спина округлена, колени лотоса `[110,140]`/`[92,140]` лежат на руках (2.4/3.1 px от оси), стопы перед грудью; WARN «мелкая фигура=76» принят. |
 | 85 | 93 | [mayurasana](http://localhost:5173/#/series/intermediate/asana/mayurasana) | Mayurasana — Поза павлина | ⬜ | Локти в живот, тело — балка. |
 | 86 | 94 | [nakrasana](http://localhost:5173/#/series/intermediate/asana/nakrasana) | Nakrasana — Поза крокодила | ⬜ | Упор на предплечья, ноги назад. |
 | 87 | 95 | [vatayanasana](http://localhost:5173/#/series/intermediate/asana/vatayanasana) | Vatayanasana — Поза лошади | ⬜ | 2026-11-19: присед на опорной ноге (таз ниже на 12 px, колено 109°, стопа на настиле), спина прямая, намасте перед грудью. |
