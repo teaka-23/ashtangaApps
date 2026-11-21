@@ -12,6 +12,7 @@
     "illustrations:audit": "node illustrations/audit.mjs",
     "illustrations:poses": "node illustrations/audit-poses.mjs",
     "illustrations:pack": "node illustrations/review-pack.mjs",
+    "analytics:ping": "node --env-file=.env -e \"fetch(process.env.VITE_ANALYTICS_WEBHOOK_URL).then((r) => r.text()).then(console.log)\"",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",

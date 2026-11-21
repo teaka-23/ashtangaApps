@@ -26,13 +26,31 @@ function doGet(e) {
   try {
     var raw = (e && e.parameter && e.parameter.payload) || '';
     if (!raw) {
-      return json_({ ok: true, ping: true });
+      return json_(pingInfo_());
     }
     upsertVisitor_(JSON.parse(raw));
     return json_({ ok: true });
   } catch (err) {
     return json_({ ok: false, error: String(err) });
   }
+}
+
+/**
+ * Ответ на пустой GET: проверка живости, ссылка на таблицу и число visitor'ов.
+ * Нужен, чтобы не хранить приватную ссылку в репозитории — её всегда можно
+ * получить запросом к webhook (`curl <webhook>`).
+ */
+function pingInfo_() {
+  var book = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = book.getSheetByName('Users');
+  return {
+    ok: true,
+    ping: true,
+    sheetUrl: book.getUrl(),
+    sheetName: book.getName(),
+    users: Math.max(0, (sheet ? sheet.getLastRow() : 1) - 1),
+    updatedAt: new Date().toISOString(),
+  };
 }
 
 function doPost(e) {

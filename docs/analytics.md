@@ -55,6 +55,24 @@ VITE_ANALYTICS_WEBHOOK_URL=https://script.google.com/macros/s/XXXX/exec
 3. Практика → выход: та же строка, выросли `practiceSec` / `practiceOpens`.
 4. Повторный заход — **та же** `visitorId`, счётчики только растут.
 
+## Ссылка на таблицу
+
+Ссылка на сам Sheet **в репозитории не хранится** (это приватный документ
+владельца) — в проекте есть только webhook. Точный адрес всегда можно получить
+из скрипта:
+
+```bash
+npm run analytics:ping     # читает .env → GET к webhook
+# {"ok":true,"ping":true,"sheetUrl":"https://docs.google.com/spreadsheets/d/…","users":12,…}
+```
+
+Так отвечает `doGet` без `payload` (функция `pingInfo_`). Если в ответе только
+`{"ok":true,"ping":true}` — в таблице живёт **старая версия** скрипта: нужен
+redeploy (Deploy → Manage deployments → ✏️ → New version → Deploy).
+
+Пока redeploy не сделан, таблицу можно найти в Google Drive аккаунта, где создан
+Apps Script: https://drive.google.com/drive/search?q=Users (лист `Users`).
+
 ## Поля строки
 
 | Поле | Смысл |
