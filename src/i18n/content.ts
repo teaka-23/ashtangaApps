@@ -140,6 +140,8 @@ export const DRISHTI_EN: Record<string, string> = {
   Вверх: 'Up',
   'В сторону': 'To the side',
   Вперёд: 'Forward',
+  'На кисть': 'Hand',
+  'На стопу': 'Foot',
 };
 
 export const NOTE_EN: Record<string, string> = {

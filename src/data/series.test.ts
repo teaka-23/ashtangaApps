@@ -53,6 +53,56 @@ describe('series registry', () => {
     expect(ADVANCED_UNIQUE.every((a) => cartoonFrames(a.pose))).toBe(true);
   });
 
+  it('keeps the shorter third-series standing block (through Parsvottanasana)', () => {
+    const standing = ADVANCED_SERIES.filter((a) => a.section === 'standing').map((a) =>
+      a.id.replace(/^adv-/, ''),
+    );
+    expect(standing).toEqual([
+      'padangusthasana',
+      'padahastasana',
+      'utthita-trikonasana-a',
+      'utthita-trikonasana-b',
+      'utthita-parsvakonasana-a',
+      'utthita-parsvakonasana-b',
+      'prasarita-padottanasana-a',
+      'prasarita-padottanasana-b',
+      'prasarita-padottanasana-c',
+      'prasarita-padottanasana-d',
+      'parsvottanasana',
+    ]);
+  });
+
+  it('keeps the advanced A order from the printed sheet', () => {
+    expect(ADVANCED_UNIQUE.slice(0, 12).map((a) => a.id)).toEqual([
+      'vasisthasana',
+      'vishvamitrasana',
+      'kasyapasana',
+      'chakorasana',
+      'bhairavasana',
+      'skandasana',
+      'durvasana',
+      'urdhva-kukkutasana-a',
+      'urdhva-kukkutasana-b',
+      'urdhva-kukkutasana-c',
+      'galavasana',
+      'eka-pada-bakasana-a',
+    ]);
+  });
+
+  it('keeps the advanced A drishti corrections', () => {
+    const drishti = new Map(ADVANCED_UNIQUE.map((a) => [a.id, a.drishti]));
+    expect(drishti.get('vasisthasana')).toBe('На стопу');
+    expect(drishti.get('vishvamitrasana')).toBe('На кисть');
+    expect(drishti.get('kasyapasana')).toBe('Третий глаз');
+    expect(drishti.get('chakorasana')).toBe('На стопу');
+    expect(drishti.get('bhairavasana')).toBe('На кисть');
+    expect(drishti.get('skandasana')).toBe('Нос');
+    expect(drishti.get('durvasana')).toBe('Вверх');
+    expect(drishti.get('digasana-a')).toBe('На кисть');
+    expect(drishti.get('digasana-b')).toBe('Нос');
+    expect(drishti.get('nata-rajasana')).toBe('На кисть');
+  });
+
   it('builds intermediate from opening + unique + finishing', () => {
     expect(INTERMEDIATE_UNIQUE.length).toBe(37);
     expect(INTERMEDIATE_SERIES.length).toBeGreaterThan(50);

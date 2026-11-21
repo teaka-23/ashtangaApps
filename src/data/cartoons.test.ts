@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { ADVANCED_SERIES } from './advancedSeries';
 import { INTERMEDIATE_SERIES } from './intermediateSeries';
 import { PRIMARY_SERIES } from './primarySeries';
 import { cartoonFrames, poseFrameCount } from './cartoons';
@@ -34,6 +35,12 @@ describe('cartoon illustrations', () => {
 
   it('covers every intermediate pose', () => {
     for (const asana of INTERMEDIATE_SERIES) {
+      expect(cartoonFrames(asana.pose)?.length, asana.pose).toBeGreaterThan(0);
+    }
+  });
+
+  it('covers every advanced pose', () => {
+    for (const asana of ADVANCED_SERIES) {
       expect(cartoonFrames(asana.pose)?.length, asana.pose).toBeGreaterThan(0);
     }
   });

@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 import { CANVAS, GROUND, inkBounds } from './mono.mjs';
 
 const root = dirname(fileURLToPath(import.meta.url));
-const DIRS = ['surya', 'standing', 'seated1', 'seated2', 'finishing', 'intermediate'];
+const DIRS = ['surya', 'standing', 'seated1', 'seated2', 'finishing', 'intermediate', 'advanced'];
 
 /** Холст из mono.mjs: '-8 0 216 200' → границы. */
 function canvasBox() {

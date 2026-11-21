@@ -23,6 +23,7 @@ const MODULES = [
   ['poses-seated2.mjs', 'seated2'],
   ['poses-finishing.mjs', 'finishing'],
   ['poses-intermediate.mjs', 'intermediate'],
+  ['poses-advanced.mjs', 'advanced'],
 ];
 
 /** Перехватываем только вызовы, несущие координаты суставов. */
