@@ -40,8 +40,19 @@ const pending = (
 });
 
 export const ADVANCED_UNIQUE: Asana[] = [
-  pending('vasisthasana', 'Vasiṣṭhāsana', 'Васи́штхасана', 'Поза Васиштхи',
-    'Боковой упор на одной руке: верхняя рука и нога вытянуты вверх, таз поднят.', 'वसिष्ठासन'),
+  {
+    id: 'vasisthasana',
+    sanskrit: 'Vasiṣṭhāsana',
+    devanagari: 'वसिष्ठासन',
+    transcription: 'Васи́штхасана',
+    russian: 'Поза Васиштхи',
+    pose: 'vasisthasana',
+    vinyasa: 8,
+    drishti: 'Вверх',
+    breaths: 5,
+    note: 'Боковой упор на одной руке: верхняя рука и нога вытянуты вверх, взгляд на поднятую кисть.',
+    section: 'advanced',
+  },
   pending('vishvamitrasana', 'Viśvāmitrāsana', 'Вишвамитра́сана', 'Поза Вишвамитры',
     'Боковой упор: нижняя нога вытянута вперёд над опорной рукой, верхняя рука держит стопу.', 'विश्वामित्रासन'),
   pending('kasyapasana', 'Kaśyapāsana', 'Кашьяпа́сана', 'Поза Кашьяпы',

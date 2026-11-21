@@ -12,6 +12,7 @@ const MODULES = [
   ['poses-seated2.mjs', 'seated2'],
   ['poses-finishing.mjs', 'finishing'],
   ['poses-intermediate.mjs', 'intermediate'],
+  ['poses-advanced.mjs', 'advanced'],
 ];
 
 for (const [mod, dirName] of MODULES) {

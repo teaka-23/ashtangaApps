@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { cartoonFrames } from './cartoons';
 import { POSES } from './poses';
 import { ADVANCED_SERIES, ADVANCED_UNIQUE } from './advancedSeries';
 import { INTERMEDIATE_SERIES, INTERMEDIATE_UNIQUE } from './intermediateSeries';
@@ -24,7 +25,8 @@ describe('series registry', () => {
     for (const id of SERIES_ORDER) {
       for (const asana of SERIES[id].asanas) {
         if (!asana.illustrationPending) {
-          expect(POSES[asana.pose], `${id}:${asana.id}`).toBeTruthy();
+          const hasFigure = Boolean(POSES[asana.pose] || cartoonFrames(asana.pose));
+          expect(hasFigure, `${id}:${asana.id}`).toBeTruthy();
         }
         expect(asana.note?.trim(), `${id}:${asana.id} note`).toBeTruthy();
       }
@@ -37,7 +39,7 @@ describe('series registry', () => {
     expect(ADVANCED_SERIES.some((a) => a.id === 'vasisthasana')).toBe(true);
     expect(ADVANCED_SERIES.at(-1)?.id).toMatch(/^adv-/);
     // 36 новых асан пока без иллюстраций — плашка «иллюстрация готовится».
-    expect(ADVANCED_UNIQUE.every((a) => a.illustrationPending)).toBe(true);
+    expect(ADVANCED_UNIQUE.filter((a) => a.illustrationPending).length).toBe(35);
   });
 
   it('builds intermediate from opening + unique + finishing', () => {
