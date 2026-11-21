@@ -163,6 +163,7 @@ const CARTOONS: Record<string, readonly string[]> = {
   'baddha-hasta-sirsasana-c': [svg('intermediate/105-baddha-hasta-sirsasana-c')],
   'baddha-hasta-sirsasana-d': [svg('intermediate/106-baddha-hasta-sirsasana-d')],
   vasisthasana: [svg('advanced/01-vasisthasana')],
+  vishvamitrasana: [svg('advanced/02-vishvamitrasana')],
 };
 
 export function cartoonFrames(pose: string): readonly string[] | undefined {

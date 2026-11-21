@@ -39,7 +39,7 @@ describe('series registry', () => {
     expect(ADVANCED_SERIES.some((a) => a.id === 'vasisthasana')).toBe(true);
     expect(ADVANCED_SERIES.at(-1)?.id).toMatch(/^adv-/);
     // 36 новых асан пока без иллюстраций — плашка «иллюстрация готовится».
-    expect(ADVANCED_UNIQUE.filter((a) => a.illustrationPending).length).toBe(35);
+    expect(ADVANCED_UNIQUE.filter((a) => a.illustrationPending).length).toBe(34);
   });
 
   it('builds intermediate from opening + unique + finishing', () => {

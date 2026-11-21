@@ -55,12 +55,12 @@
 
 | Готово | Осталось |
 |---|---|
-| 1 — `vasisthasana` (боковой упор, взгляд на поднятую кисть; `vinyasa 8`, дришти «Вверх») | 35 |
+| 2 — `vasisthasana`, `vishvamitrasana` (дришти «Вверх», vinyasa 8 и 7) | 34 |
 
 ### Пакет 1 (в работе)
 
 1. ✅ `vasisthasana`
-2. ⬜ `vishvamitrasana`
+2. ✅ `vishvamitrasana`
 3. ⬜ `kasyapasana`
 4. ⬜ `chakorasana`
 5. ⬜ `bhairavasana`
