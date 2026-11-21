@@ -262,7 +262,7 @@ export function skandasana() {
   const shoulder = [128, 96];
   return doc([
     // Опорная нога прямая.
-    aLeg(hip, [100, 136], [100, 168], { foot: 'anatFlat', toe: 1, underShorts: true }),
+    aLeg(hip, [100, 136], [100, 162], { foot: 'anatFlat', toe: 1, underShorts: true }),
     // Стопа за головой: бедро вверх, голень спускается за шею, стопа у затылка.
     thigh([100, 104], [98, 71], { far: true, underShorts: true }),
     shin([98, 71], [124, 88], { far: true, foot: 'anatLotus', toe: -1 }),
@@ -282,7 +282,7 @@ export function durvasana() {
   const hip = [100, 104];
   const shoulder = [100, 70];
   return doc([
-    aLeg(hip, [100, 136], [100, 168], { foot: 'anatFlat', toe: 1, underShorts: true }),
+    aLeg(hip, [100, 136], [100, 162], { foot: 'anatFlat', toe: 1, underShorts: true }),
     // Стопа за головой: колено вверх-вправо, голень уходит влево за макушку.
     thigh([100, 104], [114, 74], { far: true, underShorts: true }),
     shin([114, 74], [84, 68], { far: true, foot: 'anatLotus', toe: -1 }),
@@ -762,12 +762,12 @@ export function digasanaA() {
   const hip = [100, 106];
   const shoulder = [100, 72];
   return doc([
-    aLeg(hip, [100, 138], [100, 168], { foot: 'anatFlat', toe: 1, underShorts: true }),
+    aLeg(hip, [100, 136], [100, 162], { foot: 'anatFlat', toe: 1, underShorts: true }),
     // Вторая нога вытянута далеко назад.
     aLeg(hip, [70, 112], [40, 118], { far: true, foot: 'anatFree', toe: -1, underShorts: true }),
     trunk(hip, shoulder, { hipW: 10, waistW: 9, chestW: 11, shoulderW: 12 }),
     shortsOn(hip, shoulder, [1, 0], [
-      [[100, 106], [100, 138]],
+      [[100, 106], [100, 136]],
       [[100, 106], [70, 112]],
     ]),
     arm([100, 72], [124, 72], [148, 72], { hand: 'up' }),
@@ -781,11 +781,11 @@ export function digasanaB() {
   const hip = [100, 106];
   const shoulder = [100, 72];
   return doc([
-    aLeg(hip, [100, 138], [100, 168], { foot: 'anatFlat', toe: 1, underShorts: true }),
+    aLeg(hip, [100, 136], [100, 162], { foot: 'anatFlat', toe: 1, underShorts: true }),
     aLeg(hip, [70, 112], [40, 118], { far: true, foot: 'anatFree', toe: -1, underShorts: true }),
     trunk(hip, shoulder, { hipW: 10, waistW: 9, chestW: 11, shoulderW: 12 }),
     shortsOn(hip, shoulder, [1, 0], [
-      [[100, 106], [100, 138]],
+      [[100, 106], [100, 136]],
       [[100, 106], [70, 112]],
     ]),
     arm([100, 72], [124, 72], [148, 72], { hand: 'up' }),
@@ -799,17 +799,17 @@ export function utthitaTrivikramasana() {
   const hip = [100, 106];
   const shoulder = [100, 72];
   return doc([
-    aLeg(hip, [100, 138], [100, 168], { foot: 'anatFlat', toe: 1, underShorts: true }),
-    // Поднятая нога: прямая, высоко вверх.
-    aLeg(hip, [80, 80], [60, 54], { far: true, foot: 'anatFree', toe: -1, underShorts: true }),
+    aLeg(hip, [100, 136], [100, 162], { foot: 'anatFlat', toe: 1, underShorts: true }),
+    // Поднятая нога: прямая, высоко вверх; стопа согнута к кистям.
+    aLeg(hip, [80, 80], [60, 54], { far: true, foot: 'anatHold', toe: 1, underShorts: true }),
     trunk(hip, shoulder, { hipW: 10, waistW: 9, chestW: 11, shoulderW: 12 }),
     shortsOn(hip, shoulder, [1, 0], [
-      [[100, 106], [100, 138]],
+      [[100, 106], [100, 136]],
       [[100, 106], [80, 80]],
     ]),
-    arm([100, 72], [80, 76], [62, 56], { hand: 'wrap' }),
-    arm([104, 72], [84, 78], [66, 58], { far: true, hand: 'wrap' }),
-    headP([100, 72], [0.1, -0.99], [60, 54], [0.2, -0.98]),
+    arm([100, 72], [80, 76], [69, 60], { hand: 'wrap' }),
+    arm([104, 72], [84, 78], [71, 62], { far: true, hand: 'wrap' }),
+    headP([100, 72], [0.1, -0.99], [69, 60], [0.2, -0.98]),
   ]);
 }
 
@@ -818,13 +818,13 @@ export function nataRajasana() {
   const hip = [100, 106];
   const shoulder = [108, 78];
   return doc([
-    aLeg(hip, [100, 138], [100, 168], { foot: 'anatFlat', toe: 1, underShorts: true }),
+    aLeg(hip, [100, 136], [100, 162], { foot: 'anatFlat', toe: 1, underShorts: true }),
     // Свободная нога открывается назад и вверх.
     aLeg(hip, [76, 96], [58, 76], { far: true, foot: 'anatFree', toe: -1, underShorts: true }),
     trunk(hip, shoulder, { hipW: 10, waistW: 9, chestW: 11, shoulderW: 12 }),
     shortsOn(hip, shoulder, [1, 0], [
       [[100, 106], [76, 96]],
-      [[100, 106], [100, 138]],
+      [[100, 106], [100, 136]],
     ]),
     // Рука держит стопу сзади.
     arm([108, 78], [90, 74], [60, 78], { hand: 'wrap' }),

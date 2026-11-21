@@ -109,38 +109,38 @@ function footPath(ankle, toe, mode, knee, far = false) {
   // Гладкий замкнутый контур через polySmooth: без отдельных «шпор»,
   // острых мысков и заусенцев на стыке с голенью.
   if (mode === 'anatFlat') {
-    const heel = ax - s * 7 * k;
-    const pts = [
-      [heel, sole],
-      [heel - s * 2 * k, sole - 3 * k],
-      [ax - s * 4 * k, sole - 5 * k],
-      [ax + s * 2 * k, ankle[1] - 2 * k],
-      [ax + s * 9 * k, sole - 5 * k],
-      [ax + s * 15 * k, sole - 4 * k],
-      [ax + s * 17 * k, sole - 1.5 * k],
-      [ax + s * 14 * k, sole],
-      [ax + s * 5 * k, sole],
-      [ax + s * 1 * k, sole],
-    ];
-    return polySmooth(pts, 1.5 * k);
+    // Плоская подошва + скруглённый подъём. polySmooth стягивал низ в
+    // каплю-шпору, поэтому подошва идёт прямой линией.
+    const heel = ax - s * 8 * k;
+    const toe = ax + s * 17 * k;
+    return [
+      `M ${pt([heel, sole])}`,
+      `L ${pt([toe - s * 3 * k, sole])}`,
+      `Q ${pt([toe, sole])} ${pt([toe, sole - 2.5 * k])}`,
+      `Q ${pt([ax + s * 14 * k, sole - 5 * k])} ${pt([ax + s * 9 * k, sole - 6.5 * k])}`,
+      `Q ${pt([ax + s * 2 * k, sole - 9 * k])} ${pt([ax - s * 5 * k, sole - 9 * k])}`,
+      `Q ${pt([ax - s * 9 * k, sole - 5 * k])} ${pt([heel, sole - 2.5 * k])}`,
+      `Q ${pt([heel - s * 1 * k, sole])} ${pt([heel, sole])}`,
+      'Z',
+    ].join(' ');
   }
   if (mode === 'anatFlex') {
-    const heel = ax - s * 4 * k;
+    // Сидячая стопа: плоская подошва, носок вверх, без острого верхнего клина.
+    const heel = ax - s * 6 * k;
+    const ball = ax + s * 5 * k;
     const top = ankle[1] - 14 * k;
-    const pts = [
-      [heel, sole],
-      [heel - s * 3 * k, sole - 5 * k],
-      [ax - s * 2 * k, ankle[1] - 2 * k],
-      [ax + s * 1 * k, top],
-      [ax + s * 5 * k, top + 2 * k],
-      [ax + s * 6 * k, top + 6 * k],
-      [ax + s * 4 * k, sole - 2 * k],
-      [ax + s * 1 * k, sole],
-    ];
-    return polySmooth(pts, 1.5 * k);
+    return [
+      `M ${pt([heel, sole])}`,
+      `L ${pt([ball, sole])}`,
+      `Q ${pt([ball + s * 2 * k, sole - 1 * k])} ${pt([ball + s * 1.5 * k, sole - 5 * k])}`,
+      `Q ${pt([ax + s * 6 * k, top + 6 * k])} ${pt([ax + s * 4 * k, top + 1 * k])}`,
+      `Q ${pt([ax + s * 1 * k, top - 1 * k])} ${pt([ax - s * 2 * k, top + 4 * k])}`,
+      `Q ${pt([ax - s * 4 * k, ankle[1] - 2 * k])} ${pt([heel, sole])}`,
+      'Z',
+    ].join(' ');
   }
   if (mode === 'anatTops') {
-    const heel = ax - s * 2 * k;
+    const heel = ax - s * 5 * k;
     const toe = ax + s * 14 * k;
     const pts = [
       [heel, sole - 4 * k],
@@ -153,6 +153,24 @@ function footPath(ankle, toe, mode, knee, far = false) {
     ];
     return polySmooth(pts, 1.4 * k);
   }
+  if (mode === 'anatHold') {
+    // Стопа в захвате рукой: сгиб в голеностопе, носок уходит к кисти,
+    // а не продолжает голень остриём. Компактная, без «лопаты».
+    const dir = norm([s, 0.35]);
+    const side = [-dir[1], dir[0]];
+    const heel = add(ankle, mul(dir, -5));
+    const mid = add(ankle, mul(dir, 4));
+    const tip = add(ankle, mul(dir, 9));
+    const pts = [
+      add(heel, mul(side, 2.4)),
+      add(heel, mul(side, -2.4)),
+      add(mid, mul(side, -2.9)),
+      add(tip, mul(side, -2.2)),
+      add(tip, mul(side, 2.2)),
+      add(mid, mul(side, 2.6)),
+    ];
+    return polySmooth(pts, 2);
+  }
   if (mode === 'anatFree' || mode === 'anatLotus') {
     const isLotus = mode === 'anatLotus';
     let dir = [s, 0];
@@ -161,22 +179,21 @@ function footPath(ankle, toe, mode, knee, far = false) {
       if (len(d) > 4) dir = norm(d);
     }
     const side = [-dir[1], dir[0]];
-    const reach = isLotus ? (far ? 6.5 : 7.5) : far ? 8 : 9.5;
-    const w = isLotus ? (far ? 4 : 4.5) : far ? 4.4 : 5;
-    const heel = add(ankle, mul(dir, -2.2));
+    const reach = isLotus ? (far ? 6.5 : 7.5) : far ? 9 : 11;
+    const w = isLotus ? (far ? 4 : 4.5) : far ? 5 : 5.5;
+    const heel = add(ankle, mul(dir, -6));
     const mid = add(ankle, mul(dir, reach * 0.45));
     const tip = add(ankle, mul(dir, reach));
     const pts = [
-      add(heel, mul(side, w * 0.45)),
-      add(heel, mul(dir, -1.2)),
-      add(heel, mul(side, -w * 0.55)),
+      add(heel, mul(side, w * 0.5)),
+      add(heel, mul(side, -w * 0.5)),
+      add(ankle, [0, 5]),
       add(mid, mul(side, -w * 0.6)),
-      add(tip, mul(side, -w * 0.25)),
-      add(tip, mul(dir, 1.2)),
-      add(tip, mul(side, w * 0.25)),
+      add(tip, mul(side, -w * 0.3)),
+      add(tip, mul(side, w * 0.3)),
       add(mid, mul(side, w * 0.55)),
     ];
-    return polySmooth(pts, 1.6);
+    return polySmooth(pts, 2);
   }
   if (mode === 'free' || mode === 'lotus') {
     // стопа вдоль голени с округлой пяткой и мягким носком (без шипа-клинa).
@@ -828,7 +845,7 @@ function shortsOutlineGarment(hip, u, f, thighs, opt) {
  * полудиск в щели торс↔бедро, и он торчит из-под шорт.
  * Острый сустав: раздув радиуса + мягкий round. Bevel не используем —
  * на вогнутой стороне даёт лоскуты-спицы; острые локти → split в arm(). */
-function ribbon(pts, radii, { bluntStart = false, softStart = false } = {}) {
+function ribbon(pts, radii, { bluntStart = false, bluntEnd = false, softStart = false } = {}) {
   const rad = radii.map((r, i) => {
     if (i === 0 || i === pts.length - 1) return r;
     const ang = jointAngle(pts[i - 1], pts[i], pts[i + 1]);
@@ -853,6 +870,17 @@ function ribbon(pts, radii, { bluntStart = false, softStart = false } = {}) {
     right[0] = add(right[0], mul(toKnee, rad[0] * 1.55));
     startCap = [];
   }
+  let endCap = [add(pts[end], mul(endDir, rad[end] * (softStart ? 0.85 : 1.05)))];
+  if (bluntEnd) {
+    // Тупой срез у щиколотки: круглая заглушка голени не выглядывает
+    // из-под стопы маленькой «шпорой».
+    const toPrev = norm(sub(pts[end - 1], pts[end]));
+    left = left.slice();
+    right = right.slice();
+    left[end] = add(left[end], mul(toPrev, rad[end] * 0.65));
+    right[end] = add(right[end], mul(toPrev, rad[end] * 0.65));
+    endCap = [];
+  }
   // На острых суставах меньше round — Q не стягивает ширину в иглу
   let round = bluntStart ? 1.6 : softStart ? 2.4 : 3.0;
   for (let i = 1; i < pts.length - 1; i++) {
@@ -861,7 +889,7 @@ function ribbon(pts, radii, { bluntStart = false, softStart = false } = {}) {
   return polySmooth(
     [
       ...left,
-      add(pts[end], mul(endDir, rad[end] * (softStart ? 0.85 : 1.05))),
+      ...endCap,
       ...right.reverse(),
       ...startCap,
     ],
@@ -869,7 +897,7 @@ function ribbon(pts, radii, { bluntStart = false, softStart = false } = {}) {
   );
 }
 
-function limb(pts, radii, far, extra, { bluntStart = false, softStart = false } = {}) {
+function limb(pts, radii, far, extra, { bluntStart = false, bluntEnd = false, softStart = false } = {}) {
   const stroke = far ? LINE_FAR : LINE;
   const fill = far ? SKIN_FAR : SKIN;
   const hi = far ? SKIN_LIT_FAR : SKIN_LIT;
@@ -880,8 +908,8 @@ function limb(pts, radii, far, extra, { bluntStart = false, softStart = false } 
     return add(p, mul(toward, radii[i] * 0.2));
   });
   return [
-    `<path d="${ribbon(pts, radii, { bluntStart, softStart })}" fill="${fill}" stroke="${stroke}" stroke-width="1.15" stroke-linejoin="round"/>`,
-    `<path d="${ribbon(shifted, radii.map((r) => r * 0.28), { bluntStart, softStart })}" fill="${hi}" opacity="0.22"/>`,
+    `<path d="${ribbon(pts, radii, { bluntStart, bluntEnd, softStart })}" fill="${fill}" stroke="${stroke}" stroke-width="1.15" stroke-linejoin="round"/>`,
+    `<path d="${ribbon(shifted, radii.map((r) => r * 0.28), { bluntStart, bluntEnd, softStart })}" fill="${hi}" opacity="0.22"/>`,
     extra || '',
   ].join('\n');
 }
@@ -896,6 +924,7 @@ function limb(pts, radii, far, extra, { bluntStart = false, softStart = false } 
  */
 function leg(hip, knee, ankle, opt) {
   const { far = false, foot = 'flat', toe = 1, underShorts = false, softKnee = false } = opt;
+  const bluntEnd = opt.bluntEnd ?? foot.startsWith('anat');
   const radii = far ? [6.2, 5.3, 4.2] : [6.9, 5.9, 4.6];
   let sole = '';
   if (foot === 'free' && knee) {
@@ -917,11 +946,11 @@ function leg(hip, knee, ankle, opt) {
     const cap = `<circle cx="${kx}" cy="${ky}" r="${rCap}" ${skin(far)} stroke-width="1.2"/>`;
     return [
       limb([hip, knee], [radii[0], radii[1]], far, '', { bluntStart: underShorts }),
-      limb([knee, ankle], [radii[1], radii[2]], far, footSvg),
+      limb([knee, ankle], [radii[1], radii[2]], far, footSvg, { bluntEnd }),
       cap,
     ].join('\n');
   }
-  return limb([hip, knee, ankle], radii, far, footSvg, { bluntStart: underShorts });
+  return limb([hip, knee, ankle], radii, far, footSvg, { bluntStart: underShorts, bluntEnd });
 }
 
 function thigh(hip, knee, opt = {}) {
@@ -932,9 +961,10 @@ function thigh(hip, knee, opt = {}) {
 
 function shin(knee, ankle, opt = {}) {
   const { far = false, foot = 'lotus', toe = 1 } = opt;
+  const bluntEnd = opt.bluntEnd ?? foot.startsWith('anat');
   const radii = far ? [5.3, 4.2] : [5.9, 4.6];
   const footSvg = `<path d="${footPath(ankle, toe, foot, knee, far)}" ${skin(far)} stroke-width="1.2" stroke-linejoin="round"/>`;
-  return limb([knee, ankle], radii, far, footSvg);
+  return limb([knee, ankle], radii, far, footSvg, { bluntEnd });
 }
 
 /**
