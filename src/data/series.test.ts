@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { cartoonFrames } from './cartoons';
 import { POSES } from './poses';
+import { hasStressMark } from '../practice/voice';
 import { ADVANCED_SERIES, ADVANCED_UNIQUE } from './advancedSeries';
 import { INTERMEDIATE_SERIES, INTERMEDIATE_UNIQUE } from './intermediateSeries';
 import { PRIMARY_SERIES } from './primarySeries';
@@ -29,6 +30,15 @@ describe('series registry', () => {
           expect(hasFigure, `${id}:${asana.id}`).toBeTruthy();
         }
         expect(asana.note?.trim(), `${id}:${asana.id} note`).toBeTruthy();
+      }
+    }
+  });
+
+  it('keeps a stress mark in every transcription (для озвучки)', () => {
+    for (const id of SERIES_ORDER) {
+      for (const asana of SERIES[id].asanas) {
+        const spoken = asana.speech?.trim() || asana.transcription;
+        expect(hasStressMark(spoken), `${id}:${asana.id} → ${spoken}`).toBe(true);
       }
     }
   });

@@ -55,6 +55,15 @@ export function asanaSecondaryName(asana: Asana, locale: Locale): string {
   return asana.transcription;
 }
 
+/**
+ * Имя для озвучки: русская транскрипция с ударениями, либо ручная подсказка
+ * `speech`, если движок читает имя неверно. Санскрит — только для en.
+ */
+export function asanaSpeechName(asana: Asana, locale: Locale): string {
+  if (locale === 'en') return asana.sanskrit;
+  return asana.speech?.trim() || asana.transcription;
+}
+
 export function asanaDrishti(asana: Asana, locale: Locale): string | undefined {
   if (!asana.drishti) return undefined;
   if (locale === 'en') return DRISHTI_EN[asana.drishti] ?? asana.drishti;

@@ -29,6 +29,32 @@ export function saveVoiceEnabled(on: boolean): void {
   }
 }
 
+/** Ударение в русской типографике — комбинируемый акут U+0301. */
+export const STRESS_MARK = '\u0301';
+
+/** Есть ли в строке знак ударения (для тестов и валидации данных). */
+export function hasStressMark(text: string): boolean {
+  return text.includes(STRESS_MARK);
+}
+
+const VARIANT_LETTERS: Record<string, string> = { A: 'А', B: 'Б', C: 'В' };
+
+/**
+ * Приводит имя к виду, удобному речевому движку, **не снимая ударения**:
+ * NFC, латинские A/B/C → кириллические А/Б/В (чтобы голос не переключал язык),
+ * «·» → запятая, лишние пробелы убираются.
+ */
+export function forSpeech(text: string): string {
+  return text
+    .normalize('NFC')
+    .replace(/\s*·\s*/g, ', ')
+    .replace(/(^|\s)([ABC])(?=$|[\s.,;:!?)0-9])/g, (_m, space: string, letter: string) => {
+      return `${space}${VARIANT_LETTERS[letter] ?? letter}`;
+    })
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 let speakToken = 0;
 let pendingSpeak: number | null = null;
 /** Chrome собирает utterance, если на него нет ссылки, и молчит. */
@@ -116,14 +142,15 @@ function buildUtterance(text: string, locale: 'ru' | 'en'): SpeechSynthesisUtter
  * попадает в user gesture (важно для Safari/iOS).
  */
 export function speakNow(text: string, locale: 'ru' | 'en'): boolean {
-  if (!voiceSupported() || !text.trim()) return false;
+  const spoken = forSpeech(text);
+  if (!voiceSupported() || !spoken) return false;
   try {
     const synth = window.speechSynthesis;
     if (synth.speaking || synth.pending) synth.cancel();
     const token = ++speakToken;
-    const utterance = buildUtterance(text, locale);
+    const utterance = buildUtterance(spoken, locale);
     activeUtterance = utterance;
-    rememberSpoken(text);
+    rememberSpoken(spoken);
     startUtterance(utterance, token);
     return true;
   } catch {
@@ -137,16 +164,17 @@ export function speakNow(text: string, locale: 'ru' | 'en'): boolean {
  * в одном тике гасят новую фразу. Возвращает false без Speech API.
  */
 export function speakAsana(text: string, locale: 'ru' | 'en'): boolean {
-  if (!voiceSupported() || !text.trim()) return false;
-  if (isRecentDuplicate(text)) return true;
+  const spoken = forSpeech(text);
+  if (!voiceSupported() || !spoken) return false;
+  if (isRecentDuplicate(spoken)) return true;
   try {
     const synth = window.speechSynthesis;
     const needCancel = synth.speaking || synth.pending;
     if (needCancel) synth.cancel();
     const token = ++speakToken;
-    const utterance = buildUtterance(text, locale);
+    const utterance = buildUtterance(spoken, locale);
     activeUtterance = utterance;
-    rememberSpoken(text);
+    rememberSpoken(spoken);
 
     // Без отмены говорим сразу: так вызов ближе к user gesture и не теряется.
     if (!needCancel) {
@@ -165,3 +193,9 @@ export function speakAsana(text: string, locale: 'ru' | 'en'): boolean {
 
 /** Пауза перед стартом таймера: даём договорить название и рассмотреть позу. */
 export const VOICE_LEAD_MS = 2000;
+
+/** Последняя произнесённая фраза — для тестов и отладки. */
+export function lastSpokenText(): string {
+  return lastText;
+}
+

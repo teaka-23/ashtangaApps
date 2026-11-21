@@ -12,6 +12,7 @@ import {
   asanaDrishti,
   asanaNote,
   asanaSecondaryName,
+  asanaSpeechName,
   t,
   useLocale,
 } from '../i18n';
@@ -110,7 +111,7 @@ export function PracticeView({
     }
     if (spokenForRef.current === asana.id) return;
     spokenForRef.current = asana.id;
-    speakAsana(asanaSecondaryName(asana, locale), locale);
+    speakAsana(asanaSpeechName(asana, locale), locale);
   }, [asana, done, voiceOn, locale]);
 
   const progressPct = useMemo(
@@ -211,13 +212,13 @@ export function PracticeView({
                 setVoiceOn(next);
                 saveVoiceEnabled(next);
                 if (next) {
-                  speakNow(asanaSecondaryName(asana, locale), locale);
+                  speakNow(asanaSpeechName(asana, locale), locale);
                 } else {
                   cancelSpeech();
                 }
               }}
             >
-              {t(locale, 'voiceLabel')}
+              <SpeakerIcon muted={!voiceOn} />
             </button>
           )}
           <button type="button" className="practice__exit" onClick={exitPractice}>
@@ -247,7 +248,7 @@ export function PracticeView({
               className="say-name"
               title={t(locale, 'sayName')}
               aria-label={`${asana.sanskrit}. ${t(locale, 'sayName')}`}
-              onClick={() => speakNow(asanaSecondaryName(asana, locale), locale)}
+              onClick={() => speakNow(asanaSpeechName(asana, locale), locale)}
             >
               <span className="say-name__text">{asana.sanskrit}</span>
               <SpeakerIcon className="say-name__icon" />

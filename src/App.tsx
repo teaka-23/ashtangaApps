@@ -19,6 +19,7 @@ import {
   asanaDrishti,
   asanaNote,
   asanaSecondaryName,
+  asanaSpeechName,
   pluralizeAsana,
   sectionNavLabel,
   sectionSubtitle,
@@ -109,7 +110,7 @@ export default function App() {
       const targetId = resume && seriesProgress ? seriesProgress.currentAsanaId : startId;
       const target = seriesDef.asanas.find((a) => a.id === targetId) ?? seriesDef.asanas[0];
       if (target && loadVoiceEnabled()) {
-        speakNow(asanaSecondaryName(target, LOCALE), LOCALE);
+        speakNow(asanaSpeechName(target, LOCALE), LOCALE);
       }
 
       if (resume && seriesProgress) {
@@ -583,7 +584,7 @@ export default function App() {
                       className="say-name"
                       title={t(locale, 'sayName')}
                       aria-label={`${selected.sanskrit}. ${t(locale, 'sayName')}`}
-                      onClick={() => speakNow(asanaSecondaryName(selected, locale), LOCALE)}
+                      onClick={() => speakNow(asanaSpeechName(selected, locale), LOCALE)}
                     >
                       <span className="say-name__text">{selected.sanskrit}</span>
                       <SpeakerIcon className="say-name__icon" />

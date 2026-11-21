@@ -762,10 +762,15 @@ body {
 }
 
 .practice__voice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
   background: transparent;
   color: var(--tg-hint);
-  padding: 4px 6px;
-  font-size: 13px;
+  border-radius: 10px;
 }
 
 .practice__voice.is-active {

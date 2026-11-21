@@ -1,11 +1,11 @@
-/** Небольшая иконка динамика для кнопки «озвучить название». */
-export function SpeakerIcon({ className }: { className?: string }) {
+/** Иконка динамика: `muted` добавляет перечёркивание (озвучка выключена). */
+export function SpeakerIcon({ className, muted = false }: { className?: string; muted?: boolean }) {
   return (
     <svg
       className={className}
       viewBox="0 0 24 24"
-      width="14"
-      height="14"
+      width="18"
+      height="18"
       aria-hidden="true"
       focusable="false"
     >
@@ -24,6 +24,15 @@ export function SpeakerIcon({ className }: { className?: string }) {
         strokeWidth="1.7"
         strokeLinecap="round"
       />
+      {muted && (
+        <path
+          d="M4.5 4.5 19.5 19.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+        />
+      )}
     </svg>
   );
 }
