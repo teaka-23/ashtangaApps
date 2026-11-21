@@ -55,14 +55,14 @@
 
 | Готово | Осталось |
 |---|---|
-| 2 — `vasisthasana`, `vishvamitrasana` (дришти «Вверх», vinyasa 8 и 7) | 34 |
+| 4 — `vasisthasana`, `vishvamitrasana`, `kasyapasana`, `chakorasana` | 32 |
 
 ### Пакет 1 (в работе)
 
 1. ✅ `vasisthasana`
 2. ✅ `vishvamitrasana`
-3. ⬜ `kasyapasana`
-4. ⬜ `chakorasana`
+3. ✅ `kasyapasana`
+4. ✅ `chakorasana`
 5. ⬜ `bhairavasana`
 
 ## Что осталось

@@ -5,7 +5,7 @@
  */
 import { draw, svgDocument } from './figure.mjs';
 
-const { leg, arm, torso, shortsFrame, headFront, shadow, groundLine } = draw;
+const { leg, arm, torso, shortsFrame, head, headFront, shadow, groundLine } = draw;
 
 function doc(parts) {
   return svgDocument([groundLine(), ...parts].join('\n'));
@@ -84,7 +84,81 @@ export function vishvamitrasana() {
   ]);
 }
 
+export function kasyapasana() {
+  return doc([
+    shadow(96, 52),
+    // Нога за головой (дальняя, дымка): бедро вверх, голень уходит за макушку.
+    leg([116, 150], [96, 112], [56, 146], { far: true, foot: 'lotus', toe: -1, underShorts: true }),
+    // Торс лежит на спине: плечи у головы (слева), таз справа.
+    torso([
+      [62, 150],
+      [76, 140],
+      [96, 138],
+      [114, 142],
+      [126, 150],
+      [122, 162],
+      [94, 166],
+      [72, 162],
+      [58, 156],
+    ]),
+    // Поднятая нога (ближняя): вертикально вверх, стопа flex.
+    leg([122, 148], [112, 104], [108, 62], { foot: 'freeFlex', toe: 1, underShorts: true }),
+    shortsFrame([118, 150], [0.88, -0.47], [0.47, 0.88], {
+      rise: 10,
+      half: 10.2,
+      thighs: [
+        [[122, 148], [112, 104]],
+        [[116, 150], [96, 112]],
+      ],
+      legLen: 13,
+      crotch: 5.4,
+      inline: true,
+    }),
+    // Руки держат поднятую ногу у щиколотки.
+    arm([76, 146], [92, 118], [106, 78], { far: true, hand: 'hold' }),
+    arm([86, 148], [100, 120], [110, 80], { hand: 'hold' }),
+    head([44, 150], [-0.9, 0.2], [0.2, -0.98], [60, 150]),
+  ]);
+}
+
+export function chakorasana() {
+  return doc([
+    shadow(104, 44),
+    // Нога за головой (дальняя): бедро вверх, стопа у шеи.
+    leg([112, 112], [94, 92], [86, 120], { far: true, foot: 'lotus', toe: -1, underShorts: true }),
+    // Торс в воздухе между руками.
+    torso([
+      [92, 124],
+      [102, 112],
+      [118, 110],
+      [128, 120],
+      [124, 132],
+      [108, 134],
+      [94, 132],
+    ]),
+    // Поднятая нога: вертикально вверх.
+    leg([118, 112], [124, 78], [126, 44], { foot: 'freeFlex', toe: 1, underShorts: true }),
+    shortsFrame([112, 116], [0.86, -0.5], [0.5, 0.86], {
+      rise: 10,
+      half: 10,
+      thighs: [
+        [[118, 112], [124, 78]],
+        [[112, 112], [94, 92]],
+      ],
+      legLen: 12,
+      crotch: 5.2,
+      inline: true,
+    }),
+    // Руки-опоры: ладони на настиле под плечами.
+    arm([100, 122], [96, 140], [98, 158], { far: true, hand: 'flat', fingers: 1 }),
+    arm([118, 122], [122, 140], [122, 158], { hand: 'flat', fingers: 1 }),
+    head([128, 104], [0.4, -0.92], [0.92, 0.4], [118, 116]),
+  ]);
+}
+
 export const FILES = [
   ['01-vasisthasana', vasisthasana],
   ['02-vishvamitrasana', vishvamitrasana],
+  ['03-kasyapasana', kasyapasana],
+  ['04-chakorasana', chakorasana],
 ];
