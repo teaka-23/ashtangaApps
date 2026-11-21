@@ -9,6 +9,7 @@ import { PosePicture } from './components/PosePicture';
 import { bindSessionLifecycle, startSession } from './analytics/session';
 import { hideBackButton, initPlatform, showBackButton } from './platform';
 import { clearProgress, loadProgress, type PracticeProgress } from './practice/progress';
+import { loadVoiceEnabled, speakNow } from './practice/voice';
 import { PracticeView } from './practice/PracticeView';
 import { navigate, parseHash, type Route } from './routing';
 import {
@@ -100,6 +101,15 @@ export default function App() {
       const seriesDef = getSeries(seriesId);
       const seriesProgress = progressBySeries[seriesId];
       const startId = fromId ?? seriesDef.asanas[0].id;
+
+      // Озвучка первой асаны запускается прямо из клика: так фраза попадает в
+      // user gesture (Safari/iOS иначе может промолчать).
+      const targetId = resume && seriesProgress ? seriesProgress.currentAsanaId : startId;
+      const target = seriesDef.asanas.find((a) => a.id === targetId) ?? seriesDef.asanas[0];
+      if (target && loadVoiceEnabled()) {
+        speakNow(asanaSecondaryName(target, LOCALE), LOCALE);
+      }
+
       if (resume && seriesProgress) {
         setPracticeCompletedIds(seriesProgress.completedIds);
         navigate({

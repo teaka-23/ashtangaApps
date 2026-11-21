@@ -737,6 +737,17 @@ body {
   background: var(--tg-secondary-bg);
 }
 
+.practice__voice-test {
+  background: transparent;
+  color: var(--tg-hint);
+  padding: 4px 6px;
+  font-size: 13px;
+  border: none;
+  border-radius: 10px;
+  font: inherit;
+  cursor: pointer;
+}
+
 .practice__finish {
   background: transparent;
   color: var(--tg-hint);

@@ -21,6 +21,8 @@ import {
   loadVoiceEnabled,
   saveVoiceEnabled,
   speakAsana,
+  speakNow,
+  voiceInfo,
   voiceSupported,
 } from './voice';
 import {
@@ -62,6 +64,7 @@ export function PracticeView({
   const [soundOn, setSoundOn] = useState(() => loadBreathSound());
   const [voiceOn, setVoiceOn] = useState(() => loadVoiceEnabled());
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [, refreshVoices] = useState(0);
 
   const asana = asanas[index];
 
@@ -77,6 +80,14 @@ export function PracticeView({
     showBackButton(exitPractice);
     return () => hideBackButton();
   }, [exitPractice]);
+
+  useEffect(() => {
+    if (!voiceSupported()) return;
+    const synth = window.speechSynthesis;
+    const onVoices = () => refreshVoices((n) => n + 1);
+    synth.addEventListener?.('voiceschanged', onVoices);
+    return () => synth.removeEventListener?.('voiceschanged', onVoices);
+  }, []);
 
   useEffect(() => {
     startSession('practice', seriesId);
@@ -197,6 +208,17 @@ export function PracticeView({
           {index + 1} / {asanas.length}
         </span>
         <div className="practice__header-actions">
+          {voiceSupported() && voiceOn && (
+            <button
+              type="button"
+              className="practice__voice-test"
+              title={voiceInfo(locale).label}
+              aria-label={`${t(locale, 'voiceTest')}: ${voiceInfo(locale).label}`}
+              onClick={() => speakNow(asanaSecondaryName(asana, locale), locale)}
+            >
+              {t(locale, 'voiceTest')}
+            </button>
+          )}
           {voiceSupported() && (
             <button
               type="button"
@@ -209,7 +231,7 @@ export function PracticeView({
                 setVoiceOn(next);
                 saveVoiceEnabled(next);
                 if (next) {
-                  speakAsana(asanaSecondaryName(asana, locale), locale);
+                  speakNow(asanaSecondaryName(asana, locale), locale);
                 } else {
                   cancelSpeech();
                 }
