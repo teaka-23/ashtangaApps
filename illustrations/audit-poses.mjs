@@ -249,7 +249,11 @@ for (const p of poses) {
       if (opt.foot === 'freeFlex') {
         flags.push(['ERR', 'жёсткая стопа freeFlex', `${r1(ankle[0])},${r1(ankle[1])}`]);
       }
-      if ((opt.foot ?? 'flat') === 'flat' && (ankle[1] < 154 || ankle[1] > 170)) {
+      if (opt.foot && !opt.foot.startsWith('anat')) {
+        flags.push(['ERR', 'старая стопа в третьей серии', opt.foot]);
+      }
+      const footMode = opt.foot ?? 'flat';
+      if ((footMode === 'flat' || footMode === 'anatFlat') && (ankle[1] < 154 || ankle[1] > 170)) {
         flags.push(['ERR', 'flat-стопа не у пола', `${r1(ankle[1])}`]);
       }
       const ang = angleAt(l.args[0], l.args[1], ankle);

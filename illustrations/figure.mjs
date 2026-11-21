@@ -105,6 +105,79 @@ function footPath(ankle, toe, mode, knee, far = false) {
       `Q ${heel - s * 2 * k},${sole - 1} ${heel},${sole} Z`,
     ].join(' ');
   }
+  // ── Чистые стопы третьей серии ─────────────────────────────────────
+  // Гладкий замкнутый контур через polySmooth: без отдельных «шпор»,
+  // острых мысков и заусенцев на стыке с голенью.
+  if (mode === 'anatFlat') {
+    const heel = ax - s * 7 * k;
+    const pts = [
+      [heel, sole],
+      [heel - s * 2 * k, sole - 3 * k],
+      [ax - s * 4 * k, sole - 5 * k],
+      [ax + s * 2 * k, ankle[1] - 2 * k],
+      [ax + s * 9 * k, sole - 5 * k],
+      [ax + s * 15 * k, sole - 4 * k],
+      [ax + s * 17 * k, sole - 1.5 * k],
+      [ax + s * 14 * k, sole],
+      [ax + s * 5 * k, sole],
+      [ax + s * 1 * k, sole],
+    ];
+    return polySmooth(pts, 1.5 * k);
+  }
+  if (mode === 'anatFlex') {
+    const heel = ax - s * 4 * k;
+    const top = ankle[1] - 14 * k;
+    const pts = [
+      [heel, sole],
+      [heel - s * 3 * k, sole - 5 * k],
+      [ax - s * 2 * k, ankle[1] - 2 * k],
+      [ax + s * 1 * k, top],
+      [ax + s * 5 * k, top + 2 * k],
+      [ax + s * 6 * k, top + 6 * k],
+      [ax + s * 4 * k, sole - 2 * k],
+      [ax + s * 1 * k, sole],
+    ];
+    return polySmooth(pts, 1.5 * k);
+  }
+  if (mode === 'anatTops') {
+    const heel = ax - s * 2 * k;
+    const toe = ax + s * 14 * k;
+    const pts = [
+      [heel, sole - 4 * k],
+      [heel - s * 2 * k, sole - 1 * k],
+      [ax + s * 2 * k, sole],
+      [toe, sole],
+      [toe + s * 2 * k, sole - 3 * k],
+      [ax + s * 9 * k, ankle[1] - 1 * k],
+      [ax, ankle[1] - 3 * k],
+    ];
+    return polySmooth(pts, 1.4 * k);
+  }
+  if (mode === 'anatFree' || mode === 'anatLotus') {
+    const isLotus = mode === 'anatLotus';
+    let dir = [s, 0];
+    if (knee) {
+      const d = sub(ankle, knee);
+      if (len(d) > 4) dir = norm(d);
+    }
+    const side = [-dir[1], dir[0]];
+    const reach = isLotus ? (far ? 6.5 : 7.5) : far ? 8 : 9.5;
+    const w = isLotus ? (far ? 4 : 4.5) : far ? 4.4 : 5;
+    const heel = add(ankle, mul(dir, -2.2));
+    const mid = add(ankle, mul(dir, reach * 0.45));
+    const tip = add(ankle, mul(dir, reach));
+    const pts = [
+      add(heel, mul(side, w * 0.45)),
+      add(heel, mul(dir, -1.2)),
+      add(heel, mul(side, -w * 0.55)),
+      add(mid, mul(side, -w * 0.6)),
+      add(tip, mul(side, -w * 0.25)),
+      add(tip, mul(dir, 1.2)),
+      add(tip, mul(side, w * 0.25)),
+      add(mid, mul(side, w * 0.55)),
+    ];
+    return polySmooth(pts, 1.6);
+  }
   if (mode === 'free' || mode === 'lotus') {
     // стопа вдоль голени с округлой пяткой и мягким носком (без шипа-клинa).
     let dir = [s, 0];

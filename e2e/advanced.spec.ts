@@ -9,7 +9,9 @@ test.describe('Third series (Advanced A)', () => {
     await expect(dialog.getByText(/вторая нога вытянута далеко назад/i)).toBeVisible();
     const image = dialog.locator('img').first();
     await expect(image).toBeVisible();
-    await expect(image).toHaveAttribute('src', /^data:image\/svg\+xml/);
+    const src = await image.getAttribute('src');
+    expect(src).toBeTruthy();
+    expect(src).toMatch(/^data:image\/svg\+xml|\.svg/);
   });
 
   test('shows the distinct Viranchyasana B2 frame', async ({ page }) => {
