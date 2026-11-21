@@ -36,6 +36,7 @@ const LOCALE: Locale = 'ru';
 const SERIES_VISUAL: Record<SeriesId, { accentBg: string; accentColor: string; watermarkPose: string }> = {
   primary: { accentBg: 'var(--primary-accent-bg)', accentColor: 'var(--primary-accent)', watermarkPose: 'urdhva-dhanurasana' },
   intermediate: { accentBg: 'var(--intermediate-accent-bg)', accentColor: 'var(--intermediate-accent)', watermarkPose: 'pincha-mayurasana' },
+  advanced: { accentBg: 'var(--advanced-accent-bg)', accentColor: 'var(--advanced-accent)', watermarkPose: 'mayurasana' },
 };
 
 function useRoute(): Route {
@@ -530,6 +531,8 @@ export default function App() {
                             pose={asana.pose}
                             className="asana-card__figure"
                             thumbnail
+                            pending={asana.illustrationPending}
+                            pendingLabel={t(locale, 'illustrationSoon')}
                           />
                           <span className="asana-card__text" aria-hidden="true">
                             <span className="asana-card__sanskrit">
@@ -569,13 +572,17 @@ export default function App() {
                   className={`sheet__figure${sheetMultiFrame ? ' sheet__figure--overview' : ''}`}
                   numbered={sheetMultiFrame}
                   label={asanaDisplayName(selected, locale)}
+                  pending={selected.illustrationPending}
+                  pendingLabel={t(locale, 'illustrationSoon')}
                 />
                 <h3 className="sheet__sanskrit" id="sheet-title">
                   {selected.sanskrit}
                 </h3>
-                <p className="sheet__devanagari" lang="sa">
-                  {selected.devanagari}
-                </p>
+                {selected.devanagari && (
+                  <p className="sheet__devanagari" lang="sa">
+                    {selected.devanagari}
+                  </p>
+                )}
                 <p className="sheet__transcription">
                   {asanaSecondaryName(selected, locale)}
                 </p>

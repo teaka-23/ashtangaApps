@@ -1,4 +1,8 @@
 import {
+  ADVANCED_SECTIONS,
+  ADVANCED_SERIES,
+} from './advancedSeries';
+import {
   INTERMEDIATE_SECTIONS,
   INTERMEDIATE_SERIES,
 } from './intermediateSeries';
@@ -20,12 +24,18 @@ export const SERIES: Record<SeriesId, SeriesDef> = {
     asanas: INTERMEDIATE_SERIES,
     sections: INTERMEDIATE_SECTIONS,
   },
+  advanced: {
+    id: 'advanced',
+    slug: 'advanced',
+    asanas: ADVANCED_SERIES,
+    sections: ADVANCED_SECTIONS,
+  },
 };
 
-export const SERIES_ORDER: SeriesId[] = ['primary', 'intermediate'];
+export const SERIES_ORDER: SeriesId[] = ['primary', 'intermediate', 'advanced'];
 
 export function isSeriesId(id: string): id is SeriesId {
-  return id === 'primary' || id === 'intermediate';
+  return id === 'primary' || id === 'intermediate' || id === 'advanced';
 }
 
 export function getSeries(id: SeriesId): SeriesDef {
@@ -52,7 +62,9 @@ export function getSection(seriesId: SeriesId, sectionId: string): Section | und
   return SERIES[seriesId].sections.find((s) => s.id === sectionId);
 }
 
-/** Strip int- clone prefix for shared i18n lookups */
+/** Strip int-/adv- clone prefix for shared i18n lookups */
 export function contentKeyForAsana(asanaId: string): string {
-  return asanaId.startsWith('int-') ? asanaId.slice(4) : asanaId;
+  if (asanaId.startsWith('int-')) return asanaId.slice(4);
+  if (asanaId.startsWith('adv-')) return asanaId.slice(4);
+  return asanaId;
 }

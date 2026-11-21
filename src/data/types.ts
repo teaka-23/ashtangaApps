@@ -11,7 +11,7 @@ export interface Asana {
   /** Транслитерация санскритского названия (латиницей) */
   sanskrit: string;
   /** Название деванагари */
-  devanagari: string;
+  devanagari?: string;
   /** Русская транскрипция — как произносится */
   transcription: string;
   /** Название на русском */
@@ -32,9 +32,11 @@ export interface Asana {
   /** Заметка: вариации, количество дыханий и т.п. */
   note?: string;
   section: string;
+  /** Иллюстрация ещё не нарисована (третья серия): UI показывает плашку. */
+  illustrationPending?: boolean;
 }
 
-export type SeriesId = 'primary' | 'intermediate';
+export type SeriesId = 'primary' | 'intermediate' | 'advanced';
 
 export interface SeriesDef {
   id: SeriesId;

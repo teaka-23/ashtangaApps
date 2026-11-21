@@ -31,14 +31,15 @@ export function pluralizeAsana(locale: Locale, count: number): string {
 }
 
 export function seriesTitle(seriesId: SeriesId, locale: Locale): string {
-  return t(locale, seriesId === 'primary' ? 'seriesPrimary' : 'seriesIntermediate');
+  if (seriesId === 'primary') return t(locale, 'seriesPrimary');
+  if (seriesId === 'intermediate') return t(locale, 'seriesIntermediate');
+  return t(locale, 'seriesAdvanced');
 }
 
 export function seriesSubtitle(seriesId: SeriesId, locale: Locale): string {
-  return t(
-    locale,
-    seriesId === 'primary' ? 'seriesPrimarySub' : 'seriesIntermediateSub',
-  );
+  if (seriesId === 'primary') return t(locale, 'seriesPrimarySub');
+  if (seriesId === 'intermediate') return t(locale, 'seriesIntermediateSub');
+  return t(locale, 'seriesAdvancedSub');
 }
 
 export function asanaDisplayName(asana: Asana, locale: Locale): string {

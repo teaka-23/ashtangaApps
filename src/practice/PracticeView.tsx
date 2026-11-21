@@ -254,6 +254,8 @@ export function PracticeView({
           compact={multiFrame}
           label={label}
           description={asanaDescription(asana, locale)}
+          pending={asana.illustrationPending}
+          pendingLabel={t(locale, 'illustrationSoon')}
         />
       </div>
 

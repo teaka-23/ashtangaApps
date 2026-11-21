@@ -10,6 +10,9 @@ type Props = {
   compact?: boolean;
   label?: string;
   description?: string;
+  /** Иллюстрация ещё не нарисована — показываем нейтральную плашку. */
+  pending?: boolean;
+  pendingLabel?: string;
 };
 
 function autoColumns(count: number, compact: boolean): number {
@@ -33,7 +36,21 @@ export function PosePicture({
   compact = false,
   label,
   description,
+  pending = false,
+  pendingLabel,
 }: Props) {
+  if (pending) {
+    return (
+      <div
+        className={`${className ?? ''} pose-pending`.trim()}
+        role="img"
+        aria-label={label ?? pendingLabel ?? ''}
+      >
+        <span className="pose-pending__mark" aria-hidden="true" />
+        {pendingLabel ? <span className="pose-pending__text">{pendingLabel}</span> : null}
+      </div>
+    );
+  }
   const frames = cartoonFrames(pose);
   if (!frames) {
     return (
