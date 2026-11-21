@@ -5,7 +5,7 @@
  */
 import { draw, svgDocument } from './figure.mjs';
 
-const { leg, arm, torso, shortsFrame, head, headFront, shadow, groundLine } = draw;
+const { leg, thigh, shin, arm, torso, shortsFrame, head, headFront, shadow, groundLine } = draw;
 
 function doc(parts) {
   return svgDocument([groundLine(), ...parts].join('\n'));
@@ -156,9 +156,118 @@ export function chakorasana() {
   ]);
 }
 
+export function urdhvaKukkutasanaA() {
+  return doc([
+    shadow(114, 40),
+    // Лотос: дальнее бедро в сторону, голень складывается к центру.
+    thigh([116, 112], [94, 118], { far: true, underShorts: true }),
+    shin([94, 118], [114, 126], { far: true, foot: 'lotus', toe: 1 }),
+    // Торс компактно между руками.
+    torso([
+      [104, 126],
+      [110, 108],
+      [124, 106],
+      [132, 120],
+      [128, 132],
+      [112, 134],
+      [104, 132],
+    ]),
+    // Ближнее бедро лотоса и голень.
+    thigh([118, 114], [138, 120], { underShorts: true }),
+    shortsFrame([116, 114], [0, -1], [1, 0], {
+      rise: 9,
+      half: 9.6,
+      thighs: [
+        [[118, 114], [138, 120]],
+        [[116, 112], [94, 118]],
+      ],
+      legLen: 12,
+      crotch: 5,
+      inline: true,
+    }),
+    shin([138, 120], [118, 128], { foot: 'lotus', toe: -1 }),
+    // Руки-опоры: предплечья вертикально, ладони на настиле.
+    arm([104, 126], [102, 142], [104, 158], { far: true, hand: 'flat', fingers: 1 }),
+    arm([128, 126], [130, 142], [130, 158], { hand: 'flat', fingers: 1 }),
+    head([116, 94], [0.1, -0.99], [0.99, 0.1], [116, 108]),
+  ]);
+}
+
+export function durvasana() {
+  return doc([
+    shadow(104, 42),
+    // Нога за головой: бедро вверх, стопа у шеи сзади.
+    leg([104, 126], [124, 108], [132, 88], { far: true, foot: 'lotus', toe: -1, underShorts: true }),
+    // Торс вертикально, голова над плечами.
+    torso([
+      [96, 130],
+      [104, 118],
+      [110, 96],
+      [120, 94],
+      [124, 114],
+      [120, 130],
+    ]),
+    // Опорная нога: прямая, стопа на настиле.
+    leg([100, 130], [100, 148], [100, 162], { foot: 'flat', toe: 1, underShorts: true }),
+    shortsFrame([102, 128], [0.05, -1], [1, 0.05], {
+      rise: 10,
+      half: 10.2,
+      thighs: [
+        [[100, 130], [100, 148]],
+        [[104, 126], [124, 108]],
+      ],
+      legLen: 12,
+      crotch: 5.4,
+      inline: true,
+    }),
+    // Руки в намасте у груди.
+    arm([104, 98], [96, 112], [112, 108], { far: true, hand: 'prayer' }),
+    arm([122, 98], [128, 112], [116, 108], { hand: 'prayer' }),
+    head([112, 82], [0.15, -0.99], [0.99, 0.15], [110, 96]),
+  ]);
+}
+
+export function bhairavasana() {
+  return doc([
+    shadow(98, 48),
+    // Нижняя нога (дальняя): стопа плоско на настиле.
+    leg([102, 138], [80, 150], [58, 160], { far: true, foot: 'flat', toe: -1, underShorts: true }),
+    // Нога за головой (ближняя): бедро вверх, голень уходит за макушку.
+    leg([98, 134], [104, 104], [136, 96], { foot: 'lotus', toe: -1, underShorts: true }),
+    torso([
+      [94, 142],
+      [100, 130],
+      [120, 118],
+      [138, 116],
+      [146, 128],
+      [136, 138],
+      [114, 146],
+    ]),
+    shortsFrame([100, 136], [0.78, -0.63], [0.63, 0.78], {
+      rise: 10,
+      half: 10.2,
+      thighs: [
+        [[98, 134], [104, 104]],
+        [[102, 138], [80, 150]],
+      ],
+      legLen: 12,
+      crotch: 5.4,
+      inline: true,
+    }),
+    // Опорная рука на предплечье: локоть и предплечье на настиле.
+    arm([140, 122], [144, 148], [124, 158], { hand: 'flat', fingers: -1 }),
+    // Верхняя рука держит стопу за головой.
+    arm([146, 122], [142, 106], [134, 98], { far: true, hand: 'hold' }),
+    head([152, 108], [0.9, -0.42], [0.4, -0.92], [140, 118]),
+  ]);
+}
+
 export const FILES = [
   ['01-vasisthasana', vasisthasana],
   ['02-vishvamitrasana', vishvamitrasana],
   ['03-kasyapasana', kasyapasana],
   ['04-chakorasana', chakorasana],
+  ['05-urdhva-kukkutasana-a', urdhvaKukkutasanaA],
+  ['06-durvasana', durvasana],
+  ['07-bhairavasana', bhairavasana],
 ];

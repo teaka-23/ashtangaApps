@@ -166,6 +166,9 @@ const CARTOONS: Record<string, readonly string[]> = {
   vishvamitrasana: [svg('advanced/02-vishvamitrasana')],
   kasyapasana: [svg('advanced/03-kasyapasana')],
   chakorasana: [svg('advanced/04-chakorasana')],
+  'urdhva-kukkutasana-a': [svg('advanced/05-urdhva-kukkutasana-a')],
+  durvasana: [svg('advanced/06-durvasana')],
+  bhairavasana: [svg('advanced/07-bhairavasana')],
 };
 
 export function cartoonFrames(pose: string): readonly string[] | undefined {

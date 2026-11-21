@@ -55,7 +55,7 @@
 
 | Готово | Осталось |
 |---|---|
-| 4 — `vasisthasana`, `vishvamitrasana`, `kasyapasana`, `chakorasana` | 32 |
+| 7 — + `urdhva-kukkutasana-a`, `durvasana`, `bhairavasana` | 29 |
 
 ### Пакет 1 (в работе)
 
@@ -63,7 +63,7 @@
 2. ✅ `vishvamitrasana`
 3. ✅ `kasyapasana`
 4. ✅ `chakorasana`
-5. ⬜ `bhairavasana`
+5. ✅ `bhairavasana`
 
 ## Что осталось
 
