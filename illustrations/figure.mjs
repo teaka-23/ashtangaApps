@@ -924,7 +924,7 @@ function limb(pts, radii, far, extra, { bluntStart = false, bluntEnd = false, so
  */
 function leg(hip, knee, ankle, opt) {
   const { far = false, foot = 'flat', toe = 1, underShorts = false, softKnee = false } = opt;
-  const bluntEnd = opt.bluntEnd ?? foot.startsWith('anat');
+  const bluntEnd = opt.bluntEnd ?? ['anatFree', 'anatHold', 'anatLotus'].includes(foot);
   const radii = far ? [6.2, 5.3, 4.2] : [6.9, 5.9, 4.6];
   let sole = '';
   if (foot === 'free' && knee) {
@@ -961,7 +961,7 @@ function thigh(hip, knee, opt = {}) {
 
 function shin(knee, ankle, opt = {}) {
   const { far = false, foot = 'lotus', toe = 1 } = opt;
-  const bluntEnd = opt.bluntEnd ?? foot.startsWith('anat');
+  const bluntEnd = opt.bluntEnd ?? ['anatFree', 'anatHold', 'anatLotus'].includes(foot);
   const radii = far ? [5.3, 4.2] : [5.9, 4.6];
   const footSvg = `<path d="${footPath(ankle, toe, foot, knee, far)}" ${skin(far)} stroke-width="1.2" stroke-linejoin="round"/>`;
   return limb([knee, ankle], radii, far, footSvg, { bluntEnd });
