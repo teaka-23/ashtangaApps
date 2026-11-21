@@ -6,10 +6,11 @@ import type { Asana } from './data/types';
 import { FeedbackButton } from './components/FeedbackButton';
 import { MantraAudioButton } from './components/MantraAudioButton';
 import { PosePicture } from './components/PosePicture';
+import { SpeakerIcon } from './components/SpeakerIcon';
 import { bindSessionLifecycle, startSession } from './analytics/session';
 import { hideBackButton, initPlatform, showBackButton } from './platform';
 import { clearProgress, loadProgress, type PracticeProgress } from './practice/progress';
-import { loadVoiceEnabled, speakNow } from './practice/voice';
+import { loadVoiceEnabled, speakNow, voiceSupported } from './practice/voice';
 import { PracticeView } from './practice/PracticeView';
 import { navigate, parseHash, type Route } from './routing';
 import {
@@ -576,7 +577,20 @@ export default function App() {
                   pendingLabel={t(locale, 'illustrationSoon')}
                 />
                 <h3 className="sheet__sanskrit" id="sheet-title">
-                  {selected.sanskrit}
+                  {voiceSupported() ? (
+                    <button
+                      type="button"
+                      className="say-name"
+                      title={t(locale, 'sayName')}
+                      aria-label={`${selected.sanskrit}. ${t(locale, 'sayName')}`}
+                      onClick={() => speakNow(asanaSecondaryName(selected, locale), LOCALE)}
+                    >
+                      <span className="say-name__text">{selected.sanskrit}</span>
+                      <SpeakerIcon className="say-name__icon" />
+                    </button>
+                  ) : (
+                    selected.sanskrit
+                  )}
                 </h3>
                 {selected.devanagari && (
                   <p className="sheet__devanagari" lang="sa">

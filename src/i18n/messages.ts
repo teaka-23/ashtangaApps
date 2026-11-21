@@ -47,7 +47,7 @@ export const messages = {
     voiceLabel: 'Озвучка',
     voiceOn: 'Озвучка асаны включена',
     voiceOff: 'Озвучка асаны выключена',
-    voiceTest: 'Тест',
+    sayName: 'Озвучить название асаны',
     langSwitch: 'EN',
     asanaWord: {
       one: 'асана',
@@ -105,7 +105,7 @@ export const messages = {
     voiceLabel: 'Voice',
     voiceOn: 'Asana voice announcement on',
     voiceOff: 'Asana voice announcement off',
-    voiceTest: 'Test',
+    sayName: 'Speak the asana name',
     langSwitch: 'RU',
     asanaWord: {
       one: 'asana',

@@ -27,19 +27,19 @@ test.describe('Ashtanga Mini App', () => {
   test('starts practice with timer and advances', async ({ page }) => {
     await page.goto('/#/series/primary/practice/surya-a');
     await expect(page.getByRole('heading', { name: 'Surya Namaskara A' })).toBeVisible();
-    await expect(page.getByText('1 / 61')).toBeVisible();
+    await expect(page.getByText('1 / 62')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Выйти' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Завершить практику' })).toHaveCount(0);
     await expect(page.getByRole('button', { name: 'Пауза' })).toBeVisible();
     await page.getByRole('button', { name: '→' }).click();
     await expect(page.getByRole('heading', { name: 'Surya Namaskara B' })).toBeVisible();
-    await expect(page.getByText('2 / 61')).toBeVisible();
+    await expect(page.getByText('2 / 62')).toBeVisible();
   });
 
   test('legacy practice hash still works for primary', async ({ page }) => {
     await page.goto('/#/practice/surya-a');
     await expect(page.getByRole('heading', { name: 'Surya Namaskara A' })).toBeVisible();
-    await expect(page.getByText('1 / 61')).toBeVisible();
+    await expect(page.getByText('1 / 62')).toBeVisible();
   });
 
   test('opens asana by hash route', async ({ page }) => {

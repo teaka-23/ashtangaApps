@@ -773,15 +773,46 @@ body {
   background: var(--tg-secondary-bg);
 }
 
-.practice__voice-test {
-  background: transparent;
-  color: var(--tg-hint);
-  padding: 4px 6px;
-  font-size: 13px;
+/* Название асаны = кнопка озвучки (шторка и практика) */
+.say-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
   border: none;
-  border-radius: 10px;
+  border-radius: 6px;
+  background: none;
   font: inherit;
+  color: inherit;
+  text-align: inherit;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.say-name__text {
+  border-bottom: 1px dotted currentColor;
+}
+
+.say-name__icon {
+  flex: 0 0 auto;
+  opacity: 0.45;
+  transition: opacity 0.15s ease;
+}
+
+.say-name:hover {
+  color: var(--tg-link);
+}
+
+.say-name:hover .say-name__icon,
+.say-name:active .say-name__icon {
+  opacity: 1;
+}
+
+.say-name:focus-visible {
+  outline: 2px solid var(--tg-link);
+  outline-offset: 3px;
 }
 
 .practice__finish {

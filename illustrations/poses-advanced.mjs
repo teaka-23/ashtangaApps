@@ -281,7 +281,6 @@ function airBase({ torsoPts, shorts, far = [], near = [], headSpec, extraArms = 
 }
 
 const lotusFar = (hip, knee, ankle, toe = 1) => [hip, knee, ankle, { far: true, foot: 'lotus', toe, underShorts: true }];
-const lotusNear = (hip, knee, ankle, toe = 1) => [hip, knee, ankle, { foot: 'lotus', toe, underShorts: true }];
 
 export function urdhvaKukkutasanaB() {
   return doc([

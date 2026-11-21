@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { getSeries } from '../data/series';
 import type { SeriesId } from '../data/types';
 import { PosePicture } from '../components/PosePicture';
+import { SpeakerIcon } from '../components/SpeakerIcon';
 import { poseFrameCount } from '../data/cartoons';
 import { endSession, startSession } from '../analytics/session';
 import { haptic, hideBackButton, keepScreenOn, showBackButton } from '../platform';
@@ -22,7 +23,6 @@ import {
   saveVoiceEnabled,
   speakAsana,
   speakNow,
-  voiceInfo,
   voiceSupported,
 } from './voice';
 import {
@@ -64,7 +64,6 @@ export function PracticeView({
   const [soundOn, setSoundOn] = useState(() => loadBreathSound());
   const [voiceOn, setVoiceOn] = useState(() => loadVoiceEnabled());
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [, refreshVoices] = useState(0);
 
   const asana = asanas[index];
 
@@ -80,14 +79,6 @@ export function PracticeView({
     showBackButton(exitPractice);
     return () => hideBackButton();
   }, [exitPractice]);
-
-  useEffect(() => {
-    if (!voiceSupported()) return;
-    const synth = window.speechSynthesis;
-    const onVoices = () => refreshVoices((n) => n + 1);
-    synth.addEventListener?.('voiceschanged', onVoices);
-    return () => synth.removeEventListener?.('voiceschanged', onVoices);
-  }, []);
 
   useEffect(() => {
     startSession('practice', seriesId);
@@ -208,17 +199,6 @@ export function PracticeView({
           {index + 1} / {asanas.length}
         </span>
         <div className="practice__header-actions">
-          {voiceSupported() && voiceOn && (
-            <button
-              type="button"
-              className="practice__voice-test"
-              title={voiceInfo(locale).label}
-              aria-label={`${t(locale, 'voiceTest')}: ${voiceInfo(locale).label}`}
-              onClick={() => speakNow(asanaSecondaryName(asana, locale), locale)}
-            >
-              {t(locale, 'voiceTest')}
-            </button>
-          )}
           {voiceSupported() && (
             <button
               type="button"
@@ -260,7 +240,22 @@ export function PracticeView({
       </div>
 
       <div className="practice__info">
-        <h2 className="practice__sanskrit">{asana.sanskrit}</h2>
+        <h2 className="practice__sanskrit">
+          {voiceSupported() ? (
+            <button
+              type="button"
+              className="say-name"
+              title={t(locale, 'sayName')}
+              aria-label={`${asana.sanskrit}. ${t(locale, 'sayName')}`}
+              onClick={() => speakNow(asanaSecondaryName(asana, locale), locale)}
+            >
+              <span className="say-name__text">{asana.sanskrit}</span>
+              <SpeakerIcon className="say-name__icon" />
+            </button>
+          ) : (
+            asana.sanskrit
+          )}
+        </h2>
         <p className="practice__names">
           <span>{asanaSecondaryName(asana, locale)}</span>
           <span aria-hidden="true"> · </span>
