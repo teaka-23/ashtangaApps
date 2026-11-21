@@ -38,8 +38,9 @@ describe('series registry', () => {
     expect(ADVANCED_SERIES[0].id).toBe('adv-surya-a');
     expect(ADVANCED_SERIES.some((a) => a.id === 'vasisthasana')).toBe(true);
     expect(ADVANCED_SERIES.at(-1)?.id).toMatch(/^adv-/);
-    // 36 новых асан пока без иллюстраций — плашка «иллюстрация готовится».
-    expect(ADVANCED_UNIQUE.filter((a) => a.illustrationPending).length).toBe(29);
+    // Все 36 асан третьей серии получили иллюстрации.
+    expect(ADVANCED_UNIQUE.filter((a) => a.illustrationPending).length).toBe(0);
+    expect(ADVANCED_UNIQUE.every((a) => cartoonFrames(a.pose))).toBe(true);
   });
 
   it('builds intermediate from opening + unique + finishing', () => {
