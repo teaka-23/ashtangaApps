@@ -720,9 +720,9 @@ export function hanumanasana() {
   const hip = [100, 150];
   const shoulder = [80, 140];
   return doc([
-    // Передняя нога вперёд, задняя назад; таз на полу.
+    // Задняя нога на полу, плотная (не дымка), затем передняя поверх неё.
+    aLeg([104, 150], [132, 154], [160, 158], { foot: 'anatBack', toe: 1, underShorts: true }),
     aLeg([100, 150], [72, 154], [44, 160], { foot: 'anatFlex', toe: -1, underShorts: true }),
-    aLeg([104, 150], [132, 154], [160, 158], { far: true, foot: 'anatTops', toe: 1, underShorts: true }),
     trunk(hip, shoulder, { hipW: 11, waistW: 10, chestW: 11, shoulderW: 12 }),
     shortsOn(hip, shoulder, [0, 1], [
       [[100, 150], [72, 154]],

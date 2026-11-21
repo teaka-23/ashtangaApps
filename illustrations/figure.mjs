@@ -139,6 +139,24 @@ function footPath(ankle, toe, mode, knee, far = false) {
       'Z',
     ].join(' ');
   }
+  if (mode === 'anatBack') {
+    // Задняя стопа в Хануманасане: тыл стопы на полу, носок назад,
+    // пятка сверху. Клин идёт от носка на полу к щиколотке, поэтому
+    // стопа читается отдельно от голени.
+    const toe = ax + s * 16 * k;
+    const ball = ax + s * 10 * k;
+    const instep = ax + s * 4 * k;
+    const pts = [
+      [toe, sole],
+      [ball, sole - 1 * k],
+      [instep, sole - 5 * k],
+      [ax, ankle[1]],
+      [ax - s * 3 * k, ankle[1] - 2 * k],
+      [ax - s * 6 * k, ankle[1] + 3 * k],
+      [ax - s * 3 * k, sole - 2 * k],
+    ];
+    return polySmooth(pts, 1.2 * k);
+  }
   if (mode === 'anatTops') {
     const heel = ax - s * 5 * k;
     const toe = ax + s * 14 * k;
