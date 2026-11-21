@@ -176,15 +176,15 @@ export function chakorasana() {
   const hip = [92, 138];
   const shoulder = [112, 118];
   return doc([
-    // Стопа за головой (дальняя): голень выходит за шею, стопа у затылка.
-    thigh([92, 138], [89, 105], { far: true, underShorts: true }),
-    shin([89, 105], [120, 100], { far: true, foot: 'lotus', toe: -1 }),
+    // Стопа за головой (дальняя): голень выходит за шею, стопа левее головы.
+    thigh([92, 138], [77, 109], { far: true, underShorts: true }),
+    shin([77, 109], [106, 98], { far: true, foot: 'lotus', toe: -1 }),
     // Вторая нога вертикально вверх.
     aLeg([92, 138], [94, 104], [96, 72], { foot: 'free', toe: 1, underShorts: true }),
     trunk(hip, shoulder, { hipW: 10, waistW: 9, chestW: 11, shoulderW: 11 }),
     shortsOn(hip, shoulder, [1, 0], [
       [[92, 138], [94, 104]],
-      [[92, 138], [89, 105]],
+      [[92, 138], [77, 109]],
     ]),
     // Две опоры: ладони под плечами; правое плечо уведено внутрь контура.
     arm([112, 118], [110, 140], [108, 158], { far: true, hand: 'flat', fingers: 1 }),
@@ -201,18 +201,18 @@ export function bhairavasana() {
     // Нижняя нога на полу.
     aLeg(hip, [65, 145], [45, 162], { far: true, foot: 'flat', toe: -1, underShorts: true }),
     // Стопа за головой: голень огибает затылок, стопа уходит за макушку.
-    thigh([85, 128], [87, 95], { far: true, underShorts: true }),
-    shin([87, 95], [118, 90], { far: true, foot: 'lotus', toe: -1 }),
+    thigh([85, 128], [77, 96], { far: true, underShorts: true }),
+    shin([77, 96], [106, 86], { far: true, foot: 'lotus', toe: -1 }),
     trunk(hip, shoulder, { hipW: 10, waistW: 9, chestW: 10, shoulderW: 11 }),
     shortsOn(hip, shoulder, [1, 0], [
-      [[85, 128], [87, 95]],
+      [[85, 128], [77, 96]],
       [[85, 128], [65, 145]],
     ]),
     // Опорная рука: предплечье на полу.
     arm([112, 108], [118, 136], [112, 158], { hand: 'flat', fingers: 1 }),
     // Свободная рука держит стопу за головой.
-    arm([110, 106], [124, 104], [118, 90], { far: true, hand: 'wrap' }),
-    headP([112, 108], [0.55, -0.84], [118, 90], [0.4, -0.92]),
+    arm([110, 106], [126, 102], [106, 86], { far: true, hand: 'wrap' }),
+    headP([112, 108], [0.55, -0.84], [106, 86], [0.4, -0.92]),
   ]);
 }
 
@@ -560,13 +560,13 @@ export function viranchyasanaA3() {
   return doc([
     // Левая нога: колено на левом плече.
     aLeg([96, 122], [80, 136], [102, 144], { foot: 'lotus', toe: -1, underShorts: true }),
-    // Правая стопа за головой: голень уходит за шею, стопа у затылка.
-    thigh([104, 122], [87, 94], { far: true, underShorts: true }),
-    shin([87, 94], [118, 92], { far: true, foot: 'lotus', toe: -1 }),
+    // Правая стопа за головой: голень уходит за шею, стопа левее головы.
+    thigh([104, 122], [81, 98], { far: true, underShorts: true }),
+    shin([81, 98], [112, 96], { far: true, foot: 'lotus', toe: -1 }),
     trunk(hip, shoulder, { hipW: 10, waistW: 9, chestW: 10, shoulderW: 11 }),
     shortsOn(hip, shoulder, [1, 0], [
       [[96, 122], [80, 136]],
-      [[104, 122], [87, 94]],
+      [[104, 122], [81, 98]],
     ]),
     arm([96, 112], [80, 136], [100, 150], { far: true, hand: 'flat', fingers: 1 }),
     arm([112, 108], [114, 136], [116, 158], { hand: 'flat', fingers: 1 }),
