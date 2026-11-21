@@ -198,6 +198,7 @@ for (const p of poses) {
 
   // 2. Крепления: голова и плечи должны стоять на контуре торса.
   const tpts = torsos[0]?.args[0] ?? [];
+  const strict = p.rel.startsWith('advanced/');
   if (tpts.length) {
     if (tpts.length < LIMITS.torsoPts) flags.push(['ERR', 'торс из точек', tpts.length]);
     let span = 0;
@@ -207,18 +208,70 @@ for (const p of poses) {
       const gap = nearest(h.args[0], tpts);
       if (gap > LIMITS.headGap) flags.push(['ERR', 'голова оторвана', r1(gap)]);
     }
+    // Третья серия: рука и бедро должны реально лежать на контуре торса,
+    // иначе в силуэте виден белый просвет («рука/голова оторваны»). Общий
+    // порог 26/24 — для исторического корпуса, здесь он слишком мягкий.
+    const shoulderGap = strict ? 9 : LIMITS.shoulderGap;
+    const hipGap = strict ? 10 : LIMITS.hipGap;
     for (const a of arms) {
-      const gap = nearest(a.args[0], tpts);
-      if (gap > LIMITS.shoulderGap) flags.push(['ERR', 'плечо оторвано', r1(gap)]);
+      // Плечо может стоять на ребре торса между вершинами — меряем до контура.
+      const gap = polyDist(a.args[0], tpts);
+      if (gap > shoulderGap) {
+        flags.push(['ERR', 'плечо оторвано', `${r1(gap)} @ ${a.args[0].map(r1).join(',')}`]);
+      }
     }
     // Таз: бедро обязано расти из торса, иначе фигура «стоит» с телом у пола.
     for (const hip of [...legs.map((l) => l.args[0]), ...thighs.map((t) => t.args[0])]) {
       const gap = polyDist(hip, tpts);
-      if (gap > LIMITS.hipGap) flags.push(['ERR', 'таз оторван от торса', r1(gap)]);
+      if (gap > hipGap) {
+        flags.push(['ERR', 'таз оторван от торса', `${r1(gap)} @ ${hip.map(r1).join(',')}`]);
+      }
     }
     // Голова внутри контура торса: шея есть, а силуэт читается безголовым.
     for (const h of heads) {
       if (inPoly(h.args[0], tpts)) flags.push(['NOTE', 'голова внутри торса', `${r1(h.args[0][0])},${r1(h.args[0][1])}`]);
+      // Третья серия: шея обязана начинаться внутри торса. Если neckAt лежит
+      // снаружи, между головой и телом остаётся белый просвет.
+      if (strict) {
+        const neckAt = h.kind === 'headFront' ? h.args[1] : h.args[3];
+        if (Array.isArray(neckAt) && polyDist(neckAt, tpts) > 2) {
+          flags.push(['ERR', 'шея вне торса', `${r1(polyDist(neckAt, tpts))}`]);
+        }
+      }
+    }
+  }
+
+  // 2b. Третья серия: колени, стопы и «стопа за головой».
+  if (strict) {
+    for (const l of legs) {
+      const opt = l.args[3] ?? {};
+      const ankle = l.args[2];
+      if (opt.foot === 'freeFlex') {
+        flags.push(['ERR', 'жёсткая стопа freeFlex', `${r1(ankle[0])},${r1(ankle[1])}`]);
+      }
+      if ((opt.foot ?? 'flat') === 'flat' && (ankle[1] < 154 || ankle[1] > 170)) {
+        flags.push(['ERR', 'flat-стопа не у пола', `${r1(ankle[1])}`]);
+      }
+      const ang = angleAt(l.args[0], l.args[1], ankle);
+      if (ang < 1.02 && !opt.softKnee) {
+        flags.push(['ERR', 'острое колено без softKnee', `${r1(ang)}`]);
+      }
+    }
+    const BEHIND_HEAD = new Set([
+      'kasyapasana',
+      'chakorasana',
+      'bhairavasana',
+      'skandasana',
+      'durvasana',
+      'viranchyasana-a1',
+      'viranchyasana-a2',
+      'viranchyasana-a3',
+    ]);
+    const relName = p.rel.replace(/^advanced\/\d+-/, '');
+    if (BEHIND_HEAD.has(relName) && heads.length) {
+      const footPts = [...legs.map((l) => l.args[2]), ...shins.map((s) => s.args[1])];
+      const d = Math.min(...footPts.map((f) => dist(f, heads[0].args[0])));
+      if (d > 24) flags.push(['ERR', 'стопа не у головы', r1(d)]);
     }
   }
 

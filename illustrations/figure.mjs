@@ -1254,12 +1254,13 @@ function head(c, gaze, crown, neckAt, rOrOpt = 11.2, maybeOpt = {}) {
 }
 
 /** Лицо на зрителя: гладкий овал, направление взгляда — пунктир. */
-function headFront(c, neckAt, nose = [0, 1], r = 11.2) {
+function headFront(c, neckAt, nose = [0, 1], r = 11.2, opt = {}) {
   const g = norm(nose);
+  const neckW = opt.neckW ?? 3.6;
   const neckTop = [c[0], c[1] + (neckAt[1] >= c[1] ? r * 0.72 : -r * 0.72)];
   return [
     gazeLine(c, g),
-    `<path d="${capsule(neckAt, neckTop, 3.6)}" fill="${SKIN}" stroke="${LINE}" stroke-width="1.15"/>`,
+    `<path d="${capsule(neckAt, neckTop, neckW)}" fill="${SKIN}" stroke="${LINE}" stroke-width="1.15"/>`,
     `<ellipse cx="${n(c)[0]}" cy="${n(c)[1]}" rx="${r * 0.94}" ry="${r}" fill="${SKIN}" stroke="${LINE}" stroke-width="1.35"/>`,
   ].join('\n');
 }
