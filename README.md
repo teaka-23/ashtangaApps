@@ -17,6 +17,11 @@ React 19 + Vite + TypeScript. Полностью статическое прил
 GitHub Actions (`.github/workflows/deploy.yml`) собирает и публикует на
 GitHub Pages при пуше в `main`: https://teaka-23.github.io/ashtangaApps/
 
+**Пуш и деплой — только по команде владельца.** Агент правит и коммитит
+локально, тесты/сборку проверяет сам, но `git push` (а значит и публикация в
+mini-app для Telegram/VK) запускается только по явной команде «пуш»/«деплой».
+См. `.clinerules` и `.cursor/rules/push-only-on-command.mdc`.
+
 Один URL используется и для Telegram, и для VK.
 
 ## Telegram Mini App
