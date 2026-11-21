@@ -5,7 +5,7 @@
  */
 import { draw, svgDocument } from './figure.mjs';
 
-const { leg, arm, torso, shortsFrame, headFront, head, shadow, groundLine } = draw;
+const { leg, arm, torso, shortsFrame, headFront, shadow, groundLine } = draw;
 
 function doc(parts) {
   return svgDocument([groundLine(), ...parts].join('\n'));
