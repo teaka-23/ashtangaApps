@@ -60,6 +60,86 @@ const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 const nearest = (p, pts) => Math.min(...pts.map((q) => dist(p, q)));
 const r1 = (v) => Math.round(v * 10) / 10;
 
+/** Габарит пути стопы: по нему ловим схлопнутые в полоску стопы. */
+function pathBounds(d) {
+  const tokens = d.match(/[MLHVCSQTAZ]|-?\d*\.?\d+(?:e[-+]?\d+)?/gi) || [];
+  let i = 0;
+  let cmd = 'M';
+  let x = 0;
+  let y = 0;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  const plot = (px, py) => {
+    minX = Math.min(minX, px);
+    minY = Math.min(minY, py);
+    maxX = Math.max(maxX, px);
+    maxY = Math.max(maxY, py);
+  };
+  const num = () => parseFloat(tokens[i++]);
+  while (i < tokens.length) {
+    if (/[A-Za-z]/.test(tokens[i])) cmd = tokens[i++];
+    const u = cmd.toUpperCase();
+    const rel = cmd !== u;
+    if (u === 'Z') continue;
+    if (u === 'H') {
+      const v = num();
+      x = rel ? x + v : v;
+      plot(x, y);
+      continue;
+    }
+    if (u === 'V') {
+      const v = num();
+      y = rel ? y + v : v;
+      plot(x, y);
+      continue;
+    }
+    if (u === 'M' || u === 'L' || u === 'T') {
+      const a = num();
+      const b = num();
+      x = rel ? x + a : a;
+      y = rel ? y + b : b;
+      plot(x, y);
+      if (u === 'M') cmd = rel ? 'l' : 'L';
+      continue;
+    }
+    if (u === 'Q' || u === 'S') {
+      const a = num();
+      const b = num();
+      const c = num();
+      const e = num();
+      plot(rel ? x + a : a, rel ? y + b : b);
+      x = rel ? x + c : c;
+      y = rel ? y + e : e;
+      plot(x, y);
+      continue;
+    }
+    if (u === 'C') {
+      const a = num();
+      const b = num();
+      const c = num();
+      const e = num();
+      const f = num();
+      const g = num();
+      plot(rel ? x + a : a, rel ? y + b : b);
+      plot(rel ? x + c : c, rel ? y + e : e);
+      x = rel ? x + f : f;
+      y = rel ? y + g : g;
+      plot(x, y);
+      continue;
+    }
+    if (u === 'A') {
+      const nums = [];
+      for (let k = 0; k < 7; k++) nums.push(num());
+      x = rel ? x + nums[5] : nums[5];
+      y = rel ? y + nums[6] : nums[6];
+      plot(x, y);
+    }
+  }
+  return { minX, minY, maxX, maxY };
+}
+
 /** Расстояние до контура: таз обычно лежит на ребре полигона, а не в вершине. */
 function polyDist(p, pts) {
   let m = Infinity;
@@ -276,6 +356,32 @@ for (const p of poses) {
       const footPts = [...legs.map((l) => l.args[2]), ...shins.map((s) => s.args[1])];
       const d = Math.min(...footPts.map((f) => dist(f, heads[0].args[0])));
       if (d > 24) flags.push(['ERR', 'стопа не у головы', r1(d)]);
+    }
+  }
+
+  // 2c. Стопа на полу не должна схлопываться в полоску: проверяем габарит
+  // контура стопы (высота и соотношение сторон), а не только координату.
+  const FLOOR_FOOT_MODES = new Set([
+    'flat',
+    'tops',
+    'tucked',
+    'flex',
+    'anatFlat',
+    'anatTops',
+    'anatBack',
+    'anatFlex',
+  ]);
+  for (const call of [...legs, ...shins]) {
+    const opt = call.kind === 'leg' ? call.args[3] : call.args[2];
+    const ankle = call.kind === 'leg' ? call.args[2] : call.args[1];
+    const knee = call.kind === 'leg' ? call.args[1] : call.args[0];
+    if (!opt?.foot || !FLOOR_FOOT_MODES.has(opt.foot)) continue;
+    const b = pathBounds(draw.footPath(ankle, opt.toe ?? 1, opt.foot, knee, opt.far ?? false));
+    const h = b.maxY - b.minY;
+    const w = b.maxX - b.minX;
+    const ratio = w / h;
+    if (h < 5.5 || ratio > 4.5) {
+      flags.push(['ERR', 'стопа-полоска', `${opt.foot} h=${r1(h)} ratio=${r1(ratio)}`]);
     }
   }
 

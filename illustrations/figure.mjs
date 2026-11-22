@@ -144,14 +144,15 @@ function footPath(ankle, toe, mode, knee, far = false) {
     // углов и заусенцев. Плюсна на полу, подъём к щиколотке, пятка сверху.
     const pts = [
       [ax + s * 10 * k, sole],
-      [ax + s * 6 * k, sole - 2 * k],
-      [ax + s * 2 * k, sole - 4 * k],
+      [ax + s * 8 * k, sole - 2 * k],
+      [ax + s * 4 * k, sole - 4 * k],
       [ax, ankle[1]],
       [ax - s * 5 * k, ankle[1] - 2 * k],
       [ax - s * 8 * k, ankle[1] + 2 * k],
       [ax - s * 6 * k, sole - 2 * k],
+      [ax - s * 2 * k, sole],
     ];
-    return smoothClosed(pts);
+    return polySmooth(pts, 1.4 * k);
   }
   if (mode === 'anatTops') {
     const heel = ax - s * 5 * k;
@@ -1533,4 +1534,5 @@ export const draw = {
   shadow,
   groundLine,
   smoothClosed,
+  footPath,
 };
