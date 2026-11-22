@@ -102,7 +102,7 @@ export function PracticeView({
   }, [asana, completedIds, done, seriesId]);
 
   // Название асаны проговаривается при входе в неё; таймер дыханий стартует
-  // после паузы LOOK_HOLD_MS (2 с) — этого хватает, чтобы договорить.
+  // после паузы LOOK_HOLD_MS (3 с) — этого хватает, чтобы договорить.
   const spokenForRef = useRef<string | null>(null);
   useEffect(() => {
     if (!asana || done || !voiceOn) {

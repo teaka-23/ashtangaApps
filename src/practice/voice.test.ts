@@ -15,9 +15,9 @@ describe('voice settings', () => {
     localStorage.removeItem(VOICE_KEY);
   });
 
-  it('defaults to enabled and waits 2 s before the timer', () => {
+  it('defaults to enabled and waits 3 s before the timer', () => {
     expect(loadVoiceEnabled()).toBe(true);
-    expect(VOICE_LEAD_MS).toBe(2000);
+    expect(VOICE_LEAD_MS).toBe(3000);
   });
 
   it('persists the toggle', () => {

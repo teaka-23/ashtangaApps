@@ -37,7 +37,7 @@ export function playBreathCue(phase: 'inhale' | 'exhale'): void {
 }
 
 /** Пауза на новой асане, чтобы успеть увидеть рисунок до отсчёта дыханий. */
-export const LOOK_HOLD_MS = 2000;
+export const LOOK_HOLD_MS = 3000;
 
 export const BREATH_TEMPO_MS = {
   slow: 5000,

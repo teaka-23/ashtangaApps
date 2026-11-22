@@ -192,7 +192,7 @@ export function speakAsana(text: string, locale: 'ru' | 'en'): boolean {
 }
 
 /** Пауза перед стартом таймера: даём договорить название и рассмотреть позу. */
-export const VOICE_LEAD_MS = 2000;
+export const VOICE_LEAD_MS = 3000;
 
 /** Последняя произнесённая фраза — для тестов и отладки. */
 export function lastSpokenText(): string {
