@@ -1,9 +1,9 @@
 :root {
   --tg-bg: #ffffff;
   --tg-text: #1c1c1e;
-  --tg-hint: #8e8e93;
-  --tg-link: #2481cc;
-  --tg-button: #2481cc;
+  --tg-hint: #6e6e73;
+  --tg-link: #1f6fae;
+  --tg-button: #1f6fae;
   --tg-secondary-bg: #f2f2f5;
   --modern-bg: #eef6f0;
   --modern-accent: #2f6b4f;
@@ -12,13 +12,13 @@
   --brand-soft: #f7ece5;
   /* Серия 1: Первая (Йога Чилити) — тёплый акцент */
   --primary-accent-bg: #fdf3ed;
-  --primary-accent: #c46d3a;
+  --primary-accent: #a8542a;
   /* Серия 2: Промежуточная (Нади Шодхана) — холодный акцент */
   --intermediate-accent-bg: #edf3fd;
-  --intermediate-accent: #3a7bc4;
+  --intermediate-accent: #2b5f9e;
   /* Серия 3: Продвинутая (Стхира Бхага) — зелёный акцент */
   --advanced-accent-bg: #ecf6ef;
-  --advanced-accent: #3d8a5f;
+  --advanced-accent: #2f6b4a;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,7 +27,7 @@
     --tg-text: #f2f2f5;
     --tg-hint: #98989f;
     --tg-link: #5aa9e6;
-    --tg-button: #5aa9e6;
+    --tg-button: #2f6fae;
     --tg-secondary-bg: #2c2c2e;
     --modern-bg: #1e2a24;
     --modern-accent: #7dba98;
@@ -48,6 +48,11 @@ body {
   color: var(--tg-text);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+:where(button, a, input, summary, [role='button']):focus-visible {
+  outline: 2px solid var(--tg-link);
+  outline-offset: 2px;
 }
 
 .app {
@@ -86,9 +91,11 @@ body {
 }
 
 .header__back-series {
-  display: inline-block;
-  margin: 0 0 6px;
-  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin: 0 0 2px -4px;
+  padding: 0 4px;
   border: none;
   background: transparent;
   color: var(--tg-link);
@@ -268,9 +275,10 @@ body {
 .header__continue,
 .sheet__practice,
 .sheet__share {
+  min-height: 44px;
   border: none;
   border-radius: 12px;
-  padding: 10px 14px;
+  padding: 12px 14px;
   font: inherit;
   font-weight: 600;
   cursor: pointer;
@@ -315,8 +323,11 @@ body {
 }
 
 .section-nav a {
+  display: inline-flex;
+  align-items: center;
   flex-shrink: 0;
-  padding: 6px 12px;
+  min-height: 44px;
+  padding: 6px 14px;
   border-radius: 16px;
   background: var(--tg-secondary-bg);
   color: var(--tg-text);
@@ -349,8 +360,9 @@ body {
 
 .catalog-search input {
   width: 100%;
+  min-height: 44px;
   box-sizing: border-box;
-  padding: 11px 42px 11px 12px;
+  padding: 11px 44px 11px 12px;
   border: 1px solid transparent;
   border-radius: 12px;
   background: var(--tg-secondary-bg);
@@ -381,8 +393,8 @@ body {
   transform: translateY(-50%);
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border: none;
   border-radius: 50%;
@@ -672,8 +684,8 @@ body {
   z-index: 2;
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border: none;
   border-radius: 50%;
@@ -794,6 +806,7 @@ body {
 
 .sheet__nav button {
   flex: 1;
+  min-height: 44px;
   padding: 12px;
   border: none;
   border-radius: 12px;
@@ -831,6 +844,7 @@ body {
 
 .confirm__actions button {
   flex: 1;
+  min-height: 44px;
   padding: 12px;
   border: none;
   border-radius: 12px;
@@ -922,9 +936,12 @@ body {
 }
 
 .practice__exit {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   background: transparent;
   color: var(--tg-link);
-  padding: 4px 6px;
+  padding: 4px 8px;
   font-size: 14px;
 }
 
@@ -932,8 +949,8 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   background: transparent;
   color: var(--tg-hint);
@@ -951,8 +968,9 @@ body {
   align-items: center;
   gap: 6px;
   max-width: 100%;
+  min-height: 44px;
   margin: 0;
-  padding: 0;
+  padding: 2px 0;
   border: none;
   border-radius: 6px;
   background: none;
@@ -988,10 +1006,13 @@ body {
 }
 
 .practice__finish {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   background: transparent;
   color: var(--tg-hint);
   font-size: 13px;
-  padding: 4px 6px;
+  padding: 4px 8px;
 }
 
 .practice__visual {
@@ -1215,6 +1236,7 @@ img.sheet__figure {
 }
 
 .practice__settings-toggle {
+  min-height: 36px;
   border: none;
   border-radius: 8px;
   background: transparent;
@@ -1222,7 +1244,7 @@ img.sheet__figure {
   font: inherit;
   font-size: 12px;
   font-weight: 600;
-  padding: 2px 8px;
+  padding: 4px 10px;
   cursor: pointer;
 }
 
@@ -1239,14 +1261,15 @@ img.sheet__figure {
 }
 
 .practice__breath-opts button {
+  min-height: 36px;
   border: none;
   border-radius: 8px;
   background: var(--tg-secondary-bg);
   color: var(--tg-hint);
   font: inherit;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  padding: 4px 8px;
+  padding: 6px 10px;
   cursor: pointer;
 }
 
@@ -1265,6 +1288,7 @@ img.sheet__figure {
 
 .practice__controls button {
   flex: 1;
+  min-height: 44px;
   padding: 11px;
   background: var(--tg-secondary-bg);
   color: var(--tg-text);
@@ -1492,6 +1516,7 @@ img.sheet__figure {
 }
 
 .feedback-btn__action {
+  min-height: 40px;
   border: none;
   border-radius: 6px;
   background: transparent;
@@ -1500,7 +1525,7 @@ img.sheet__figure {
   font-size: 12px;
   font-weight: 400;
   letter-spacing: 0.01em;
-  padding: 4px 8px;
+  padding: 8px 10px;
   cursor: pointer;
   opacity: 0.72;
 }
@@ -1509,7 +1534,8 @@ img.sheet__figure {
 .feedback-btn__action:focus-visible {
   opacity: 1;
   color: var(--tg-hint);
-  outline: none;
+  outline: 2px solid var(--tg-link);
+  outline-offset: 2px;
 }
 
 .feedback-btn__hint {
@@ -1521,4 +1547,41 @@ img.sheet__figure {
   color: var(--tg-hint);
   text-align: center;
   opacity: 0.85;
+}
+
+@media (max-height: 560px) {
+  .practice__header {
+    padding-top: 2px;
+  }
+
+  .practice__note {
+    display: none;
+  }
+
+  .practice__settings {
+    margin-top: 0;
+  }
+
+  .practice__visual {
+    margin: 0;
+  }
+
+  .practice__sanskrit {
+    font-size: 16px;
+  }
+
+  .practice__names {
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

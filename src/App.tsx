@@ -35,6 +35,10 @@ import './App.css';
 /** UI locale switcher hidden for now; i18n strings kept for later. */
 const LOCALE: Locale = 'ru';
 
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' &&
+  Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches);
+
 /** Series-specific visual config */
 const SERIES_VISUAL: Record<SeriesId, { accentBg: string; accentColor: string; watermarkPose: string }> = {
   primary: { accentBg: 'var(--primary-accent-bg)', accentColor: 'var(--primary-accent)', watermarkPose: 'urdhva-dhanurasana' },
@@ -108,7 +112,10 @@ export default function App() {
     }
     if (!route.sectionId) return;
     const el = document.getElementById(`section-${route.sectionId}`);
-    el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    el?.scrollIntoView({
+      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+      block: 'start',
+    });
   }, [route]);
 
   const goHome = useCallback(() => navigate({ name: 'home' }), []);
