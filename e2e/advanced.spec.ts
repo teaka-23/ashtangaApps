@@ -32,6 +32,21 @@ test.describe('Third series (Advanced A)', () => {
     await expect(dialog.locator('img').first()).toBeVisible();
   });
 
+  test('loads catalog illustrations in all series', async ({ page }) => {
+    for (const id of ['primary', 'intermediate', 'advanced']) {
+      await page.goto(`/#/series/${id}`);
+      await page.waitForTimeout(700);
+      const images = page.locator('main img');
+      expect(await images.count(), `${id}: no images`).toBeGreaterThan(10);
+      const broken = await images.evaluateAll((imgs) =>
+        imgs
+          .filter((img) => img.complete && img.naturalWidth === 0)
+          .map((img) => img.getAttribute('src') ?? ''),
+      );
+      expect(broken, `${id}: broken images`).toEqual([]);
+    }
+  });
+
   test('keeps the printed order in the advanced catalog', async ({ page }) => {
     await page.goto('/#/series/advanced/section/advanced');
     const names = await page.locator('main button').allInnerTexts();

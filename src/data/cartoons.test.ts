@@ -44,4 +44,18 @@ describe('cartoon illustrations', () => {
       expect(cartoonFrames(asana.pose)?.length, asana.pose).toBeGreaterThan(0);
     }
   });
+
+  it('does not append a cache-buster to inlined data URIs', () => {
+    const poses = new Set(
+      [...PRIMARY_SERIES, ...INTERMEDIATE_SERIES, ...ADVANCED_SERIES].map((a) => a.pose),
+    );
+    for (const pose of poses) {
+      for (const src of cartoonFrames(pose) ?? []) {
+        expect(src.length, pose).toBeGreaterThan(0);
+        if (src.startsWith('data:')) {
+          expect(src, pose).not.toContain('?v=');
+        }
+      }
+    }
+  });
 });

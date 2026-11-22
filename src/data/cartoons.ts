@@ -11,12 +11,16 @@ const files = import.meta.glob('../../illustrations/**/*.svg', {
  * может показать старую картинку после `npm run illustrations`; в prod
  * Vite сам выдаёт хэшированные URL, поэтому query не нужен.
  */
-const ILLUSTRATION_VERSION = import.meta.env.DEV ? `?v=${Date.now().toString(36)}` : '';
+const ILLUSTRATION_VERSION = import.meta.env.DEV ? Date.now().toString(36) : '';
 
 function svg(rel: string): string {
   const hit = Object.entries(files).find(([path]) => path.endsWith(`/${rel}.svg`));
   if (!hit) throw new Error(`Нет иллюстрации ${rel}`);
-  return `${hit[1]}${ILLUSTRATION_VERSION}`;
+  const url = hit[1];
+  // Vite может инлайнить мелкие SVG в data-URI. Добавлять к нему ?v= нельзя:
+  // это ломает data:image/svg+xml, и картинка «слетает».
+  if (!ILLUSTRATION_VERSION || url.startsWith('data:')) return url;
+  return `${url}${url.includes('?') ? '&' : '?'}v=${ILLUSTRATION_VERSION}`;
 }
 
 const S = {
