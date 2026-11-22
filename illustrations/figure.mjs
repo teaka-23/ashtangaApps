@@ -143,11 +143,11 @@ function footPath(ankle, toe, mode, knee, far = false) {
     // Задняя стопа в Хануманасане: крупный анатомический клин.
     // Носок и плюсна на полу, подъём к щиколотке, пятка сверху;
     // нижний контур прямой, без дуги-крючка.
-    const toe = ax + s * 16 * k;
-    const ball = ax + s * 2 * k;
+    const toe = ax + s * 10 * k;
+    const ball = ax + s * 5 * k;
     const heelTop = [ax - s * 6 * k, ankle[1] - 2 * k];
-    const heelBack = [ax - s * 10 * k, ankle[1] + 2 * k];
-    const heelBottom = [ax - s * 8 * k, sole - 2 * k];
+    const heelBack = [ax - s * 9 * k, ankle[1] + 2 * k];
+    const heelBottom = [ax - s * 7 * k, sole - 2 * k];
     return [
       `M ${pt([toe, sole])}`,
       `L ${pt([ball, sole])}`,
