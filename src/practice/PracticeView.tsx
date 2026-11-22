@@ -5,7 +5,13 @@ import { PosePicture } from '../components/PosePicture';
 import { SpeakerIcon } from '../components/SpeakerIcon';
 import { poseFrameCount } from '../data/cartoons';
 import { endSession, startSession } from '../analytics/session';
-import { haptic, hideBackButton, keepScreenOn, showBackButton } from '../platform';
+import {
+  getPlatformHost,
+  haptic,
+  hideBackButton,
+  keepScreenOn,
+  showBackButton,
+} from '../platform';
 import {
   asanaDescription,
   asanaDisplayName,
@@ -53,6 +59,9 @@ export function PracticeView({
   const locale = useLocale();
   const series = getSeries(seriesId);
   const asanas = series.asanas;
+  // В VK верхний правый угол занят нативными «…» и «×» — уводим действия
+  // практики от края. Telegram и обычный веб оставляем без изменений.
+  const isVk = getPlatformHost() === 'vk';
   const startIndex = Math.max(
     0,
     asanas.findIndex((a) => a.id === startId),
@@ -183,7 +192,11 @@ export function PracticeView({
   ].filter(Boolean);
 
   return (
-    <div className={`practice${multiFrame ? ' practice--overview' : ''}`}>
+    <div
+      className={`practice${multiFrame ? ' practice--overview' : ''}${
+        isVk ? ' practice--vk' : ''
+      }`}
+    >
       <div
         className="practice__progress"
         role="progressbar"

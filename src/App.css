@@ -914,6 +914,15 @@ body {
   gap: 8px;
 }
 
+/*
+ * VK Mini Apps: правый верхний угол занимают нативные «…» и «×».
+ * Сдвигаем озвучку и «Выйти» к центру, чтобы они не попадали под них.
+ * Telegram и обычный веб не затронуты — класс добавляется только для VK.
+ */
+.practice--vk .practice__header {
+  padding-right: 96px;
+}
+
 .practice__step {
   color: var(--tg-hint);
   font-size: 13px;
