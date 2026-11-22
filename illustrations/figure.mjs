@@ -140,22 +140,25 @@ function footPath(ankle, toe, mode, knee, far = false) {
     ].join(' ');
   }
   if (mode === 'anatBack') {
-    // Задняя стопа в Хануманасане: тыл стопы на полу, носок назад,
-    // пятка сверху. Клин идёт от носка на полу к щиколотке, поэтому
-    // стопа читается отдельно от голени.
+    // Задняя стопа в Хануманасане: тыл стопы лежит на полу от носка до
+    // плюсны, подъём поднимается к щиколотке, пятка сверху. Плоская
+    // передняя часть не даёт «когтя» и не сливается с голенью.
     const toe = ax + s * 16 * k;
-    const ball = ax + s * 10 * k;
-    const instep = ax + s * 4 * k;
-    const pts = [
-      [toe, sole],
-      [ball, sole - 1 * k],
-      [instep, sole - 5 * k],
-      [ax, ankle[1]],
-      [ax - s * 3 * k, ankle[1] - 2 * k],
-      [ax - s * 6 * k, ankle[1] + 3 * k],
-      [ax - s * 3 * k, sole - 2 * k],
-    ];
-    return polySmooth(pts, 1.2 * k);
+    const ball = ax + s * 7 * k;
+    const heel = ax - s * 5 * k;
+    const heelTop = [heel, ankle[1] - 1 * k];
+    const heelBack = [heel - s * 2 * k, ankle[1] + 4 * k];
+    const heelBottom = [heel, sole - 2 * k];
+    return [
+      `M ${pt([toe, sole])}`,
+      `L ${pt([ball, sole])}`,
+      `Q ${pt([ax + s * 3 * k, sole - 1 * k])} ${pt([ax + s * 1 * k, sole - 3 * k])}`,
+      `L ${pt([ax, ankle[1]])}`,
+      `Q ${pt([ax - s * 2 * k, ankle[1] - 2 * k])} ${pt(heelTop)}`,
+      `Q ${pt(heelBack)} ${pt(heelBottom)}`,
+      `Q ${pt([heel + s * 2 * k, sole - 1 * k])} ${pt([toe, sole])}`,
+      'Z',
+    ].join(' ');
   }
   if (mode === 'anatTops') {
     const heel = ax - s * 5 * k;
