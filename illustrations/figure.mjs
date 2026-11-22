@@ -140,24 +140,18 @@ function footPath(ankle, toe, mode, knee, far = false) {
     ].join(' ');
   }
   if (mode === 'anatBack') {
-    // Задняя стопа в Хануманасане: крупный анатомический клин.
-    // Носок и плюсна на полу, подъём к щиколотке, пятка сверху;
-    // нижний контур прямой, без дуги-крючка.
-    const toe = ax + s * 10 * k;
-    const ball = ax + s * 5 * k;
-    const heelTop = [ax - s * 6 * k, ankle[1] - 2 * k];
-    const heelBack = [ax - s * 9 * k, ankle[1] + 2 * k];
-    const heelBottom = [ax - s * 7 * k, sole - 2 * k];
-    return [
-      `M ${pt([toe, sole])}`,
-      `L ${pt([ball, sole])}`,
-      `Q ${pt([ax, sole - 2 * k])} ${pt([ax, ankle[1]])}`,
-      `Q ${pt([ax - s * 2 * k, ankle[1] - 3 * k])} ${pt(heelTop)}`,
-      `L ${pt(heelBack)}`,
-      `L ${pt(heelBottom)}`,
-      `L ${pt([toe, sole])}`,
-      'Z',
-    ].join(' ');
+    // Задняя стопа в Хануманасане: гладкий замкнутый контур без острых
+    // углов и заусенцев. Плюсна на полу, подъём к щиколотке, пятка сверху.
+    const pts = [
+      [ax + s * 10 * k, sole],
+      [ax + s * 6 * k, sole - 2 * k],
+      [ax + s * 2 * k, sole - 4 * k],
+      [ax, ankle[1]],
+      [ax - s * 5 * k, ankle[1] - 2 * k],
+      [ax - s * 8 * k, ankle[1] + 2 * k],
+      [ax - s * 6 * k, sole - 2 * k],
+    ];
+    return smoothClosed(pts);
   }
   if (mode === 'anatTops') {
     const heel = ax - s * 5 * k;
