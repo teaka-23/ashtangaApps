@@ -6,10 +6,17 @@ const files = import.meta.glob('../../illustrations/**/*.svg', {
   import: 'default',
 }) as Record<string, string>;
 
+/**
+ * В dev SVG пересобираются на месте под тем же URL. Без версии браузер
+ * может показать старую картинку после `npm run illustrations`; в prod
+ * Vite сам выдаёт хэшированные URL, поэтому query не нужен.
+ */
+const ILLUSTRATION_VERSION = import.meta.env.DEV ? `?v=${Date.now().toString(36)}` : '';
+
 function svg(rel: string): string {
   const hit = Object.entries(files).find(([path]) => path.endsWith(`/${rel}.svg`));
   if (!hit) throw new Error(`Нет иллюстрации ${rel}`);
-  return hit[1];
+  return `${hit[1]}${ILLUSTRATION_VERSION}`;
 }
 
 const S = {
