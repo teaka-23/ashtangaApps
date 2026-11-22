@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { poseFrameCount } from './data/cartoons';
 import { getMantra, MANTRAS, type MantraId } from './data/mantras';
 import { getSeries, SERIES_ORDER, type SeriesId } from './data/series';
@@ -6,6 +6,7 @@ import type { Asana } from './data/types';
 import { FeedbackButton } from './components/FeedbackButton';
 import { MantraAudioButton } from './components/MantraAudioButton';
 import { PosePicture } from './components/PosePicture';
+import { Sheet } from './components/Sheet';
 import { SpeakerIcon } from './components/SpeakerIcon';
 import { bindSessionLifecycle, startSession } from './analytics/session';
 import { hideBackButton, initPlatform, showBackButton } from './platform';
@@ -61,11 +62,24 @@ export default function App() {
   >({});
   const [practiceCompletedIds, setPracticeCompletedIds] = useState<string[]>([]);
   const [mantraId, setMantraId] = useState<MantraId | null>(null);
+  const [queryState, setQueryState] = useState<{
+    seriesId: SeriesId | null;
+    value: string;
+  }>({ seriesId: null, value: '' });
+  const [pendingStart, setPendingStart] = useState<{
+    seriesId: SeriesId;
+    fromId?: string;
+  } | null>(null);
+  const catalogScrollRef = useRef<number | null>(null);
 
   const activeSeriesId: SeriesId | null =
     route.name === 'home' ? null : route.seriesId;
   const series = activeSeriesId ? getSeries(activeSeriesId) : null;
   const progress = activeSeriesId ? (progressBySeries[activeSeriesId] ?? null) : null;
+  // Запрос привязан к серии: при переходе в другую серию он не протекает.
+  const query = queryState.seriesId === activeSeriesId ? queryState.value : '';
+  const setQuery = (value: string) =>
+    setQueryState({ seriesId: activeSeriesId, value });
 
   useEffect(() => {
     document.documentElement.lang = locale;
@@ -84,22 +98,34 @@ export default function App() {
   }, [locale]);
 
   useEffect(() => {
-    if (route.name !== 'catalog' || !route.sectionId) return;
+    if (route.name !== 'catalog') return;
+    // Возврат из шторки: сохраняем точную позицию списка, а не прыгаем наверх.
+    const saved = catalogScrollRef.current;
+    if (saved !== null) {
+      catalogScrollRef.current = null;
+      window.scrollTo(0, saved);
+      return;
+    }
+    if (!route.sectionId) return;
     const el = document.getElementById(`section-${route.sectionId}`);
     el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [route]);
 
   const goHome = useCallback(() => navigate({ name: 'home' }), []);
 
-  const goCatalog = useCallback((seriesId: SeriesId) => {
-    navigate({ name: 'catalog', seriesId });
+  const goCatalog = useCallback((seriesId: SeriesId, sectionId?: string) => {
+    navigate({ name: 'catalog', seriesId, sectionId });
   }, []);
 
-  const openAsana = useCallback((seriesId: SeriesId, id: string, replace = false) => {
-    navigate({ name: 'asana', seriesId, id }, replace);
-  }, []);
+  const openAsana = useCallback(
+    (seriesId: SeriesId, id: string, replace = false) => {
+      if (route.name === 'catalog') catalogScrollRef.current = window.scrollY;
+      navigate({ name: 'asana', seriesId, id }, replace);
+    },
+    [route.name],
+  );
 
-  const startPractice = useCallback(
+  const beginPractice = useCallback(
     (seriesId: SeriesId, fromId?: string, resume = false) => {
       const seriesDef = getSeries(seriesId);
       const seriesProgress = progressBySeries[seriesId];
@@ -130,6 +156,21 @@ export default function App() {
       navigate({ name: 'practice', seriesId, startId });
     },
     [progressBySeries],
+  );
+
+  /**
+   * «Начать практику» при наличии прогресса не стирает его молча:
+   * сначала подтверждение. «Продолжить» идёт напрямую в beginPractice.
+   */
+  const requestPracticeStart = useCallback(
+    (seriesId: SeriesId, fromId?: string) => {
+      if (progressBySeries[seriesId]) {
+        setPendingStart({ seriesId, fromId });
+        return;
+      }
+      beginPractice(seriesId, fromId, false);
+    },
+    [beginPractice, progressBySeries],
   );
 
   const exitPractice = useCallback(() => {
@@ -177,7 +218,7 @@ export default function App() {
   useEffect(() => {
     if (route.name === 'practice') return;
     if (route.name === 'asana') {
-      showBackButton(() => goCatalog(route.seriesId));
+      showBackButton(() => goCatalog(route.seriesId, selected?.section));
       return () => hideBackButton();
     }
     if (route.name === 'catalog') {
@@ -185,21 +226,31 @@ export default function App() {
       return () => hideBackButton();
     }
     hideBackButton();
-  }, [route, goHome, goCatalog]);
+  }, [route, goHome, goCatalog, selected?.section]);
 
   const grouped = useMemo(() => {
     if (!activeSeriesId) return [];
     const activeSeries = getSeries(activeSeriesId);
+    const needle = query.trim().toLocaleLowerCase('ru');
+    const matches = (asana: Asana) => {
+      if (!needle) return true;
+      return [asana.sanskrit, asana.transcription, asanaDisplayName(asana, locale)]
+        .join(' ')
+        .toLocaleLowerCase('ru')
+        .includes(needle);
+    };
     const map = new Map<string, { asana: Asana; num: number }[]>();
     for (const section of activeSeries.sections) map.set(section.id, []);
     activeSeries.asanas.forEach((asana, idx) => {
-      map.get(asana.section)?.push({ asana, num: idx + 1 });
+      if (matches(asana)) map.get(asana.section)?.push({ asana, num: idx + 1 });
     });
-    return activeSeries.sections.map((section) => ({
-      section,
-      asanas: map.get(section.id) ?? [],
-    }));
-  }, [activeSeriesId]);
+    return activeSeries.sections
+      .map((section) => ({ section, asanas: map.get(section.id) ?? [] }))
+      .filter((group) => !needle || group.asanas.length > 0);
+  }, [activeSeriesId, query, locale]);
+
+  const completedIds = new Set(progress?.completedIds ?? []);
+  const filteredCount = grouped.reduce((n, group) => n + group.asanas.length, 0);
 
   const go = (delta: number) => {
     if (!series || !activeSeriesId) return;
@@ -299,7 +350,7 @@ export default function App() {
                     <button
                       type="button"
                       className="header__practice"
-                      onClick={() => startPractice(id)}
+                      onClick={() => requestPracticeStart(id)}
                     >
                       {t(locale, 'startPractice')}
                     </button>
@@ -307,7 +358,7 @@ export default function App() {
                       <button
                         type="button"
                         className="header__continue"
-                        onClick={() => startPractice(id, undefined, true)}
+                        onClick={() => beginPractice(id, undefined, true)}
                       >
                         {t(locale, 'continuePractice')}
                       </button>
@@ -429,14 +480,12 @@ export default function App() {
           <FeedbackButton context={{ screen: '#/' }} />
 
           {mantraId && (
-            <div className="sheet-backdrop" onClick={() => setMantraId(null)}>
-              <div
-                className="sheet mantra-sheet"
-                onClick={(e) => e.stopPropagation()}
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="mantra-title"
-              >
+            <Sheet
+              onClose={() => setMantraId(null)}
+              labelledBy="mantra-title"
+              closeLabel={t(locale, 'close')}
+              className="mantra-sheet"
+            >
                 <div className="sheet__grip" />
                 <h3 className="sheet__sanskrit" id="mantra-title">
                   {getMantra(mantraId).title}
@@ -465,8 +514,7 @@ export default function App() {
                     </Fragment>
                   ))}
                 </p>
-              </div>
-            </div>
+            </Sheet>
           )}
         </div>
       ) : (
@@ -484,7 +532,7 @@ export default function App() {
               <button
                 type="button"
                 className="header__practice"
-                onClick={() => startPractice(route.seriesId)}
+                onClick={() => requestPracticeStart(route.seriesId)}
               >
                 {t(locale, 'startPractice')}
               </button>
@@ -492,7 +540,7 @@ export default function App() {
                 <button
                   type="button"
                   className="header__continue"
-                  onClick={() => startPractice(route.seriesId, undefined, true)}
+                  onClick={() => beginPractice(route.seriesId, undefined, true)}
                 >
                   {t(locale, 'continuePractice')}
                 </button>
@@ -500,74 +548,120 @@ export default function App() {
             </div>
           </header>
 
-          <nav className="section-nav" aria-label="Sections">
-            {series!.sections.map((s) => (
-              <a key={s.id} href={`#/series/${route.seriesId}/section/${s.id}`}>
-                {sectionNavLabel(s, locale)}
-              </a>
-            ))}
-          </nav>
+          <div className="catalog-search">
+            <label htmlFor="asana-search" className="visually-hidden">
+              {t(locale, 'searchAsana')}
+            </label>
+            <input
+              id="asana-search"
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t(locale, 'searchAsana')}
+              autoComplete="off"
+            />
+            {query && (
+              <button
+                type="button"
+                className="catalog-search__clear"
+                aria-label={t(locale, 'clearSearch')}
+                title={t(locale, 'clearSearch')}
+                onClick={() => setQuery('')}
+              >
+                ×
+              </button>
+            )}
+          </div>
+          {query && (
+            <p className="catalog-search__count">
+              {t(locale, 'foundCount').replace(
+                '{n}',
+                `${filteredCount} ${pluralizeAsana(locale, filteredCount)}`,
+              )}
+            </p>
+          )}
+
+          {!query && (
+            <nav className="section-nav" aria-label="Sections">
+              {series!.sections.map((s) => (
+                <a key={s.id} href={`#/series/${route.seriesId}/section/${s.id}`}>
+                  {sectionNavLabel(s, locale)}
+                </a>
+              ))}
+            </nav>
+          )}
 
           <main>
-            {grouped.map(({ section, asanas }) => (
-              <section key={section.id} id={`section-${section.id}`} className="section">
-                <div className="section__header">
-                  <h2>{sectionTitle(section, locale)}</h2>
-                  <span>{sectionSubtitle(section, locale)}</span>
-                </div>
-                <ul className="asana-list">
-                  {asanas.map(({ asana, num }) => {
-                    const label = asanaDisplayName(asana, locale);
-                    return (
-                      <li key={asana.id}>
-                        <button
-                          type="button"
-                          className={`asana-card${asana.modernAddition ? ' asana-card--modern' : ''}`}
-                          onClick={() => openAsana(route.seriesId, asana.id)}
-                          aria-label={`${num}. ${asana.sanskrit}, ${label}`}
-                        >
-                          <span className="asana-card__num" aria-hidden="true">
-                            {num}
-                          </span>
-                          <PosePicture
-                            pose={asana.pose}
-                            className="asana-card__figure"
-                            thumbnail
-                            pending={asana.illustrationPending}
-                            pendingLabel={t(locale, 'illustrationSoon')}
-                          />
-                          <span className="asana-card__text" aria-hidden="true">
-                            <span className="asana-card__sanskrit">
-                              {asana.modernAddition && (
-                                <span className="asana-card__modern-dot" title={t(locale, 'modernBadge')} />
-                              )}
-                              {asana.sanskrit}
+            {query && filteredCount === 0 ? (
+              <p className="catalog-empty">{t(locale, 'nothingFound')}</p>
+            ) : (
+              grouped.map(({ section, asanas }) => (
+                <section key={section.id} id={`section-${section.id}`} className="section">
+                  <div className="section__header">
+                    <h2>{sectionTitle(section, locale)}</h2>
+                    <span>{sectionSubtitle(section, locale)}</span>
+                  </div>
+                  <ul className="asana-list">
+                    {asanas.map(({ asana, num }) => {
+                      const label = asanaDisplayName(asana, locale);
+                      const done = completedIds.has(asana.id);
+                      return (
+                        <li key={asana.id}>
+                          <button
+                            type="button"
+                            className={`asana-card${asana.modernAddition ? ' asana-card--modern' : ''}${done ? ' asana-card--done' : ''}`}
+                            onClick={() => openAsana(route.seriesId, asana.id)}
+                            aria-label={`${num}. ${asana.sanskrit}, ${label}${done ? `, ${t(locale, 'completed')}` : ''}`}
+                          >
+                            <span className="asana-card__num" aria-hidden="true">
+                              {num}
                             </span>
-                            <span className="asana-card__russian">{label}</span>
-                          </span>
-                          {asana.vinyasa !== undefined && (
-                            <span className="asana-card__vinyasa" aria-hidden="true">
-                              {asana.vinyasa}
+                            <PosePicture
+                              pose={asana.pose}
+                              className="asana-card__figure"
+                              thumbnail
+                              pending={asana.illustrationPending}
+                              pendingLabel={t(locale, 'illustrationSoon')}
+                            />
+                            <span className="asana-card__text" aria-hidden="true">
+                              <span className="asana-card__sanskrit">
+                                {asana.modernAddition && (
+                                  <span className="asana-card__modern-dot" title={t(locale, 'modernBadge')} />
+                                )}
+                                {asana.sanskrit}
+                              </span>
+                              <span className="asana-card__russian">{label}</span>
                             </span>
-                          )}
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </section>
-            ))}
+                            {done && (
+                              <span
+                                className="asana-card__done"
+                                aria-hidden="true"
+                                title={t(locale, 'completed')}
+                              >
+                                ✓
+                              </span>
+                            )}
+                            {asana.vinyasa !== undefined && (
+                              <span className="asana-card__vinyasa" aria-hidden="true">
+                                {asana.vinyasa}
+                              </span>
+                            )}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </section>
+              ))
+            )}
           </main>
 
-          {selected && (
-            <div className="sheet-backdrop" onClick={() => goCatalog(route.seriesId)}>
-              <div
-                className="sheet"
-                onClick={(e) => e.stopPropagation()}
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="sheet-title"
-              >
+          {selected && !pendingStart && (
+            <Sheet
+              onClose={() => goCatalog(route.seriesId, selected.section)}
+              labelledBy="sheet-title"
+              closeLabel={t(locale, 'close')}
+            >
                 <div className="sheet__grip" />
                 <PosePicture
                   pose={selected.pose}
@@ -631,7 +725,7 @@ export default function App() {
                 <button
                   type="button"
                   className="sheet__practice"
-                  onClick={() => startPractice(route.seriesId, selected.id)}
+                  onClick={() => requestPracticeStart(route.seriesId, selected.id)}
                 >
                   {t(locale, 'practiceFromHere')}
                 </button>
@@ -651,10 +745,39 @@ export default function App() {
                     {t(locale, 'next')}
                   </button>
                 </div>
-              </div>
-            </div>
+            </Sheet>
           )}
+
         </div>
+      )}
+
+      {pendingStart && (
+        <Sheet
+          onClose={() => setPendingStart(null)}
+          labelledBy="reset-progress-title"
+          closeLabel={t(locale, 'close')}
+        >
+          <div className="confirm">
+            <h2 id="reset-progress-title">{t(locale, 'resetProgressTitle')}</h2>
+            <p>{t(locale, 'resetProgressText')}</p>
+            <div className="confirm__actions">
+              <button type="button" onClick={() => setPendingStart(null)}>
+                {t(locale, 'cancel')}
+              </button>
+              <button
+                type="button"
+                className="confirm__primary"
+                onClick={() => {
+                  const start = pendingStart;
+                  setPendingStart(null);
+                  beginPractice(start.seriesId, start.fromId, false);
+                }}
+              >
+                {t(locale, 'startOver')}
+              </button>
+            </div>
+          </div>
+        </Sheet>
       )}
     </LocaleContext.Provider>
   );

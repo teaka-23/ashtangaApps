@@ -342,6 +342,79 @@ body {
   font-size: 13px;
 }
 
+.catalog-search {
+  position: relative;
+  margin: 4px 0 8px;
+}
+
+.catalog-search input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 42px 11px 12px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: var(--tg-secondary-bg);
+  color: var(--tg-text);
+  font: inherit;
+  font-size: 15px;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.catalog-search input:focus {
+  border-color: var(--tg-link);
+}
+
+.catalog-search input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.catalog-search input::placeholder {
+  color: var(--tg-hint);
+}
+
+.catalog-search__clear {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--tg-hint);
+  font: inherit;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.catalog-search__clear:hover {
+  color: var(--tg-text);
+}
+
+.catalog-search__clear:focus-visible {
+  outline: 2px solid var(--tg-link);
+  outline-offset: 1px;
+}
+
+.catalog-search__count {
+  margin: 0 0 8px;
+  color: var(--tg-hint);
+  font-size: 12px;
+}
+
+.catalog-empty {
+  padding: 28px 12px;
+  margin: 0;
+  color: var(--tg-hint);
+  text-align: center;
+}
+
 .asana-list {
   list-style: none;
   margin: 0;
@@ -433,6 +506,24 @@ body {
 .asana-card__russian {
   color: var(--tg-hint);
   font-size: 13px;
+}
+
+.asana-card__done {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--modern-accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.asana-card--done {
+  box-shadow: inset 3px 0 0 var(--modern-accent);
 }
 
 .asana-card__vinyasa {
@@ -563,6 +654,7 @@ body {
 }
 
 .sheet {
+  position: relative;
   width: 100%;
   max-width: 560px;
   max-height: 95vh;
@@ -571,6 +663,37 @@ body {
   border-radius: 20px 20px 0 0;
   padding: 8px 20px calc(24px + env(safe-area-inset-bottom));
   text-align: center;
+}
+
+.sheet__close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--tg-hint);
+  font: inherit;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sheet__close:hover {
+  background: var(--tg-secondary-bg);
+  color: var(--tg-text);
+}
+
+.sheet__close:focus-visible {
+  outline: 2px solid var(--tg-link);
+  outline-offset: 2px;
 }
 
 .sheet__grip {
@@ -599,6 +722,7 @@ body {
 
 .sheet__sanskrit {
   margin: 4px 0 2px;
+  padding: 0 26px;
   font-size: 20px;
 }
 
@@ -682,6 +806,49 @@ body {
 
 .sheet__nav button:disabled {
   opacity: 0.35;
+}
+
+.confirm {
+  padding: 8px 0 4px;
+}
+
+.confirm h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.confirm p {
+  margin: 0 0 18px;
+  color: var(--tg-hint);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.confirm__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.confirm__actions button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: var(--tg-secondary-bg);
+  color: var(--tg-text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.confirm__actions .confirm__primary {
+  background: var(--tg-button);
+  color: #fff;
+}
+
+.confirm__actions button:focus-visible {
+  outline: 2px solid var(--tg-link);
+  outline-offset: 2px;
 }
 
 /* Режим практики — один экран, без вертикального скролла */
